@@ -47,7 +47,7 @@ public class LimeLight extends SubsystemBase {
    */
 
   private double calculateDistanceWithAngle(){
-    return LimeLightConstants.GOAL_RELATIVE_HEIGHT_M/(Math.tan(LimeLightConstants.LIMELIGHT_MOUNTING_ANGLE+ty.getDouble(0.0)));
+    return LimeLightConstants.GOAL_RELATIVE_HEIGHT_M/(Math.tan(LimeLightConstants.LIMELIGHT_MOUNTING_ANGLE+Math.toRadians(ty.getDouble(0.0))));
   }
 
   private double calculateBallSpeed(){
