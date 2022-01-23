@@ -74,4 +74,16 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = 0;
     }
+
+    public static final class LimeLightConstants{
+        public static final double GOAL_RELATIVE_HEIGHT_M = 2.5;
+        public static final double SHOOTER_ANGLE = Math.toRadians(0);
+        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(0);
+        public static final double BALL_MOMENT = 0;
+        public static final double BALL_MASS = 0;
+        public static final double BALL_RADIUS = 0;
+        public static final double WHEEL_RADIUS = 0;
+        public static final double WHEEL_MOMENT = 0;
+
+    }
 }
