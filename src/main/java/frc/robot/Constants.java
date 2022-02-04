@@ -25,7 +25,7 @@ public final class Constants {
         public static enum ARM_ENUM {HORIZONTAL, VERTICAL};
         public static enum CLAW_ENUM {OPEN, CLOSED};
         public static enum RATCHET_ENUM {RATCHETING, FREE};
-        
+        public static enum HOOK_ENUM {EXTENDED, CAPTURING, RETRACTED};
     }
 
     public static final class MotorConstants{
