@@ -14,6 +14,7 @@ import frc.robot.RobotMap;
 import frc.robot.Constants.ControlConstants.CLIMB_STATE;
 import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
 import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
+import frc.robot.Constants.PneumaticConstants.HOOK_ENUM;
 import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
 
 public class Climb extends SubsystemBase {
@@ -74,6 +75,23 @@ public class Climb extends SubsystemBase {
     }
   }
   
+  //sets HOOK position with HOOK enum.
+  public void setHook(HOOK_ENUM pos){
+    switch (pos) {
+      case EXTENDED:
+        
+        break;
+      case RETRACTED:
+        
+        break;  
+      case CAPTURING:
+
+        break;
+      default:
+        break;
+      
+    }
+  }
   //sets climb victor percent
   public void setClimbPercent(double percent){
     CLIMB_VICTOR.set(ControlMode.PercentOutput, percent);
