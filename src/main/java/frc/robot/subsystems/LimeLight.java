@@ -5,13 +5,18 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 import frc.robot.Constants.LimeLightConstants;
+
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LimeLight extends SubsystemBase {
+  private static final PigeonIMU PIGEON = RobotMap.PIGEON;
   /** Creates a new LimeLight. */
   public LimeLight() {
     ledMode.setNumber(1);
@@ -49,6 +54,11 @@ public class LimeLight extends SubsystemBase {
   private double calculateDistanceWithAngle(){
     return LimeLightConstants.GOAL_RELATIVE_HEIGHT_M/(Math.tan(LimeLightConstants.LIMELIGHT_MOUNTING_ANGLE+Math.toRadians(ty.getDouble(0.0))));
   }
+
+  public double calculateDistanceWithAngleAndPigeon(){
+    return LimeLightConstants.GOAL_RELATIVE_HEIGHT_M/(Math.tan(LimeLightConstants.LIMELIGHT_MOUNTING_ANGLE+Math.toRadians(PIGEON.getPitch())+Math.toRadians(ty.getDouble(0.0))));
+  }
+
 
   private double calculateBallSpeed(){
     double x = calculateDistanceWithAngle();

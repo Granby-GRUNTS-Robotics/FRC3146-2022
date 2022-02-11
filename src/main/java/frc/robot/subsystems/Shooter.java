@@ -12,7 +12,7 @@ import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
   
-  private static final CANSparkMax SHOOTER_LEAD_SPARK_MAX = RobotMap.SHOOTER_LEAD_SPARK;
+  private static final CANSparkMax SHOOTER_LEAD_SPARK_MAX = RobotMap.SHOOTER_LEAD_SPARK;//left side
   private static final CANSparkMax SHOOTER_FOLLOW_SPARK_MAX = RobotMap.SHOOTER_FOLLOW_SPARK;
 
   private static final RelativeEncoder SHOOTER_LEAD_ENCODER = SHOOTER_LEAD_SPARK_MAX.getEncoder();
@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter() {
     SHOOTER_LEAD_SPARK_MAX.setInverted(false);
-    SHOOTER_FOLLOW_SPARK_MAX.setInverted(false);
+    SHOOTER_FOLLOW_SPARK_MAX.setInverted(true);
 
     SHOOTER_FOLLOW_SPARK_MAX.follow(SHOOTER_LEAD_SPARK_MAX);
 

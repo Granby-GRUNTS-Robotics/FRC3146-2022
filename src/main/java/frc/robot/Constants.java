@@ -16,16 +16,17 @@ package frc.robot;
 public final class Constants {
     public static final class PneumaticConstants{
         public static final int PCM_ID = 0;
-        public static final int INTAKE_PISTON_PORT = 0;
-        public static final int ARM_PISTON_PORT = 0;
-        public static final int RATCHET_PISTON_PORT = 0;
-        public static final int CLAW_PISTON_PORT = 0;
+        public static final int INTAKE_UP_SOLENOID_PORT = 0;
+        public static final int INTAKE_DOWN_SOLENOID_PORT = 0;
+        public static final int ARM_VERT_SOLENOID_PORT = 0;
+        public static final int ARM_HORI_SOLENOID_PORT = 0;
+        public static final int RATCHET_SOLENOID_PORT = 0;
+        public static final int CLAW_SOLENOID_PORT = 0;
 
-        public static enum INTAKE_ENUM {UP, DOWN};
-        public static enum ARM_ENUM {HORIZONTAL, VERTICAL};
+        public static enum INTAKE_ENUM {UP, DOWN, FLOAT, SOFT};
+        public static enum ARM_ENUM {HORIZONTAL, VERTICAL, FLOAT, BOTH};
         public static enum CLAW_ENUM {OPEN, CLOSED};
         public static enum RATCHET_ENUM {RATCHETING, FREE};
-        public static enum HOOK_ENUM {EXTENDED, CAPTURING, RETRACTED};
     }
 
     public static final class MotorConstants{
@@ -34,11 +35,12 @@ public final class Constants {
         public static final int LEFT_FOLLOW_SPARK_ID = 0;
         public static final int RIGHT_DRIVE_SPARK_ID = 0;
         public static final int RIGHT_FOLLOW_SPARK_ID = 0;
-        public static final int SHOOTER_LEAD_SPARK_ID = 0;
+        public static final int SHOOTER_LEAD_SPARK_ID = 0; 
         public static final int SHOOTER_FOLLOW_SPARK_ID = 0;
+        public static final double CLIMB_AMPS = 0;
 
         //victors
-        public static final int CLIMB_LEAD_VICTOR_ID = 0;
+        public static final int CLIMB_LEAD_TALON_ID = 6;
         public static final int CLIMB_FOLLOW_VICTOR_ID = 0;
         public static final int INTAKE_TALON_ID = 0;
         public static final int MAGAZINE_VICTOR_ID = 0;
@@ -47,20 +49,30 @@ public final class Constants {
     public static final class ControlConstants{
         public static final int DRIVE_CONTROLLER_PORT = 0;
         public static final int BUTTON_JOYSTICK_PORT = 1;
-        
-        public static final int CLIMB_LEFT_LIMIT_PORT = 0;
-        public static final int CLIMB_RIGHT_LIMIT_PORT = 0;
-        public static final int CLIMB_ENCODER_A_PORT = 0;
-        public static final int CLIMB_ENCODER_B_PORT = 0;
-        public static final int CLIMB_ENCODER_I_PORT = 0;
 
         public static final int MAG_ENCODER_A_PORT = 0;
         public static final int MAG_ENCODER_B_PORT = 0;
         public static final int MAG_ENCODER_I_PORT = 0;
+        public static final int PIGEON_IMU_ID = 0;
 
         public static final int MAGAZINE_LIMIT_PORT = 0;
+        public static final double CLIMB_ENCODER_TO_DISTANCE = 5 / 16 * Math.PI / 8192;
 
         public static enum CLIMB_STATE {CLIMBING, POSITIONING, HELD};
+        public static enum HOOK_ENUM {EXTENDED, RESTING, CAPTURING, RETRACTED};
+
+        public static final double SHOOTER_kP = 0;
+        public static final double SHOOTER_kD = 0;
+        public static final double SHOOTER_kF = 0;
+        public static final double DRIVE_kP = 0;
+        public static final double DRIVE_kD = 0;
+        public static final double DRIVE_kF = 0;
+        public static final double HOOK_UP_kP = 0;
+        public static final double HOOK_DOWN_kP = 0;
+        public static final double HOOK_UP_kD = 0;
+        public static final double HOOK_DOWN_kD = 0;
+        public static final double HOOK_UP_kF = 0;
+        public static final double HOOK_DOWN_kF = 0;
     }
 
     public static final class SetpointConstants{
@@ -73,6 +85,11 @@ public final class Constants {
         public static final double MAGAZINE_FEED_DISTANCE = 0;
 
         public static final double INTAKE_SPEED = 0;
+
+        public static final double HOOK_EXTENDED = 0;
+        public static final double HOOK_RETRACTED = 0;
+        public static final double HOOK_RESTING = 0;
+        public static final double HOOK_CAPTURING = 0;
     }
 
     public static final class LimeLightConstants{

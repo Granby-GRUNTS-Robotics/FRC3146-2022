@@ -5,23 +5,22 @@
 package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
 import frc.robot.subsystems.Climb;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class RatchetOn extends InstantCommand {
-  Climb climb;
-  public RatchetOn(Climb climb) {
-    this.climb=climb;
-    // Use addRequirements() here to declare subsystem dependencies.
+public class IncrementClimbState extends InstantCommand {
+  private Climb climb;
+  public IncrementClimbState(Climb climb) {
+    this.climb = climb;
     addRequirements(climb);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.setRatchet(RATCHET_ENUM.RATCHETING);
+    climb.incrementClimbState();
   }
 }

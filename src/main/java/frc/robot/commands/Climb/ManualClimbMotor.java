@@ -4,28 +4,38 @@
 
 package frc.robot.commands.Climb;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PneumaticConstants.HOOK_ENUM;
 import frc.robot.subsystems.Climb;
 
-public class HookExtended extends CommandBase {
-  /** Creates a new HookExtended. */
+public class ManualClimbMotor extends CommandBase {
+  /** Creates a new ManualClimbMotor. */
+  private NetworkTableEntry voltageEntry;
   Climb climb;
-  public HookExtended(Climb climb) {
-    this.climb=climb;
+  public ManualClimbMotor(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.climb = climb;
     addRequirements(climb);
+
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable climbTable = inst.getTable("climb");
+    voltageEntry = climbTable.getEntry("climb user set voltage");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.setHook(HOOK_ENUM.EXTENDED);
+    voltageEntry.setNumber(0);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    climb.setVoltage(voltageEntry.getDouble(0));
+  }
 
   // Called once the command ends or is interrupted.
   @Override

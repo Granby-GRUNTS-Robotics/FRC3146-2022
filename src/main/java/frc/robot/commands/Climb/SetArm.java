@@ -4,23 +4,30 @@
 
 package frc.robot.commands.Climb;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PneumaticConstants.HOOK_ENUM;
+import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
 import frc.robot.subsystems.Climb;
 
-public class HookCapturing extends CommandBase {
-  /** Creates a new HookCapturing. */
-  Climb climb;
-  public HookCapturing(Climb climb) {
-    this.climb=climb;
+public class SetArm extends CommandBase {
+  private Climb climb;
+  private ARM_ENUM state;
+  private Timer timer = new Timer();
+  private double timegoal;
+  /** Creates a new SetArm. */
+  public SetArm(Climb climb, ARM_ENUM state) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.climb = climb;
     addRequirements(climb);
+    this.state = state;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.setHook(HOOK_ENUM.CAPTURING);
+    timer.start();
+    timegoal = climb.getArmState() == state ? 0 : 0.25;//TODO
+    climb.setArm(state);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,6 +41,6 @@ public class HookCapturing extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.get() > timegoal;
   }
 }

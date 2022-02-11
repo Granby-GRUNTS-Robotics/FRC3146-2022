@@ -39,6 +39,8 @@ public class Drivetrain extends SubsystemBase {
     RIGHT_DRIVE_ENCODER.setPosition(0);
     LEFT_FOLLOW_ENCODER.setPosition(0);
     RIGHT_FOLLOW_ENCODER.setPosition(0);
+
+    LEFT_DRIVE_SPARK_MAX.getPIDController();
   }
 
   @Override

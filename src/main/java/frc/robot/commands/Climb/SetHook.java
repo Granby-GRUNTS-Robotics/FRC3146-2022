@@ -5,23 +5,18 @@
 package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PneumaticConstants.HOOK_ENUM;
+import frc.robot.Constants.ControlConstants.HOOK_ENUM;
 import frc.robot.subsystems.Climb;
 
-public class HookRetracted extends CommandBase {
-  /** Creates a new HookRetracted. */
-  Climb climb;
-  public HookRetracted(Climb climb) {
-    this.climb=climb;
+public class SetHook extends CommandBase {
+  /** Creates a new SetHook. */
+  public SetHook(Climb climb,HOOK_ENUM state) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    climb.setHook(HOOK_ENUM.RETRACTED);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
