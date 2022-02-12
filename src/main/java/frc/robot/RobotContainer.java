@@ -8,8 +8,23 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.Climb.DecrementClimbState;
+import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
+import frc.robot.commands.Climb.MoveToClimbState;
+import frc.robot.commands.Intake.IntakeButtonCommand;
+import frc.robot.commands.Magazine.MagIntake;
+import frc.robot.commands.Shooter.RevUpShuffleboard;
+import frc.robot.commands.Shooter.ShootHigh;
+import frc.robot.commands.Shooter.ShootLime;
+import frc.robot.commands.Shooter.ShootLow;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.Shooter;
+import frc.robot.RobotMap.Buttons;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,10 +35,16 @@ import frc.robot.subsystems.Climb;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static final Climb M_CLIMB = new Climb();
+  private static final Intake M_INTAKE = new Intake();
+  private static final Shooter M_SHOOTER = new Shooter();
+  private static final Drivetrain M_DRIVETRAIN = new Drivetrain();
+  private static final LimeLight M_LIME_LIGHT = new LimeLight();
+  private static final Magazine M_MAGAZINE = new Magazine();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    SmartDashboard.putData("ManualClimbMotor", new ManualClimbMotor(M_CLIMB));
+    SmartDashboard.putData("ManualClimbMotor", new ManualClimbMotor(M_CLIMB, Buttons.BUTTON_Y));
+    SmartDashboard.putData("Manual Shooter Speed", new RevUpShuffleboard(M_SHOOTER));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -35,6 +56,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    Buttons.intakeButton.whileHeld(new IntakeButtonCommand(M_INTAKE))
+    .whileHeld(new MagIntake(M_MAGAZINE));
+    Buttons.lowGoalButton.and(Buttons.shootButton).whileActiveOnce(new ShootLow(M_MAGAZINE,M_SHOOTER));
+    Buttons.highGoalButton.and(Buttons.shootButton).whileActiveOnce(new ShootHigh(M_MAGAZINE,M_SHOOTER));
+    Buttons.shootButton.whileHeld(new ShootLime(M_MAGAZINE, M_SHOOTER, M_LIME_LIGHT));
+    Buttons.climbForward.whenPressed(new IncrementClimbState(M_CLIMB))
+    .whenReleased(new MoveToClimbState(M_CLIMB));
+    Buttons.climbBackwards.whenPressed(new DecrementClimbState(M_CLIMB))
+    .whenReleased(new MoveToClimbState(M_CLIMB));
   }
 
   /**

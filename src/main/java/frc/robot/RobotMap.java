@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import static frc.robot.Constants.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -53,7 +55,7 @@ public class RobotMap {
     //sensors
     public static final Encoder MAG_ENCODER = new Encoder(ControlConstants.MAG_ENCODER_A_PORT, ControlConstants.MAG_ENCODER_B_PORT, ControlConstants.MAG_ENCODER_I_PORT);
 
-    public static final DigitalInput MAGAZINE_LIMIT_SWITCH = new DigitalInput(ControlConstants.MAGAZINE_LIMIT_PORT);public static final int INTAKE_LIMIT_PORT = 0;
+    public static final DigitalInput MAGAZINE_LIMIT_SWITCH = new DigitalInput(ControlConstants.MAGAZINE_LIMIT_PORT);
 
     public static final PigeonIMU PIGEON = new PigeonIMU(ControlConstants.PIGEON_IMU_ID); 
 
@@ -62,7 +64,19 @@ public class RobotMap {
     public static final Joystick BUTTON_JOYSTICK = new Joystick(ControlConstants.BUTTON_JOYSTICK_PORT);
 
     public static final class Buttons{
-        public Button shootButton = new JoystickButton(BUTTON_JOYSTICK, 1);
+        public static final Button shootButton = new JoystickButton(DRIVE_JOYSTICK, 1);
+        
+        public static final DoubleSupplier BUTTON_Y = new DoubleSupplier() {
+            public double getAsDouble() {
+                return BUTTON_JOYSTICK.getY();
+            };
+        };
+        
+        public static final Button intakeButton = new JoystickButton(BUTTON_JOYSTICK, 2);
+        public static final Button lowGoalButton = new JoystickButton(DRIVE_JOYSTICK, 3);
+        public static final Button highGoalButton = new JoystickButton(DRIVE_JOYSTICK, 4);
+        public static final Button climbBackwards = new JoystickButton(BUTTON_JOYSTICK, 7);
+        public static final Button climbForward = new JoystickButton(BUTTON_JOYSTICK, 8);
     }
 
 }
