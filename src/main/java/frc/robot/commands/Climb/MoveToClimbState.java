@@ -26,28 +26,28 @@ public class MoveToClimbState extends SequentialCommandGroup {
         addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.VERTICAL, CLAW_ENUM.OPEN));
         break;
       case 2:
-       addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.CAPTURING, ARM_ENUM.VERTICAL, CLAW_ENUM.OPEN));
+       addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.VERTICAL, CLAW_ENUM.OPEN));
         break;
       case 3:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.CAPTURING, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED));
+        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED));
         break;
       case 4:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.HORIZONTAL, CLAW_ENUM.CLOSED), new SetArm(climb, ARM_ENUM.VERTICAL), new SetHook(climb, HOOK_ENUM.RESTING));
+        addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.MIDDLE, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED), new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.HORIZONTAL, CLAW_ENUM.CLOSED), new SetArm(climb, ARM_ENUM.VERTICAL), new SetHook(climb, HOOK_ENUM.RESTING));
         break;
       case 5:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.CAPTURING, ARM_ENUM.FLOAT, CLAW_ENUM.OPEN));
+        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.FLOAT, CLAW_ENUM.OPEN));
         break;
       case 6:
         //same as 3
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.CAPTURING, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED));
+        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED));
         break;
       case 7:
         //same as 4
-        addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.HORIZONTAL, CLAW_ENUM.CLOSED), new SetArm(climb, ARM_ENUM.VERTICAL), new SetHook(climb, HOOK_ENUM.RESTING));
+        addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.MIDDLE, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED), new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.HORIZONTAL, CLAW_ENUM.CLOSED), new SetArm(climb, ARM_ENUM.VERTICAL), new SetHook(climb, HOOK_ENUM.RESTING));
         break;
       case 8:
         //same as 5
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.CAPTURING, ARM_ENUM.FLOAT, CLAW_ENUM.OPEN));
+        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.FLOAT, CLAW_ENUM.OPEN));
         break;
       default:
         break;

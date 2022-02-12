@@ -4,42 +4,38 @@
 
 package frc.robot.commands.Climb;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
 public class ManualClimbMotor extends CommandBase {
   /** Creates a new ManualClimbMotor. */
-  private NetworkTableEntry voltageEntry;
-  Climb climb;
-  public ManualClimbMotor(Climb climb) {
+  private Climb climb;
+  private DoubleSupplier Y_AXIS;
+  public ManualClimbMotor(Climb climb, DoubleSupplier Y_AXIS) {
+    this.Y_AXIS = Y_AXIS;
     // Use addRequirements() here to declare subsystem dependencies.
     this.climb = climb;
     addRequirements(climb);
-
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable climbTable = inst.getTable("climb");
-    voltageEntry = climbTable.getEntry("climb user set voltage");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    voltageEntry.setNumber(0);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.setVoltage(voltageEntry.getDouble(0));
+    climb.setClimbPercent(Y_AXIS.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climb.setClimbPercent(0);
+  }
 
   // Returns true when the command should end.
   @Override

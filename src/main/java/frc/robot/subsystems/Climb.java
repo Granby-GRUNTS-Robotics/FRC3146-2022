@@ -48,7 +48,7 @@ public class Climb extends SubsystemBase {
     FOLLOW_VICTOR.follow(CLIMB_TALON);
     FOLLOW_VICTOR.setInverted(true);
     CLIMB_TALON.setInverted(true);
-    CLIMB_TALON.setSelectedSensorPosition(distanceToEncoderUnits(0));
+    CLIMB_TALON.setSelectedSensorPosition(distanceToEncoderUnits(SetpointConstants.HOOK_RETRACTED));
     CLIMB_TALON.setSensorPhase(true); // clockwise looking at the encoder from the outside moves the hook out. Reversed Talon to make positive outwards. Reversed Sensor to match Talon
     
     //limits current draw to 35 amps
@@ -166,7 +166,7 @@ public class Climb extends SubsystemBase {
     switch (pos) {
       case EXTENDED:
         try {
-          setSetPoint(SetpointConstants.HOOK_EXTENDED);
+          setHook(SetpointConstants.HOOK_EXTENDED);
         } catch (Exception e) {
           e.printStackTrace();
           System.out.println(e);
@@ -174,7 +174,7 @@ public class Climb extends SubsystemBase {
         break;
       case RETRACTED:
         try {
-          setSetPoint(SetpointConstants.HOOK_RETRACTED);
+          setHook(SetpointConstants.HOOK_RETRACTED);
         } catch (Exception e) {
           e.printStackTrace();
           System.out.println(e);
@@ -182,15 +182,15 @@ public class Climb extends SubsystemBase {
         break;  
       case RESTING:
         try {
-          setSetPoint(SetpointConstants.HOOK_RESTING);
+          setHook(SetpointConstants.HOOK_RESTING);
         } catch (Exception e) {
           e.printStackTrace();
           System.out.println(e);
         }
         break;  
-      case CAPTURING:
+      case MIDDLE:
         try {
-          setSetPoint(SetpointConstants.HOOK_CAPTURING);
+          setHook(SetpointConstants.HOOK_MIDDLE);
         } catch (Exception e) {
           e.printStackTrace();
           System.out.println(e);
@@ -223,7 +223,7 @@ public class Climb extends SubsystemBase {
    * @param distance the extended distance in inches
    * @throws Exception if distance is not within range or ratcheting does not match up with movement direction
    */
-  public void setSetPoint(double distance) throws Exception{
+  public void setHook(double distance) throws Exception{
     if (distance < 0 || distance > 50){
       throw new Exception("invalid distance");
     } else

@@ -58,12 +58,12 @@ public final class Constants {
         public static final int MAGAZINE_LIMIT_PORT = 0;
         public static final double CLIMB_ENCODER_TO_DISTANCE = 5 / 16 * Math.PI / 8192;
 
-        public static enum CLIMB_STATE {CLIMBING, POSITIONING, HELD};
-        public static enum HOOK_ENUM {EXTENDED, RESTING, CAPTURING, RETRACTED};
+        public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE};
 
-        public static final double SHOOTER_kP = 0;
+        public static final double SHOOTER_kP = .00049;
         public static final double SHOOTER_kD = 0;
-        public static final double SHOOTER_kF = 0;
+        public static final double SHOOTER_kS = 0.161;
+        public static final double SHOOTER_kV = 0.000187;
         public static final double DRIVE_kP = 0;
         public static final double DRIVE_kD = 0;
         public static final double DRIVE_kF = 0;
@@ -76,11 +76,12 @@ public final class Constants {
     }
 
     public static final class SetpointConstants{
-        public static final double ShooterSpeedClose = 0;
-        public static final double ShooterPrecision = 0;
+        public static final double SHOOTER_SPEED_LOW = 0;
+        public static final double SHOOTER_SPEED_HIGH = 0;
+        public static final double SHOOTER_PRECISISON = 0;
 
         public static final double MAGAZINE_SPEED = 0;
-        public static final double MAGAZINE_PRECISION = 0;
+        public static final double MAGAZINE_PRECISION = 100;
         public static final double MAGAZINE_BACKSPACE_DISTANCE = 0;
         public static final double MAGAZINE_FEED_DISTANCE = 0;
 
@@ -88,6 +89,7 @@ public final class Constants {
 
         public static final double HOOK_EXTENDED = 0;
         public static final double HOOK_RETRACTED = 0;
+        public static final double HOOK_MIDDLE = 0;
         public static final double HOOK_RESTING = 0;
         public static final double HOOK_CAPTURING = 0;
     }
