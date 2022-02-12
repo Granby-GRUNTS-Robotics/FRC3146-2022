@@ -58,7 +58,7 @@ public class Intake extends SubsystemBase {
     
   }
 
-  public static INTAKE_ENUM getIntake_pos() {
+  public INTAKE_ENUM getIntakePos() {
       return intake_pos;
   }
 

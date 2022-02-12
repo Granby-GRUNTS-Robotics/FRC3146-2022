@@ -24,16 +24,24 @@ public class MagIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    magazine.setMagazinePercent(SetpointConstants.MAGAZINE_SPEED);
+    if (!magazine.getLimitSwitch()) 
+      magazine.setMagazinePercent(SetpointConstants.MAGAZINE_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(magazine.getLimitSwitch()){
+      magazine.setMagazinePercent(0);
+    }
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    magazine.setMagazinePercent(0);
+  }
 
   // Returns true when the command should end.
   @Override
