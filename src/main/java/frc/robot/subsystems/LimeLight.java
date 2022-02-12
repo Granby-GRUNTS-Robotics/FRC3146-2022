@@ -66,7 +66,7 @@ public class LimeLight extends SubsystemBase {
       (9.8 * Math.pow(x, 2) / 2)
       /
       (
-        (Math.tan(LimeLightConstants.SHOOTER_ANGLE) - LimeLightConstants.GOAL_RELATIVE_HEIGHT_M) 
+        (Math.tan(LimeLightConstants.SHOOTER_ANGLE) - LimeLightConstants.GOAL_RELATIVE_HEIGHT_M + 1) 
         * 
         (Math.pow(Math.cos(LimeLightConstants.SHOOTER_ANGLE) , 2))
       )
