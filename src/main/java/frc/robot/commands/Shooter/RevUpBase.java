@@ -11,7 +11,7 @@ import frc.robot.subsystems.Shooter;
 public class RevUpBase extends CommandBase {
   /** Creates a new ShooterSpeedBase. */
 
-  private final Shooter shooter; 
+  protected final Shooter shooter; 
   protected double speed;
   
   public RevUpBase(Shooter shooter) {
@@ -33,6 +33,6 @@ public class RevUpBase extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(shooter.getError()) < SetpointConstants.ShooterPrecision;
+    return Math.abs(shooter.getError()) < SetpointConstants.SHOOTER_PRECISISON;
   }
 }

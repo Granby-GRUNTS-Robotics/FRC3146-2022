@@ -4,13 +4,13 @@
 
 package frc.robot.commands.Shooter;
 
-import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
 /** Add your docs here. */
-public class ShootLime extends ShootBase{
-    public ShootLime(Magazine magazine, Shooter shooter, LimeLight limeLight){
-        super(magazine, shooter, new RevUpLime(shooter, limeLight));
-    }
-}
+public class ShootHigh extends ShootBase {
+
+    public ShootHigh(Magazine magazine, Shooter shooter)  {
+        super(magazine, shooter, new RevUpHigh(shooter));
+        //TODO Auto-generated constructor stub
+    }}

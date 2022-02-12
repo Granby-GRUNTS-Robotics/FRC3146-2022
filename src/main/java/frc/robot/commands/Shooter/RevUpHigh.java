@@ -4,13 +4,18 @@
 
 package frc.robot.commands.Shooter;
 
-import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Magazine;
+import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Shooter;
 
 /** Add your docs here. */
-public class ShootLime extends ShootBase{
-    public ShootLime(Magazine magazine, Shooter shooter, LimeLight limeLight){
-        super(magazine, shooter, new RevUpLime(shooter, limeLight));
+public class RevUpHigh extends RevUpBase {
+
+    public RevUpHigh(Shooter shooter) {
+        super(shooter);
+        speed = SetpointConstants.SHOOTER_SPEED_HIGH;
+        //TODO Auto-generated constructor stub
     }
+
+
+
 }

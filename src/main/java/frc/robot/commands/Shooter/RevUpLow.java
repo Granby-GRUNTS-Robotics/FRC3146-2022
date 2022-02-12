@@ -4,13 +4,14 @@
 
 package frc.robot.commands.Shooter;
 
-import frc.robot.subsystems.Magazine;
+import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Shooter;
 
-/** Add your docs here. */
-public class ShootClose extends ShootBase{
-    public ShootClose(Magazine magazine, Shooter shooter){
-        super(magazine, shooter);
-        speedBase = new RevUpClose(shooter);
-    }
+public class RevUpLow extends RevUpBase {
+
+  /** Creates a new SetShooterSpeed. */
+  public RevUpLow(Shooter shooter) {
+    super(shooter);
+    speed = SetpointConstants.SHOOTER_SPEED_LOW;
+  }
 }

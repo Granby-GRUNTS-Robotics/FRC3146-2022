@@ -16,8 +16,7 @@ import frc.robot.subsystems.Shooter;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ShootBase extends SequentialCommandGroup {
   /** Creates a new ShootBase. */
-  protected RevUpBase speedBase;
-  public ShootBase(Magazine magazine, Shooter shooter) {
+  public ShootBase(Magazine magazine, Shooter shooter, RevUpBase speedBase) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new ParallelCommandGroup(new BackSpace(magazine), speedBase), new Feed(magazine), new ShooterBrake(shooter));
