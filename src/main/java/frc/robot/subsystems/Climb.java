@@ -224,13 +224,13 @@ public class Climb extends SubsystemBase {
    * @throws Exception if distance is not within range or ratcheting does not match up with movement direction
    */
   public void setHook(double distance) throws Exception{
-    if (distance < 0 || distance > 50){
+    if (distance < -10 || distance > 40){
       throw new Exception("invalid distance");
     } else
     if ((getPosition() - distance > 0) ^ (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
     }else{ 
-      CLIMB_TALON.selectProfileSlot(getPosition() - distance > 0 ? 1 : 0, 0);
+      CLIMB_TALON.selectProfileSlot(isHooked() ? 1 : 0, 0);
       CLIMB_TALON.set(ControlMode.Position, distanceToEncoderUnits(distance));
     }
   }
@@ -290,7 +290,16 @@ public class Climb extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setVoltage(double voltage) {
-    CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, voltage /12);
+  /**FOR TESTING USE ONLY */
+  public void setPIDFUp(double p, double d, double f){
+    CLIMB_TALON.config_kP(0, p);
+    CLIMB_TALON.config_kD(0, d);
+    CLIMB_TALON.config_kF(0, f);
+  }
+  /**FOR TESTING USE ONLY */
+  public void setPIDFDown(double p, double d, double f){
+    CLIMB_TALON.config_kP(1, p);
+    CLIMB_TALON.config_kD(1, d);
+    CLIMB_TALON.config_kF(1, f);
   }
 }
