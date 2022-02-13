@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -20,6 +21,8 @@ public class Magazine extends SubsystemBase {
 
   /** Creates a new Magazine. */
   public Magazine() {
+    SmartDashboard.setDefaultNumber("Set Magazine Move Distance", 0);
+    SmartDashboard.setDefaultNumber("Magazine Encoder", 0);
     MAGAZINE_ENCODER.setDistancePerPulse(1/4096);
     MAGAZINE_ENCODER.reset();
   }
@@ -44,11 +47,13 @@ public class Magazine extends SubsystemBase {
     return MAGAZINE_LIMIT_SWITCH.get();
   }
 
-  //gets ball amount
+  public double getMagazineMovement(){
+    return SmartDashboard.getNumber("Set Magazine Move Distance", 0);
+  }
 
   @Override
   public void periodic() {
-    
+    SmartDashboard.putNumber("Magazine Encoder", getMagPos());
     // This method will be called once per scheduler run
   }
 }
