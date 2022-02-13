@@ -15,7 +15,7 @@ public class RevUpLime extends RevUpBase{
     }
     public RevUpLime(Shooter shooter, LimeLight limeLight, boolean fixed){
         super(shooter);
-        speed = limeLight.calculateFlyWheelSpeed();
+        speed = limeLight.calculateFlyWheelSpeed() * 60;
         if(fixed){speed = limeLight.fixFlyWheelSpeed(speed);}
     }
 }
