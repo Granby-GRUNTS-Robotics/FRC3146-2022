@@ -6,9 +6,9 @@ package frc.robot.commands.Magazine;
 
 import frc.robot.subsystems.Magazine;
 
-public class MoveMag extends MagMoveBase {
+public class SetMagMove extends MagMoveBase {
   /** Creates a new BackSpace. */
-  public MoveMag(Magazine magazine, double movement) {
+  public SetMagMove(Magazine magazine, double movement) {
     super(magazine);
     this.movement = movement;
     // Use addRequirements() here to declare subsystem dependencies.
