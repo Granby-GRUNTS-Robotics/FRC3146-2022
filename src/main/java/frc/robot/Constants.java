@@ -15,7 +15,7 @@ package frc.robot;
 //TODO fill in constants
 public final class Constants {
     public static final class PneumaticConstants{
-        public static final int PCM_ID = 0;
+        public static final int PCM_ID = 5;
         public static final int INTAKE_UP_SOLENOID_PORT = 0;
         public static final int INTAKE_DOWN_SOLENOID_PORT = 0;
         public static final int ARM_VERT_SOLENOID_PORT = 0;
@@ -31,19 +31,19 @@ public final class Constants {
 
     public static final class MotorConstants{
         //spark maxes
-        public static final int LEFT_DRIVE_SPARK_ID = 0;
-        public static final int LEFT_FOLLOW_SPARK_ID = 0;
-        public static final int RIGHT_DRIVE_SPARK_ID = 0;
-        public static final int RIGHT_FOLLOW_SPARK_ID = 0;
-        public static final int SHOOTER_LEAD_SPARK_ID = 0; 
-        public static final int SHOOTER_FOLLOW_SPARK_ID = 0;
-        public static final double CLIMB_AMPS = 0;
+        public static final int LEFT_DRIVE_SPARK_ID = 1;
+        public static final int LEFT_FOLLOW_SPARK_ID = 2;
+        public static final int RIGHT_DRIVE_SPARK_ID = 3;
+        public static final int RIGHT_FOLLOW_SPARK_ID = 4;
+        public static final int SHOOTER_LEAD_SPARK_ID = 6; 
+        public static final int SHOOTER_FOLLOW_SPARK_ID = 7;
+        public static final double CLIMB_AMPS = 20;
 
         //victors
-        public static final int CLIMB_LEAD_TALON_ID = 6;
-        public static final int CLIMB_FOLLOW_VICTOR_ID = 0;
-        public static final int INTAKE_TALON_ID = 0;
-        public static final int MAGAZINE_VICTOR_ID = 0;
+        public static final int CLIMB_LEAD_TALON_ID = 8;
+        public static final int CLIMB_FOLLOW_VICTOR_ID = 9;
+        public static final int INTAKE_TALON_ID = 10;
+        public static final int MAGAZINE_VICTOR_ID = 11;
     }
 
     public static final class ControlConstants{
@@ -51,28 +51,44 @@ public final class Constants {
         public static final int BUTTON_JOYSTICK_PORT = 1;
 
         public static final int MAG_ENCODER_A_PORT = 0;
-        public static final int MAG_ENCODER_B_PORT = 0;
-        public static final int MAG_ENCODER_I_PORT = 0;
-        public static final int PIGEON_IMU_ID = 0;
+        public static final int MAG_ENCODER_B_PORT = 1;
+        public static final int MAG_ENCODER_I_PORT = 2;
+        public static final int PIGEON_IMU_ID = 12;
 
-        public static final int MAGAZINE_LIMIT_PORT = 0;
+        public static final int MAGAZINE_LIMIT_PORT = 3;
         public static final double CLIMB_ENCODER_TO_DISTANCE = 5 / 16 * Math.PI / 8192;
+        public static final double DRIVE_ENCODER_TO_DISTANCE = 6*Math.PI / 10.71; //encoder * DRIVE_ENCODER_TO_DISTANCE = wheel distance
+        public static final double DRIVE_WIDTH = 21.5 ;//inches
 
         public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE};
+        public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
         public static final double SHOOTER_kP = .00049;
         public static final double SHOOTER_kD = 0;
         public static final double SHOOTER_kS = 0.161;
         public static final double SHOOTER_kV = 0.000187;
-        public static final double DRIVE_kP = 0;
-        public static final double DRIVE_kD = 0;
-        public static final double DRIVE_kF = 0;
+
+        public static final double DRIVE_POSITION_kP = 0.01;
+        public static final double DRIVE_POSITION_kD = 0;
+        public static final double DRIVE_POSITION_kS = 0.155;
+        public static final double DRIVE_POSITION_kV = 0.0;
+
+        public static final double DRIVE_VELOCITY_kP = 0.0469;
+        public static final double DRIVE_VELOCITY_kD = 0;
+        public static final double DRIVE_VELOCITY_kS = 0.155;
+        public static final double DRIVE_VELOCITY_kV = 1.36;
+        
         public static final double HOOK_UP_kP = 0;
         public static final double HOOK_DOWN_kP = 0;
+
         public static final double HOOK_UP_kD = 0;
         public static final double HOOK_DOWN_kD = 0;
+        
         public static final double HOOK_UP_kF = 0;
         public static final double HOOK_DOWN_kF = 0;
+
+        public static final double kTHROTTLE_MULTIPLIER = 0;
+        public static final double kTWIST_MULTIPLIER = 0;
     }
 
     public static final class SetpointConstants{
@@ -80,17 +96,17 @@ public final class Constants {
         public static final double SHOOTER_SPEED_HIGH = 0;
         public static final double SHOOTER_PRECISISON = 0;
 
-        public static final double MAGAZINE_SPEED = 0;
-        public static final double MAGAZINE_PRECISION = 100;
+        public static final double MAGAZINE_SPEED = 0.5;
+        public static final double MAGAZINE_PRECISION = 10;
         public static final double MAGAZINE_BACKSPACE_DISTANCE = 0;
         public static final double MAGAZINE_FEED_DISTANCE = 0;
 
-        public static final double INTAKE_SPEED = 0;
+        public static final double INTAKE_SPEED = 0.5;
 
-        public static final double HOOK_EXTENDED = 0;
-        public static final double HOOK_RETRACTED = 0;
-        public static final double HOOK_MIDDLE = 0;
-        public static final double HOOK_RESTING = 0;
+        public static final double HOOK_EXTENDED = 30;
+        public static final double HOOK_RETRACTED = 5;
+        public static final double HOOK_MIDDLE = 15;
+        public static final double HOOK_RESTING = 28;
         public static final double HOOK_CAPTURING = 0;
     }
 

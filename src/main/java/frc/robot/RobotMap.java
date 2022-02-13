@@ -53,12 +53,11 @@ public class RobotMap {
     public static final VictorSPX MAGAZINE_VICTOR = new VictorSPX(MotorConstants.MAGAZINE_VICTOR_ID);
 
     //sensors
-    public static final Encoder MAG_ENCODER = new Encoder(ControlConstants.MAG_ENCODER_A_PORT, ControlConstants.MAG_ENCODER_B_PORT, ControlConstants.MAG_ENCODER_I_PORT);
+    public static final Encoder MAG_ENCODER = new Encoder(ControlConstants.MAG_ENCODER_A_PORT, ControlConstants.MAG_ENCODER_B_PORT, ControlConstants.MAG_ENCODER_I_PORT, false);
 
     public static final DigitalInput MAGAZINE_LIMIT_SWITCH = new DigitalInput(ControlConstants.MAGAZINE_LIMIT_PORT);
 
     public static final PigeonIMU PIGEON = new PigeonIMU(ControlConstants.PIGEON_IMU_ID); 
-
     
     public static final Joystick DRIVE_JOYSTICK = new Joystick(ControlConstants.DRIVE_CONTROLLER_PORT);
     public static final Joystick BUTTON_JOYSTICK = new Joystick(ControlConstants.BUTTON_JOYSTICK_PORT);
@@ -71,12 +70,17 @@ public class RobotMap {
                 return BUTTON_JOYSTICK.getY();
             };
         };
+        public static final Button INTAKE_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 2);
+        public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
+        public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
+        public static final Button INTAKE_FLOAT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 5);
+        public static final Button INTAKE_SOFT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 6);
+
+        public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
+        public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
         
-        public static final Button intakeButton = new JoystickButton(BUTTON_JOYSTICK, 2);
-        public static final Button lowGoalButton = new JoystickButton(DRIVE_JOYSTICK, 3);
-        public static final Button highGoalButton = new JoystickButton(DRIVE_JOYSTICK, 4);
-        public static final Button climbBackwards = new JoystickButton(BUTTON_JOYSTICK, 7);
-        public static final Button climbForward = new JoystickButton(BUTTON_JOYSTICK, 8);
+        public static final Button CLIMB_BACKWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 7);
+        public static final Button CLIMB_FORWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 8);
     }
 
 }
