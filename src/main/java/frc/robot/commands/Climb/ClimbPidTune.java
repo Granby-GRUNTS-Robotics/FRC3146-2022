@@ -5,7 +5,6 @@
 package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Climb;
 
@@ -28,7 +27,6 @@ public class ClimbPidTune extends InstantCommand {
     double d = SmartDashboard.getNumber("Climb D", 0);
     double f = SmartDashboard.getNumber("Climb FF", 0);
 
-    climb.setPIDFDown(p, d, f);
-    climb.setPIDFUp(p, d, f);
+    climb.setPDF(p, d, f);
   }
 }
