@@ -12,14 +12,12 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap;
 import frc.robot.Constants.ControlConstants;
+import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
   
   private NetworkTableEntry shooterSpeedEntry;
-  private NetworkTableEntry shooterSetSpeedEntry;//for testing purposes only
-
 
   private static final CANSparkMax SHOOTER_LEAD_SPARK_MAX = RobotMap.SHOOTER_LEAD_SPARK;//left side
   private static final CANSparkMax SHOOTER_FOLLOW_SPARK_MAX = RobotMap.SHOOTER_FOLLOW_SPARK;
@@ -36,13 +34,11 @@ public class Shooter extends SubsystemBase {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable shootTable = inst.getTable("shoot");
     shooterSpeedEntry = shootTable.getEntry("Shooter Speed");
-    shooterSetSpeedEntry = shootTable.getEntry("Shooter Set Speed");
-
 
     SHOOTER_LEAD_SPARK_MAX.setInverted(false);
-    SHOOTER_FOLLOW_SPARK_MAX.setInverted(true);
+    SHOOTER_FOLLOW_SPARK_MAX.setInverted(false);
 
-    SHOOTER_FOLLOW_SPARK_MAX.follow(SHOOTER_LEAD_SPARK_MAX);
+    SHOOTER_FOLLOW_SPARK_MAX.follow(SHOOTER_LEAD_SPARK_MAX, true);
 
     SHOOTER_LEAD_SPARK_MAX.setSmartCurrentLimit(40);
     SHOOTER_FOLLOW_SPARK_MAX.setSmartCurrentLimit(40);
@@ -57,12 +53,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setSpeed(double speed){
-    goal_speed = speed * 1.25;
-    leadController.setReference(speed, CANSparkMax.ControlType.kVelocity);
-  }
-
-  public double getSetSpeedEntryValue(){
-    return shooterSetSpeedEntry.getDouble(0);
+    goal_speed = speed / 1.25;
+    leadController.setReference(goal_speed, CANSparkMax.ControlType.kVelocity);
   }
 
   private double getSpeed(){
@@ -76,10 +68,10 @@ public class Shooter extends SubsystemBase {
   public void brake(){
     SHOOTER_LEAD_SPARK_MAX.setVoltage(0);
   }
-
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
-    shooterSpeedEntry.setDouble(getSpeed());
+    shooterSpeedEntry.setDouble(getSpeed()*1.25);
   }
 }
