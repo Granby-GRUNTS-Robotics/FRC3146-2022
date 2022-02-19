@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,6 +42,7 @@ public class Climb extends SubsystemBase {
 
   private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_DRIVE_TALON;
   private static final VictorSPX FOLLOW_VICTOR = RobotMap.CLIMB_FOLLOW_VICTOR;
+  private static final AnalogInput POTENTIOMETER = RobotMap.CLIMB_POTENTIOMETER;
 
   private int climb_state = 0;
   /** Creates a new Climb. */
@@ -215,6 +217,10 @@ public class Climb extends SubsystemBase {
   public void setClimbPercent(double percent){
     CLIMB_TALON.set(ControlMode.PercentOutput, percent);
   }
+
+  private double getPotentiometer(){
+    return POTENTIOMETER.getValue();
+  }
   
   /**
    * exception if distance is not within reasonable bounds or winch is not in correct state
@@ -294,6 +300,7 @@ public class Climb extends SubsystemBase {
     hookedEntry.setBoolean(isHooked());
     SmartDashboard.putNumber("climb_state", climb_state);
     SmartDashboard.putBoolean("isAtPosition", isAtPosition());
+    SmartDashboard.putNumber("potentiometer", getPotentiometer());
     // This method will be called once per scheduler run
   }
 
