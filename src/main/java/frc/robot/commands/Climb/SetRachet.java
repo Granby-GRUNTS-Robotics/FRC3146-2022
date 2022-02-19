@@ -6,6 +6,7 @@ package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
 import frc.robot.subsystems.Climb;     
 public class SetRachet extends CommandBase {
@@ -27,7 +28,7 @@ private double timegoal;
   @Override
   public void initialize() {
     timer.start();
-    timegoal = climb.getRatchetState() == state ? 0 : 0.25;//TODO
+    timegoal = climb.getRatchetState() == state ? 0 : ControlConstants.RATCHET_PISTON_TIME;
     climb.setRatchet(state);
   }
 
@@ -37,7 +38,9 @@ private double timegoal;
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    timer.stop();
+  }
 
   // Returns true when the command should end.
   @Override

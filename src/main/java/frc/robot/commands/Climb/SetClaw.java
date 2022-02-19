@@ -6,6 +6,7 @@ package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
 import frc.robot.subsystems.Climb;
 
@@ -28,7 +29,7 @@ public class SetClaw extends CommandBase {
   @Override
   public void initialize() {
     timer.start();
-    timegoal = climb.getClawState() == state ? 0 : 0.25;//TODO
+    timegoal = climb.getClawState() == state ? 0 : ControlConstants.CLAW_PISTON_TIME;
     climb.setClaw(state);
   }
 
@@ -38,7 +39,9 @@ public class SetClaw extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    timer.stop();
+  }
 
   // Returns true when the command should end.
   @Override
