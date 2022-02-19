@@ -11,7 +11,7 @@ public class Feed extends MagMoveBase {
   /** Creates a new BackSpace. */
   public Feed(Magazine magazine) {
     super(magazine);
-    movement = SetpointConstants.MAGAZINE_FEED_DISTANCE;
+    movement_time = SetpointConstants.MAGAZINE_FEED_DISTANCE;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 }

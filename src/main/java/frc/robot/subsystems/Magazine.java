@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -16,15 +15,11 @@ import frc.robot.RobotMap;
 public class Magazine extends SubsystemBase {
 
   private static final VictorSPX MAGAZINE_VICTOR = RobotMap.MAGAZINE_VICTOR;
-  private static final Encoder MAGAZINE_ENCODER = RobotMap.MAG_ENCODER;
   private static final DigitalInput MAGAZINE_LIMIT_SWITCH = RobotMap.MAGAZINE_LIMIT_SWITCH;
 
   /** Creates a new Magazine. */
   public Magazine() {
     SmartDashboard.setDefaultNumber("Set Magazine Move Distance", 0);
-    SmartDashboard.setDefaultNumber("Magazine Encoder", 0);
-    MAGAZINE_ENCODER.setDistancePerPulse(1/4096);
-    MAGAZINE_ENCODER.reset();
   }
 
   //sets the percent output of the magazine victor
@@ -32,14 +27,8 @@ public class Magazine extends SubsystemBase {
     MAGAZINE_VICTOR.set(ControlMode.PercentOutput, percent);
   }
 
-  //resets magazine encoder to 0
-  public void resetMagazineEncoder(){
-    MAGAZINE_ENCODER.reset();
-  }
-
-  //gets magazine position
-  public double getMagPos(){
-    return MAGAZINE_ENCODER.getDistance();
+  public void brake(){
+    setMagazinePercent(0);
   }
 
   //gets digital input
@@ -53,7 +42,6 @@ public class Magazine extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Magazine Encoder", getMagPos());
     // This method will be called once per scheduler run
   }
 }

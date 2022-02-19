@@ -11,7 +11,7 @@ public class BackSpace extends MagMoveBase {
   /** Creates a new BackSpace. */
   public BackSpace(Magazine magazine) {
     super(magazine);
-    movement = SetpointConstants.MAGAZINE_BACKSPACE_DISTANCE;
+    movement_time = SetpointConstants.MAGAZINE_BACKSPACE_DISTANCE;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 }
