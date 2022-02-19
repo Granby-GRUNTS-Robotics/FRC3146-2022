@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -14,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import frc.robot.Constants.ControlConstants;
@@ -55,11 +55,8 @@ public class Climb extends SubsystemBase {
     CLIMB_TALON.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 0, 0.5));
     
     CLIMB_TALON.config_kP(0, ControlConstants.HOOK_UP_kP);
-    CLIMB_TALON.config_kP(1, ControlConstants.HOOK_DOWN_kP);
     CLIMB_TALON.config_kD(0, ControlConstants.HOOK_UP_kD);
-    CLIMB_TALON.config_kD(1, ControlConstants.HOOK_DOWN_kD);
     CLIMB_TALON.config_kF(0, ControlConstants.HOOK_UP_kF);
-    CLIMB_TALON.config_kF(1, ControlConstants.HOOK_DOWN_kF);
 
     addChild("claw", CLAW_SOLENOID);
     addChild("arm horizontal", ARM_HORI_SOLENOID);
@@ -71,6 +68,7 @@ public class Climb extends SubsystemBase {
     currentEntry = climbTable.getEntry("current");
     positionEntry = climbTable.getEntry("position");
     hookedEntry = climbTable.getEntry("is_hooked");
+    SmartDashboard.setDefaultNumber("climb_state", climb_state);
   }
 
   /** sets arm position
@@ -230,8 +228,11 @@ public class Climb extends SubsystemBase {
     if ((getPosition() - distance > 0) ^ (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
     }else{ 
-      CLIMB_TALON.selectProfileSlot(isHooked() ? 1 : 0, 0);
-      CLIMB_TALON.set(ControlMode.Position, distanceToEncoderUnits(distance));
+      if (isHooked() && !isAtPosition()) {
+        setClimbPercent(SetpointConstants.CLIMB_PERCENT);
+      } else {
+        CLIMB_TALON.set(ControlMode.Position, distanceToEncoderUnits(distance));
+      }
     }
   }
 
@@ -270,7 +271,7 @@ public class Climb extends SubsystemBase {
    * 
    * @return the current position of the bar, in inches above fully pulled down
    */
-  public double getPosition(){
+  private double getPosition(){
     return (double)CLIMB_TALON.getSelectedSensorPosition() * ControlConstants.CLIMB_ENCODER_TO_DISTANCE;
   }
   /**
@@ -282,24 +283,24 @@ public class Climb extends SubsystemBase {
     return distance/ControlConstants.CLIMB_ENCODER_TO_DISTANCE;
   }
 
+  public boolean isAtPosition(){
+    return Math.abs(CLIMB_TALON.getClosedLoopError()) < SetpointConstants.HOOK_PRECISON;
+  }
+
   @Override
   public void periodic() {
     currentEntry.setNumber(getStatorCurrent());
     positionEntry.setNumber(getPosition());
     hookedEntry.setBoolean(isHooked());
+    SmartDashboard.putNumber("climb_state", climb_state);
+    SmartDashboard.putBoolean("isAtPosition", isAtPosition());
     // This method will be called once per scheduler run
   }
 
   /**FOR TESTING USE ONLY */
-  public void setPIDFUp(double p, double d, double f){
+  public void setPDF(double p, double d, double f){
     CLIMB_TALON.config_kP(0, p);
     CLIMB_TALON.config_kD(0, d);
     CLIMB_TALON.config_kF(0, f);
-  }
-  /**FOR TESTING USE ONLY */
-  public void setPIDFDown(double p, double d, double f){
-    CLIMB_TALON.config_kP(1, p);
-    CLIMB_TALON.config_kD(1, d);
-    CLIMB_TALON.config_kF(1, f);
   }
 }
