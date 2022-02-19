@@ -4,17 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj2.command.button.Button;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-import static frc.robot.Constants.*;
-
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -22,6 +11,18 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.ControlConstants;
+import frc.robot.Constants.MotorConstants;
+import frc.robot.Constants.PneumaticConstants;
 
 /** Add your docs here. */
 public class RobotMap {
@@ -53,8 +54,7 @@ public class RobotMap {
     public static final VictorSPX MAGAZINE_VICTOR = new VictorSPX(MotorConstants.MAGAZINE_VICTOR_ID);
 
     //sensors
-    public static final Encoder MAG_ENCODER = new Encoder(ControlConstants.MAG_ENCODER_A_PORT, ControlConstants.MAG_ENCODER_B_PORT, ControlConstants.MAG_ENCODER_I_PORT, false);
-
+    public static final AnalogInput CLIMB_POTENTIOMETER = new AnalogInput(ControlConstants.POTENTIOMETER_PORT);
     public static final DigitalInput MAGAZINE_LIMIT_SWITCH = new DigitalInput(ControlConstants.MAGAZINE_LIMIT_PORT);
 
     public static final PigeonIMU PIGEON = new PigeonIMU(ControlConstants.PIGEON_IMU_ID); 

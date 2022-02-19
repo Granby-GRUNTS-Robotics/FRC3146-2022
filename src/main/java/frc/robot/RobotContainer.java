@@ -8,40 +8,25 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.LimeTurnAndShoot;
+import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
+import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
+import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
+import frc.robot.RobotMap.Buttons;
 import frc.robot.commands.Climb.ClimbPidTune;
-import frc.robot.commands.Climb.DecrementClimbState;
-import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
-import frc.robot.commands.Climb.MoveToClimbState;
 import frc.robot.commands.Climb.SetArm;
 import frc.robot.commands.Climb.SetClaw;
 import frc.robot.commands.Climb.SetRachet;
 import frc.robot.commands.Drivetrain.DrivePIDTune;
-import frc.robot.commands.Drivetrain.DriveToAngle;
-import frc.robot.commands.Drivetrain.DriveToLocation;
-import frc.robot.commands.Drivetrain.JoyDrive;
-import frc.robot.commands.Intake.IntakeButtonCommand;
 import frc.robot.commands.Intake.ManualIntakeMotor;
-import frc.robot.commands.Intake.MoveIntakeDown;
-import frc.robot.commands.Intake.MoveIntakeFloat;
-import frc.robot.commands.Intake.MoveIntakeSoft;
-import frc.robot.commands.Intake.MoveIntakeUp;
-import frc.robot.commands.Magazine.MagIntake;
-import frc.robot.commands.Magazine.SetMagMove;
+import frc.robot.commands.Magazine.MagMoveBase;
 import frc.robot.commands.Shooter.RevUpShuffleboard;
-import frc.robot.commands.Shooter.ShootHigh;
-import frc.robot.commands.Shooter.ShootLow;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
-import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
-import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
-import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
-import frc.robot.RobotMap.Buttons;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -76,12 +61,13 @@ public class RobotContainer {
     SmartDashboard.putData("Ratchet Engaged", new SetRachet(M_CLIMB, RATCHET_ENUM.RATCHETING));
     SmartDashboard.putData("Ratchet Free", new SetRachet(M_CLIMB, RATCHET_ENUM.FREE));
 
-    SmartDashboard.putData("Manual Magazine Move", new SetMagMove(M_MAGAZINE, M_MAGAZINE.getMagazineMovement()));
+    SmartDashboard.putData("Manual Magazine Move", new MagMoveBase(M_MAGAZINE, M_MAGAZINE.getMagazineMovement()));
 
+    /*
     SmartDashboard.putData("Move 24 Inches Forward TEST", new DriveToLocation(M_DRIVETRAIN, 24));
     SmartDashboard.putData("Turn 90 Degrees, TEST", new DriveToAngle(M_DRIVETRAIN, 90));
-
-    M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
+    */
+    //M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -93,6 +79,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    /*
     Buttons.INTAKE_BUTTON.whileHeld(new IntakeButtonCommand(M_INTAKE))
     .whileHeld(new MagIntake(M_MAGAZINE));
 
@@ -105,13 +92,13 @@ public class RobotContainer {
     Buttons.HIGH_GOAL_BUTTON.and(Buttons.shootButton).whileActiveOnce(new ShootHigh(M_MAGAZINE,M_SHOOTER));
     Buttons.shootButton.whileHeld(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE));
     
-    
+    /*
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
     Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-    
+    */
   }
 
   /**

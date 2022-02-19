@@ -50,15 +50,17 @@ public final class Constants {
         public static final int DRIVE_CONTROLLER_PORT = 0;
         public static final int BUTTON_JOYSTICK_PORT = 1;
 
-        public static final int MAG_ENCODER_A_PORT = 0;
-        public static final int MAG_ENCODER_B_PORT = 1;
-        public static final int MAG_ENCODER_I_PORT = 2;
+        public static final int POTENTIOMETER_PORT = 0;
         public static final int PIGEON_IMU_ID = 12;
 
         public static final int MAGAZINE_LIMIT_PORT = 3;
-        public static final double CLIMB_ENCODER_TO_DISTANCE = 5 / 16 * Math.PI / 8192;
+        public static final double CLIMB_ENCODER_TO_DISTANCE = (double) 5 / 16 * Math.PI / 8192; //8192 == counts per rotation. Will be different if we use potentiometer
         public static final double DRIVE_ENCODER_TO_DISTANCE = 6*Math.PI / 10.71; //encoder * DRIVE_ENCODER_TO_DISTANCE = wheel distance
         public static final double DRIVE_WIDTH = 21.5 ;//inches
+
+        public static final double ARM_PISTON_TIME = 2.0;
+        public static final double CLAW_PISTON_TIME = 2.0;
+        public static final double RATCHET_PISTON_TIME = 2.0;
 
         public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE};
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
@@ -79,14 +81,9 @@ public final class Constants {
         public static final double DRIVE_VELOCITY_kV = 1.36;
         
         public static final double HOOK_UP_kP = 0;
-        public static final double HOOK_DOWN_kP = 0;
-
         public static final double HOOK_UP_kD = 0;
-        public static final double HOOK_DOWN_kD = 0;
-        
         public static final double HOOK_UP_kF = 0;
-        public static final double HOOK_DOWN_kF = 0;
-
+        
         public static final double kTHROTTLE_MULTIPLIER = 0;
         public static final double kTWIST_MULTIPLIER = 0;
     }
@@ -108,6 +105,8 @@ public final class Constants {
         public static final double HOOK_MIDDLE = 15;
         public static final double HOOK_RESTING = 28;
         public static final double HOOK_CAPTURING = 0;
+        public static final double HOOK_PRECISON = 100;
+        public static final double CLIMB_PERCENT = 0;
     }
 
     public static final class LimeLightConstants{
