@@ -13,7 +13,7 @@ import frc.robot.subsystems.Intake;
 public class IntakeButtonCommand extends CommandBase {
   /** Creates a new IntakeButtonCommand. */
   private Intake intake;
-  private Timer timer;
+  private Timer timer = new Timer();
   private double timegoal = 0;
   private INTAKE_ENUM start_state;
   public IntakeButtonCommand(Intake intake) {
@@ -30,7 +30,7 @@ public class IntakeButtonCommand extends CommandBase {
     start_state = intake.getIntakePos();
     if (start_state == INTAKE_ENUM.UP){
       intake.setIntakeSolenoids(INTAKE_ENUM.DOWN);
-      timegoal = 0.25;
+      timegoal = 1;
     }
   }
 
@@ -38,6 +38,7 @@ public class IntakeButtonCommand extends CommandBase {
   @Override
   public void execute() {
     if (timer.get() > timegoal && start_state == INTAKE_ENUM.UP){
+      if (intake.getIntakePos() != INTAKE_ENUM.SOFT)
       intake.setIntakeSolenoids(INTAKE_ENUM.SOFT);
     }
   }
