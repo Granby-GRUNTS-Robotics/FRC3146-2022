@@ -35,11 +35,18 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
+
+    LEFT_DRIVE_ENCODER.setVelocityConversionFactor(1/10.71 * 5.9 * Math.PI);
+    RIGHT_DRIVE_ENCODER.setVelocityConversionFactor(1/10.71 * 5.9 * Math.PI);
+
+    LEFT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * 5.9 * Math.PI);
+    RIGHT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * 5.9 * Math.PI);
+
     LEFT_DRIVE_SPARK_MAX.setInverted(false);
     RIGHT_DRIVE_SPARK_MAX.setInverted(true);
 
-    LEFT_FOLLOW_SPARK_MAX.follow(LEFT_DRIVE_SPARK_MAX);
-    RIGHT_FOLLOW_SPARK_MAX.follow(RIGHT_DRIVE_SPARK_MAX);
+    LEFT_FOLLOW_SPARK_MAX.follow(LEFT_DRIVE_SPARK_MAX, false);
+    RIGHT_FOLLOW_SPARK_MAX.follow(RIGHT_DRIVE_SPARK_MAX, false);
 
     RIGHT_DRIVE_SPARK_MAX.setSmartCurrentLimit(40);
     LEFT_DRIVE_SPARK_MAX.setSmartCurrentLimit(40);
@@ -51,18 +58,18 @@ public class Drivetrain extends SubsystemBase {
     LEFT_FOLLOW_ENCODER.setPosition(0);
     RIGHT_FOLLOW_ENCODER.setPosition(0);
 
-    LEFT_CONTROLLER.setP(ControlConstants.DRIVE_POSITION_kP, 0);
-    LEFT_CONTROLLER.setD(ControlConstants.DRIVE_POSITION_kD, 0);
-    LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_POSITION_kV, 0);
-    RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_POSITION_kP, 0);
-    RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_POSITION_kD, 0);
-    RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_POSITION_kV, 0);
-    LEFT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP, 1);
-    LEFT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD, 1);
-    LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV, 1);
-    RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP, 1);
-    RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD, 1);
-    RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV, 1);
+    LEFT_CONTROLLER.setP(ControlConstants.DRIVE_POSITION_kP_L, 0);
+    LEFT_CONTROLLER.setD(ControlConstants.DRIVE_POSITION_kD_L, 0);
+    LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_POSITION_kV_L, 0);
+    RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_POSITION_kP_R, 0);
+    RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_POSITION_kD_R, 0);
+    RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_POSITION_kV_R, 0);
+    LEFT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP_L, 1);
+    LEFT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD_L, 1);
+    LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV_L, 1);
+    RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP_R, 1);
+    RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD_R, 1);
+    RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV_R, 1);
 
     PIGEON.setFusedHeading(0);
   }
@@ -75,6 +82,10 @@ public class Drivetrain extends SubsystemBase {
   public void setSpeeds(double left, double right) {
     LEFT_CONTROLLER.setReference(left, ControlType.kVelocity, 1);
     RIGHT_CONTROLLER.setReference(right, ControlType.kVelocity, 1);
+  }
+
+  public double getRightSpeed(){
+    return RIGHT_DRIVE_ENCODER.getVelocity();
   }
 
   private double angleToDistance(double angle){
@@ -91,7 +102,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void setGoalPositions(double left, double right){
     LEFT_CONTROLLER.setReference(left, ControlType.kPosition, 0);
-    LEFT_CONTROLLER.setReference(right, ControlType.kPosition, 0);
+    RIGHT_CONTROLLER.setReference(right, ControlType.kPosition, 0);
     goal_position = left;
   }
 
@@ -101,16 +112,25 @@ public class Drivetrain extends SubsystemBase {
     setGoalPositions(goal_position, -goal_position);
   }
 
+  public void resetEncoders(){
+    LEFT_DRIVE_ENCODER.setPosition(0);
+    RIGHT_DRIVE_ENCODER.setPosition(0);
+  }
+
   private double getFusedHeading(){
     return PIGEON.getFusedHeading();
   }
 
-  public double[] getPositions(){
-    return new double[]{LEFT_DRIVE_ENCODER.getPosition(), RIGHT_DRIVE_ENCODER.getPosition()};
+  public double getLeftPosition(){
+    return LEFT_DRIVE_ENCODER.getPosition();
+  }
+
+  public double getRightPosition(){
+    return RIGHT_DRIVE_ENCODER.getPosition();
   }
 
   public double getLinearError(){
-    return goal_position -getPositions()[0];
+    return goal_position -getLeftPosition();
   }
 
   public double getAngularError(){
@@ -119,11 +139,11 @@ public class Drivetrain extends SubsystemBase {
 
   /**FOR TESTING USE ONLY */
   public void setPIDF(double p, double d, double f){
-    LEFT_CONTROLLER.setP(p);
-    LEFT_CONTROLLER.setD(d);
-    LEFT_CONTROLLER.setFF(f);
-    RIGHT_CONTROLLER.setP(p);
-    RIGHT_CONTROLLER.setD(d);
-    RIGHT_CONTROLLER.setFF(f);
+    LEFT_CONTROLLER.setP(p, 0);
+    LEFT_CONTROLLER.setD(d, 0);
+    LEFT_CONTROLLER.setFF(f, 0);
+    RIGHT_CONTROLLER.setP(p, 0);
+    RIGHT_CONTROLLER.setD(d, 0);
+    RIGHT_CONTROLLER.setFF(f, 0);
   }
 }

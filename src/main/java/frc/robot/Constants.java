@@ -70,30 +70,24 @@ public final class Constants {
         public static final double SHOOTER_kS = 0.161;
         public static final double SHOOTER_kV = 0.000187;
 
-        public static final double DRIVE_POSITION_kP_L = 0.0;
-        public static final double DRIVE_POSITION_kD_L = 0;
-        public static final double DRIVE_POSITION_kS_L = 0.;
-        public static final double DRIVE_POSITION_kV_L = 0.0;
+        public static final double DRIVE_POSITION_kP = 0.0;
+        public static final double DRIVE_POSITION_kD = 0;
+        public static final double DRIVE_POSITION_kS = 0.;
+        public static final double DRIVE_POSITION_kV = 0.0;
 
-        public static final double DRIVE_POSITION_kP_R = 0.0;
-        public static final double DRIVE_POSITION_kD_R = 0;
-        public static final double DRIVE_POSITION_kS_R = 0.;
-        public static final double DRIVE_POSITION_kV_R = 0.0;
-
-        public static final double DRIVE_VELOCITY_kP_L = 0.00;
-        public static final double DRIVE_VELOCITY_kD_L = 0;
-        public static final double DRIVE_VELOCITY_kS_L = 0.155;
-        public static final double DRIVE_VELOCITY_kV_L = 0.00205;
-
-        public static final double DRIVE_VELOCITY_kP_R = 0.00;
-        public static final double DRIVE_VELOCITY_kD_R = 0;
-        public static final double DRIVE_VELOCITY_kS_R = 0.155;
-        public static final double DRIVE_VELOCITY_kV_R = 0.00205;
+        public static final double DRIVE_VELOCITY_kP = 0.00;
+        public static final double DRIVE_VELOCITY_kD = 0;
+        public static final double DRIVE_VELOCITY_kS = 0.155;
+        public static final double DRIVE_VELOCITY_kV = 0.00205;
         
         public static final double HOOK_UP_kP = 0.0001;
         public static final double HOOK_UP_kD = 0;
         public static final double HOOK_UP_kF = 0;
         
+        public static final double HOOK_DOWN_kP = 0.0001;
+        public static final double HOOK_DOWN_kD = 0;
+        public static final double HOOK_DOWN_kF = 0;
+
         public static final double kTHROTTLE_MULTIPLIER = 1;
         public static final double kTWIST_MULTIPLIER = 1;
     }
