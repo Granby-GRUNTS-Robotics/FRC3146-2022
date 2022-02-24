@@ -18,9 +18,21 @@ import frc.robot.commands.Climb.SetArm;
 import frc.robot.commands.Climb.SetClaw;
 import frc.robot.commands.Climb.SetRachet;
 import frc.robot.commands.Drivetrain.DrivePIDTune;
+import frc.robot.commands.Drivetrain.DriveToAngle;
+import frc.robot.commands.Drivetrain.DriveToLocation;
+import frc.robot.commands.Drivetrain.JoyDrive;
+import frc.robot.commands.Intake.IntakeButtonCommand;
 import frc.robot.commands.Intake.ManualIntakeMotor;
+import frc.robot.commands.Intake.MoveIntakeDown;
+import frc.robot.commands.Intake.MoveIntakeFloat;
+import frc.robot.commands.Intake.MoveIntakeSoft;
+import frc.robot.commands.Intake.MoveIntakeUp;
+import frc.robot.commands.Magazine.MagIntake;
 import frc.robot.commands.Magazine.MagMoveBase;
 import frc.robot.commands.Shooter.RevUpShuffleboard;
+import frc.robot.commands.Shooter.ShootHigh;
+import frc.robot.commands.Shooter.ShootLow;
+import frc.robot.commands.Shooter.ShooterBrake;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -63,11 +75,15 @@ public class RobotContainer {
 
     SmartDashboard.putData("Manual Magazine Move", new MagMoveBase(M_MAGAZINE, M_MAGAZINE.getMagazineMovement()));
 
-    /*
+    SmartDashboard.putData("Intake Down", new MoveIntakeDown(M_INTAKE));
+    SmartDashboard.putData("Intake Up", new MoveIntakeUp(M_INTAKE));
+    SmartDashboard.putData("Intake Soft", new MoveIntakeSoft(M_INTAKE));
+    SmartDashboard.putData("Intake Float", new MoveIntakeFloat(M_INTAKE));
+    
     SmartDashboard.putData("Move 24 Inches Forward TEST", new DriveToLocation(M_DRIVETRAIN, 24));
     SmartDashboard.putData("Turn 90 Degrees, TEST", new DriveToAngle(M_DRIVETRAIN, 90));
-    */
-    //M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
+    
+    M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -79,18 +95,20 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    /*
-    Buttons.INTAKE_BUTTON.whileHeld(new IntakeButtonCommand(M_INTAKE))
-    .whileHeld(new MagIntake(M_MAGAZINE));
+    
+    Buttons.INTAKE_BUTTON.whileActiveOnce(new IntakeButtonCommand(M_INTAKE))
+    .whileActiveOnce(new MagIntake(M_MAGAZINE));
 
     Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));
     Buttons.INTAKE_FLOAT_BUTTON.whenPressed(new MoveIntakeFloat(M_INTAKE));
     Buttons.INTAKE_SOFT_BUTTON.whenPressed(new MoveIntakeSoft(M_INTAKE));
     Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE));
 
+    Buttons.shootButton.whenReleased(new ShooterBrake(M_SHOOTER));
+
     Buttons.LOW_GOAL_BUTTON.and(Buttons.shootButton).whileActiveOnce(new ShootLow(M_MAGAZINE,M_SHOOTER));
     Buttons.HIGH_GOAL_BUTTON.and(Buttons.shootButton).whileActiveOnce(new ShootHigh(M_MAGAZINE,M_SHOOTER));
-    Buttons.shootButton.whileHeld(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE));
+    //Buttons.shootButton.whileActiveOnce(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE));
     
     /*
     //Only uncomment once all testing has been done
