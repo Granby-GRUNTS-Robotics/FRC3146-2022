@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotMap;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.ControlConstants.MODE_ENUM;
 import frc.robot.subsystems.Drivetrain;
@@ -46,8 +47,8 @@ public class JoyDrive extends CommandBase {
     SmartDashboard.putData("slowmode chooser" , modechooser);
     
     //for tuning
-    double throttle = -joy.getY();
-    double twist = joy.getTwist();
+    double throttle = RobotMap.Buttons.getWithDeadZone(-joy.getY());
+    double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist());
     double throttleMult = SmartDashboard.getNumber("throttle", ControlConstants.kTHROTTLE_MULTIPLIER);
     double twistMult = SmartDashboard.getNumber("twist", ControlConstants.kTWIST_MULTIPLIER);
     double slowmodehi = SmartDashboard.getNumber("slowmodehigh", 0.75);
@@ -60,9 +61,9 @@ public class JoyDrive extends CommandBase {
     //if a certain button is pressed (drive 1), then the multipliers will be ehalved, for finer control of the chassis
     if (mode == MODE_ENUM.BOTH || mode == MODE_ENUM.TWIST) twistMult = twistMult * ((joy.getRawButton(2)) ? slowfinal : 1);
     if (mode == MODE_ENUM.BOTH || mode == MODE_ENUM.THROTTLE) throttleMult = throttleMult * ((joy.getRawButton(2)) ? slowfinal : 1);
-
     double left = throttle*throttleMult + twist*twistMult;
     double right = throttle*throttleMult - twist*twistMult;
+
     drive.setSpeeds(left, right);
   }
 
