@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Drivetrain;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -24,12 +25,17 @@ public class DriveToLocation extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.setGoalPositions(distance, distance);
+    SmartDashboard.setDefaultNumber("Distance", 0);
+    //drivetrain.resetEncoders();
+    distance = SmartDashboard.getNumber("Distance", 0);
+    drivetrain.setGoalPositions(distance + drivetrain.getLeftPosition(), distance + drivetrain.getRightPosition());
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
