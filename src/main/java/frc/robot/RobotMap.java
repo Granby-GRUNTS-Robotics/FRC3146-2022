@@ -50,7 +50,7 @@ public class RobotMap {
     //victors
     public static final TalonSRX CLIMB_DRIVE_TALON = new TalonSRX(MotorConstants.CLIMB_LEAD_TALON_ID);
     public static final VictorSPX CLIMB_FOLLOW_VICTOR = new VictorSPX(MotorConstants.CLIMB_FOLLOW_VICTOR_ID);
-    public static final TalonSRX INTAKE_TALON = new TalonSRX(MotorConstants.INTAKE_TALON_ID);
+    public static final VictorSPX INTAKE_VICTOR = new VictorSPX(MotorConstants.INTAKE_VICTOR_ID);
     public static final VictorSPX MAGAZINE_VICTOR = new VictorSPX(MotorConstants.MAGAZINE_VICTOR_ID);
 
     //sensors
@@ -67,9 +67,16 @@ public class RobotMap {
         
         public static final DoubleSupplier BUTTON_Y = new DoubleSupplier() {
             public double getAsDouble() {
-                return BUTTON_JOYSTICK.getY();
+                double x = -BUTTON_JOYSTICK.getRawAxis(1);
+                return x;
             };
         };
+
+        public static double getWithDeadZone(double value){
+                if (Math.abs(value) < 0.05) value = 0; else value = (Math.abs(value) - 0.05) * (1.0/0.95) * Math.signum(value);
+                return value;
+        }
+
         public static final Button INTAKE_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 2);
         public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
         public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);

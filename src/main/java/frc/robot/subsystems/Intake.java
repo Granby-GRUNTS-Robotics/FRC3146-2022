@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -13,7 +15,7 @@ import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 
 public class Intake extends SubsystemBase {
   
-  private static final TalonSRX INTAKE_TALON = RobotMap.INTAKE_TALON;
+  private static final VictorSPX INTAKE_VICTOR = RobotMap.INTAKE_VICTOR;
   private static final Solenoid INTAKE_UP_SOLENOID = RobotMap.INTAKE_UP_SOLENOID;
   private static final Solenoid INTAKE_DOWN_SOLENOID = RobotMap.INTAKE_DOWN_SOLENOID;
   private static INTAKE_ENUM intake_pos = INTAKE_ENUM.UP;
@@ -21,7 +23,7 @@ public class Intake extends SubsystemBase {
   
   /** Creates a new Intake and sets inversion */
   public Intake() {
-    INTAKE_TALON.setInverted(false);
+    INTAKE_VICTOR.setInverted(true);
   }
 
   
@@ -29,8 +31,7 @@ public class Intake extends SubsystemBase {
    * @param pos INTAKE_ENUM using either UP or DOWN
    **/ 
   public void setIntakeSolenoids(INTAKE_ENUM pos){
-    try {
-      intake_pos = pos;
+    intake_pos = pos;
     switch (pos) {
       case UP:
         INTAKE_UP_SOLENOID.set(false);
@@ -51,11 +52,7 @@ public class Intake extends SubsystemBase {
       default:
         break;
     }
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println(e);
-    }
-    
+    System.out.println(intake_pos);
   }
 
   public INTAKE_ENUM getIntakePos() {
@@ -66,7 +63,7 @@ public class Intake extends SubsystemBase {
    * @param percent the % output from -1.0 to 1.0
   */
   public void setIntakePercent(double percent) {
-    INTAKE_TALON.set(ControlMode.PercentOutput, percent);
+    INTAKE_VICTOR.set(ControlMode.PercentOutput, percent);
   }
 
   @Override

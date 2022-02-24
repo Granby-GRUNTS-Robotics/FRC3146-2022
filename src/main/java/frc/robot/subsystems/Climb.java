@@ -48,8 +48,8 @@ public class Climb extends SubsystemBase {
   /** Creates a new Climb. */
   public Climb() {
     FOLLOW_VICTOR.follow(CLIMB_TALON);
-    FOLLOW_VICTOR.setInverted(true);
-    CLIMB_TALON.setInverted(true);
+    FOLLOW_VICTOR.setInverted(false);
+    CLIMB_TALON.setInverted(false);
     CLIMB_TALON.setSelectedSensorPosition(distanceToEncoderUnits(SetpointConstants.HOOK_RETRACTED));
     CLIMB_TALON.setSensorPhase(true); // clockwise looking at the encoder from the outside moves the hook out. Reversed Talon to make positive outwards. Reversed Sensor to match Talon
     
@@ -80,19 +80,19 @@ public class Climb extends SubsystemBase {
     arm_state = pos;
     switch (pos) {
       case VERTICAL:
-        ARM_VERT_SOLENOID.set(true);
+        ARM_VERT_SOLENOID.set(false);
         ARM_HORI_SOLENOID.set(false);
         break;
       case HORIZONTAL:
-        ARM_VERT_SOLENOID.set(false);
+        ARM_VERT_SOLENOID.set(true);
         ARM_HORI_SOLENOID.set(true);
         break;
       case FLOAT:
-        ARM_VERT_SOLENOID.set(false);
+        ARM_VERT_SOLENOID.set(true);
         ARM_HORI_SOLENOID.set(false);
         break;
       case  BOTH:
-        ARM_VERT_SOLENOID.set(true);
+        ARM_VERT_SOLENOID.set(false);
         ARM_HORI_SOLENOID.set(true);
         break;
       default:
