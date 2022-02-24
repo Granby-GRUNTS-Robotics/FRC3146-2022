@@ -5,6 +5,7 @@
 package frc.robot.commands.Magazine;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Magazine;
@@ -32,6 +33,8 @@ public class MagMoveBase extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.setDefaultNumber("magmove", 0);
+    movement_time = SmartDashboard.getNumber("magmove", 0);
     timer.start();
     magazine.setMagazinePercent((movement_time<=0)?-SetpointConstants.MAGAZINE_SPEED:SetpointConstants.MAGAZINE_SPEED);
   }
