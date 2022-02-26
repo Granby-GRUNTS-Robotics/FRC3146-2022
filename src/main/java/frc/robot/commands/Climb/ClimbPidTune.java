@@ -23,10 +23,14 @@ public class ClimbPidTune extends InstantCommand {
     SmartDashboard.setDefaultNumber("Climb P", 0);
     SmartDashboard.setDefaultNumber("Climb D", 0);
     SmartDashboard.setDefaultNumber("Climb FF", 0);
+    SmartDashboard.setDefaultNumber("Climb Max Acc", 0);
+    SmartDashboard.setDefaultNumber("Climb Cruise Speed", 0);
     double p = SmartDashboard.getNumber("Climb P", 0);
     double d = SmartDashboard.getNumber("Climb D", 0);
     double f = SmartDashboard.getNumber("Climb FF", 0);
-
+    double a = SmartDashboard.getNumber("Climb Max Acc", 0);
+    double v = SmartDashboard.getNumber("Climb Cruise Speed", 0);
+    climb.setSmartMotionValues(a, v);
     climb.setPDF(p, d, f);
   }
 }

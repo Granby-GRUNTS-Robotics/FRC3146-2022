@@ -4,48 +4,51 @@
 
 package frc.robot.commands.Climb;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ControlConstants;
-import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
 import frc.robot.subsystems.Climb;
 
-
-public class SetClaw extends CommandBase {
-  /** Creates a new SetClaw. */
+public class ClimbSetSpeed extends CommandBase {
   private Climb climb;
-  private CLAW_ENUM state;
-  private Timer timer = new Timer();
-  private double timegoal;
-
-  public SetClaw(Climb climb, CLAW_ENUM state) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ClimbSetSpeed(Climb climb) {
     this.climb = climb;
     addRequirements(climb);
-    this.state = state;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
-
+  double velocity;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
-    timegoal = climb.getClawState() == state ? 0 : ControlConstants.CLAW_PISTON_TIME;
-    climb.setClaw(state);
+    SmartDashboard.setDefaultNumber("Climb Set Speed Value", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    SmartDashboard.putNumber("Climb Velocity", climb.getVelocity());
+    velocity = SmartDashboard.getNumber("Climb Set Speed Value", 0);
+    try {
+      climb.setClimbVelocity(velocity);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
+    try {
+      climb.setClimbPercent(0);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
+
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > timegoal;
+    return false;
   }
 }

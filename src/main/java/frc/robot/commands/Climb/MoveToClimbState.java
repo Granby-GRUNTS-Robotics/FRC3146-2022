@@ -4,56 +4,54 @@
 
 package frc.robot.commands.Climb;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.ControlConstants.HOOK_ENUM;
-import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
-import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
-import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
+import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.subsystems.Climb;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class MoveToClimbState extends SequentialCommandGroup {
+public class MoveToClimbState extends StateCommand {
   /** Creates a new MoveToClimbState. */
+  public static int climb_state;
   public MoveToClimbState(Climb climb) {
-    int state = climb.getClimbState();
-    switch (state) {
-      case 0:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED));
-        break;
-      case 1:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.VERTICAL, CLAW_ENUM.OPEN));
-        break;
-      case 2:
-       addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.VERTICAL, CLAW_ENUM.OPEN));
-        break;
-      case 3:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED));
-        break;
-      case 4:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.MIDDLE, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED), new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.HORIZONTAL, CLAW_ENUM.CLOSED), new SetArm(climb, ARM_ENUM.VERTICAL), new SetHook(climb, HOOK_ENUM.RESTING));
-        break;
-      case 5:
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.FLOAT, CLAW_ENUM.OPEN));
-        break;
-      case 6:
-        //same as 3
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED));
-        break;
-      case 7:
-        //same as 4
-        addCommands(new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.MIDDLE, ARM_ENUM.VERTICAL, CLAW_ENUM.CLOSED), new StateCommand(climb, RATCHET_ENUM.FREE, HOOK_ENUM.EXTENDED, ARM_ENUM.HORIZONTAL, CLAW_ENUM.CLOSED), new SetArm(climb, ARM_ENUM.VERTICAL), new SetHook(climb, HOOK_ENUM.RESTING));
-        break;
-      case 8:
-        //same as 5
-        addCommands(new StateCommand(climb, RATCHET_ENUM.RATCHETING, HOOK_ENUM.RETRACTED, ARM_ENUM.FLOAT, CLAW_ENUM.OPEN));
-        break;
-      default:
-        break;
-    }
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    
+    super(climb);
+  }
+  @Override
+  public void initialize() {
+      super.initialize();
+      switch (climb_state) {
+        case 0:
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.HOOK_RETRACTED});
+          break;
+        case 1:
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_OPEN, BIG_CLIMB_ENUM.HOOK_EXTENDED});
+          break;
+        case 2:
+         setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_OPEN, BIG_CLIMB_ENUM.HOOK_CAPTURING});
+          break;
+        case 3:
+          setStateList(new BIG_CLIMB_ENUM[]{BIG_CLIMB_ENUM.HOOK_CAPTURING, BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.HOOK_RETRACTED});
+          break;
+        case 4:
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.HOOK_MIDDLE, BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.HOOK_EXTENDED, BIG_CLIMB_ENUM.ARM_HORIZONTAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.HOOK_RESTING});
+          break;
+        case 5:
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_FLOAT, BIG_CLIMB_ENUM.CLAW_OPEN, BIG_CLIMB_ENUM.HOOK_RESTING, BIG_CLIMB_ENUM.PULLWITHPNEUMATICS});
+          break;
+        case 6:
+          //same as 3
+          setStateList(new BIG_CLIMB_ENUM[]{BIG_CLIMB_ENUM.HOOK_CAPTURING, BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.HOOK_RETRACTED});
+          break;
+        case 7:
+          //same as 4
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.HOOK_MIDDLE, BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.HOOK_EXTENDED, BIG_CLIMB_ENUM.ARM_HORIZONTAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.HOOK_RESTING});
+          break;
+        case 8:
+          //same as 5
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_FLOAT, BIG_CLIMB_ENUM.CLAW_OPEN, BIG_CLIMB_ENUM.HOOK_RESTING, BIG_CLIMB_ENUM.PULLWITHPNEUMATICS});
+          break;
+        default:
+          break;
+      }
   }
 }

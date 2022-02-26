@@ -4,31 +4,26 @@
 
 package frc.robot.commands.Climb;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ControlConstants;
-import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
 import frc.robot.subsystems.Climb;
 
-public class SetArm extends CommandBase {
+public class ClimbSetVoltage extends CommandBase {
+  /** Creates a new DriveSetVoltage. */
   private Climb climb;
-  private ARM_ENUM state;
-  private Timer timer = new Timer();
-  private double timegoal;
-  /** Creates a new SetArm. */
-  public SetArm(Climb climb, ARM_ENUM state) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ClimbSetVoltage(Climb climb) {
     this.climb = climb;
     addRequirements(climb);
-    this.state = state;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
-    timegoal = climb.getArmState() == state ? 0 : ControlConstants.ARM_PISTON_TIME;
-    climb.setArm(state);
+    SmartDashboard.setDefaultNumber("Climb Set Voltage Value", 0);
+    double x =SmartDashboard.getNumber("Climb Set Voltage Value", 0);
+    if (x==0) SmartDashboard.putNumber("Climb Set Voltage Value", 0);
+    climb.setVoltage(x);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,12 +33,12 @@ public class SetArm extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
+    climb.setVoltage(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > timegoal;
+    return false;
   }
 }

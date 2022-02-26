@@ -11,16 +11,17 @@ import frc.robot.subsystems.Climb;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DecrementClimbState extends InstantCommand {
-  private Climb climb;
+  Climb climb;
   public DecrementClimbState(Climb climb) {
     this.climb = climb;
     addRequirements(climb);
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.decrementClimbState();
-  }
+    MoveToClimbState.climb_state--;
+    }
 }

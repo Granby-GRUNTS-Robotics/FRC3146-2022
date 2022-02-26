@@ -4,48 +4,52 @@
 
 package frc.robot.commands.Climb;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ControlConstants.HOOK_ENUM;
 import frc.robot.subsystems.Climb;
 
-public class SetHook extends CommandBase {
-  /** Creates a new SetHook. */
+public class ClimbSetMove extends CommandBase {
+  /** Creates a new ClimbSetVelocity. */
   private Climb climb;
-  private HOOK_ENUM state;
-  private boolean ends;
-  public SetHook(Climb climb,HOOK_ENUM state) {
+  public ClimbSetMove(Climb climb) {
     this.climb = climb;
-    this.state = state;
+    addRequirements(climb);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
-  public SetHook(Climb climb,HOOK_ENUM state, boolean ends) {
-    this.climb = climb;
-    this.state = state;
-    this.ends = ends;
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
-
+  double distance;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.setHook(state);
+    SmartDashboard.setDefaultNumber("Climb Set Position", 0);
+    distance = SmartDashboard.getNumber("Climb Set Position", 0);
+    try {
+      climb.setHook(distance);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(ends == true)
-    climb.setClimbPercent(0);
+    try {
+      climb.setClimbPercent(0);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return climb.isAtPosition();
+    return false;
   }
 }

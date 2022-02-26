@@ -28,13 +28,23 @@ public class ManualClimbMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.setClimbPercent(Y_AXIS.getAsDouble());
+    try {
+      climb.setClimbPercent(Y_AXIS.getAsDouble());
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.setClimbPercent(0);
+    try {
+      climb.setClimbPercent(0);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   // Returns true when the command should end.

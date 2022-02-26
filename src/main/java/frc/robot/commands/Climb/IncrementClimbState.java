@@ -11,7 +11,7 @@ import frc.robot.subsystems.Climb;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IncrementClimbState extends InstantCommand {
-  private Climb climb;
+  Climb climb;
   public IncrementClimbState(Climb climb) {
     this.climb = climb;
     addRequirements(climb);
@@ -21,6 +21,5 @@ public class IncrementClimbState extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.incrementClimbState();
-  }
+    MoveToClimbState.climb_state++;  }
 }

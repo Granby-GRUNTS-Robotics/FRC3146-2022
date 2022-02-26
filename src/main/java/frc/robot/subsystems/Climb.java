@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -16,26 +19,27 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import frc.robot.Constants.ControlConstants;
+import frc.robot.Constants.ControlConstants.HOOK_ENUM;
 import frc.robot.Constants.MotorConstants;
-import frc.robot.Constants.SetpointConstants;
 import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
 import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
-import frc.robot.Constants.ControlConstants.HOOK_ENUM;
 import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
+import frc.robot.Constants.SetpointConstants;
+import frc.robot.RobotMap;
 
 public class Climb extends SubsystemBase {
-  
+
   private NetworkTableEntry currentEntry;
   private NetworkTableEntry hookedEntry;
   private NetworkTableEntry positionEntry;
 
   private static final Solenoid ARM_VERT_SOLENOID = RobotMap.ARM_VERT_SOLENOID;
   private static final Solenoid ARM_HORI_SOLENOID = RobotMap.ARM_HORI_SOLENOID;
-  private ARM_ENUM arm_state;
+  private ARM_ENUM arm_state = ARM_ENUM.VERTICAL;
   private static final Solenoid WINCH_SOLENOID = RobotMap.RATCHET_SOLENOID;
-  private RATCHET_ENUM ratchet_state;
+  private RATCHET_ENUM ratchet_state = RATCHET_ENUM.RATCHETING;
   private static final Solenoid CLAW_SOLENOID = RobotMap.CLAW_SOLENOID;
   private CLAW_ENUM claw_state;
   private HOOK_ENUM hook_state;
@@ -44,13 +48,12 @@ public class Climb extends SubsystemBase {
   private static final VictorSPX FOLLOW_VICTOR = RobotMap.CLIMB_FOLLOW_VICTOR;
   private static final AnalogInput POTENTIOMETER = RobotMap.CLIMB_POTENTIOMETER;
 
-  private int climb_state = 0;
   /** Creates a new Climb. */
   public Climb() {
     FOLLOW_VICTOR.follow(CLIMB_TALON);
     FOLLOW_VICTOR.setInverted(false);
     CLIMB_TALON.setInverted(false);
-    CLIMB_TALON.setSelectedSensorPosition(distanceToEncoderUnits(SetpointConstants.HOOK_RETRACTED));
+    CLIMB_TALON.setSelectedSensorPosition(0);
     CLIMB_TALON.setSensorPhase(true); // clockwise looking at the encoder from the outside moves the hook out. Reversed Talon to make positive outwards. Reversed Sensor to match Talon
     
     //limits current draw to 35 amps
@@ -59,6 +62,12 @@ public class Climb extends SubsystemBase {
     CLIMB_TALON.config_kP(0, ControlConstants.HOOK_UP_kP);
     CLIMB_TALON.config_kD(0, ControlConstants.HOOK_UP_kD);
     CLIMB_TALON.config_kF(0, ControlConstants.HOOK_UP_kF);
+
+    CLIMB_TALON.config_kP(1, ControlConstants.HOOK_DOWN_kP);
+    CLIMB_TALON.config_kD(1, ControlConstants.HOOK_DOWN_kD);
+    CLIMB_TALON.config_kF(1, ControlConstants.HOOK_DOWN_kF);
+
+    CLIMB_TALON.selectProfileSlot(0, 0);
 
     addChild("claw", CLAW_SOLENOID);
     addChild("arm horizontal", ARM_HORI_SOLENOID);
@@ -70,7 +79,6 @@ public class Climb extends SubsystemBase {
     currentEntry = climbTable.getEntry("current");
     positionEntry = climbTable.getEntry("position");
     hookedEntry = climbTable.getEntry("is_hooked");
-    SmartDashboard.setDefaultNumber("climb_state", climb_state);
   }
 
   /** sets arm position
@@ -188,6 +196,14 @@ public class Climb extends SubsystemBase {
           System.out.println(e);
         }
         break;  
+      case CAPTURING:
+        try {
+          setHook(SetpointConstants.HOOK_CAPTURING);
+        } catch (Exception e) {
+          e.printStackTrace();
+          System.out.println(e);
+        }
+        break;  
       case MIDDLE:
         try {
           setHook(SetpointConstants.HOOK_MIDDLE);
@@ -214,12 +230,48 @@ public class Climb extends SubsystemBase {
    * sets the percent output of the leading Talon SRX
    * @param percent the output percent, from -1.0 to 1.0
    */
-  public void setClimbPercent(double percent){
-    CLIMB_TALON.set(ControlMode.PercentOutput, percent);
+  public void setClimbPercent(double percent) throws Exception{
+    if ((percent > 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
+      throw new Exception("Ratcheting should be enabled only for pulling upwards!");
+    }else{
+    CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, percent);}
+  }
+
+  /**
+   * 
+   * @param velocity the speed of the arm in inches/sec
+   */
+  public void setClimbVelocity(double velocity) throws Exception{
+    velocity = distanceToEncoderUnits(velocity) / 10.0;
+    if ((velocity > 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
+      throw new Exception("Ratcheting should be enabled only for pulling upwards!");
+    }else{ CLIMB_TALON.set(TalonSRXControlMode.Velocity, velocity); }
+  }
+
+  public double getVelocity(){
+    return encoderUnitsToDistanct(CLIMB_TALON.getSelectedSensorVelocity()) * 10;
   }
 
   private double getPotentiometer(){
     return POTENTIOMETER.getValue();
+  }
+
+  private double getError(){
+    return CLIMB_TALON.getClosedLoopError();
+  }
+
+  public void switchPID() throws Exception{
+    if(isHooked()){
+      if (!isAtPosition()) {
+        CLIMB_TALON.selectProfileSlot(1, 0);
+        CLIMB_TALON.set(ControlMode.MotionMagic, getError(), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_DOWN_ARB_FF);
+      }else setClimbPercent(0);
+
+    }else {
+      CLIMB_TALON.selectProfileSlot(0, 0);
+      CLIMB_TALON.set(ControlMode.MotionMagic, getError(), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_UP_ARB_FF);
+
+    }
   }
   
   /**
@@ -230,14 +282,18 @@ public class Climb extends SubsystemBase {
   public void setHook(double distance) throws Exception{
     if (distance < -10 || distance > 40){
       throw new Exception("invalid distance");
-    } else
-    if ((getPosition() - distance > 0) ^ (getRatchetState() == RATCHET_ENUM.RATCHETING)){
+    } else if ((getPosition() - distance < 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
     }else{ 
-      if (isHooked() && !isAtPosition()) {
-        setClimbPercent(SetpointConstants.CLIMB_PERCENT);
+      if (isHooked()) {
+        if (!isAtPosition()) {
+          CLIMB_TALON.selectProfileSlot(1, 0);
+          CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_DOWN_ARB_FF);
+        }else setClimbPercent(0);
+        
       } else {
-        CLIMB_TALON.set(ControlMode.Position, distanceToEncoderUnits(distance));
+        CLIMB_TALON.selectProfileSlot(0, 0);
+        CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_UP_ARB_FF);
       }
     }
   }
@@ -247,22 +303,7 @@ public class Climb extends SubsystemBase {
    * @return true if current of lead motor exceeds climb threshold
    */
   public boolean isHooked(){
-    return (getStatorCurrent() > MotorConstants.CLIMB_AMPS); 
-  }
-
-  public void incrementClimbState(){
-    climb_state+=1;
-  }
-
-  public void decrementClimbState(){
-    climb_state-=1;
-  }
-
-  /**
-   * @return the CLIMB_ENUM state of the robot 
-   * */
-  public int getClimbState() {
-      return climb_state;
+    return (getStatorCurrent() < MotorConstants.CLIMB_AMPS); 
   }
 
   /**
@@ -275,9 +316,9 @@ public class Climb extends SubsystemBase {
 
   /**
    * 
-   * @return the current position of the bar, in inches above fully pulled down
+   * @return the current position of the bar, in inches above starting position
    */
-  private double getPosition(){
+  public double getPosition(){
     return (double)CLIMB_TALON.getSelectedSensorPosition() * ControlConstants.CLIMB_ENCODER_TO_DISTANCE;
   }
   /**
@@ -289,8 +330,22 @@ public class Climb extends SubsystemBase {
     return distance/ControlConstants.CLIMB_ENCODER_TO_DISTANCE;
   }
 
+  public double encoderUnitsToDistanct(double encoderUnits){
+    return encoderUnits * ControlConstants.CLIMB_ENCODER_TO_DISTANCE;
+  }
+
   public boolean isAtPosition(){
     return Math.abs(CLIMB_TALON.getClosedLoopError()) < SetpointConstants.HOOK_PRECISON;
+  }
+
+  public void clearMotionProfile(){
+    CLIMB_TALON.clearMotionProfileTrajectories();
+  }
+
+  public boolean isTrapezoidOver(){
+    MotionProfileStatus status = new MotionProfileStatus();
+    CLIMB_TALON.getMotionProfileStatus(status);
+    return status.isLast;
   }
 
   @Override
@@ -298,10 +353,21 @@ public class Climb extends SubsystemBase {
     currentEntry.setNumber(getStatorCurrent());
     positionEntry.setNumber(getPosition());
     hookedEntry.setBoolean(isHooked());
-    SmartDashboard.putNumber("climb_state", climb_state);
-    SmartDashboard.putBoolean("isAtPosition", isAtPosition());
+    SmartDashboard.putNumber("climb_state", Constants.climb_state);
     SmartDashboard.putNumber("potentiometer", getPotentiometer());
     // This method will be called once per scheduler run
+  }
+
+  /**
+   * 
+   * @param max_acceleration the max acceleration of the motion profile, in in/sec^2
+   * @param cruise_speed the cruising speed of the arm, in in/sec
+   */
+  public void setSmartMotionValues(double max_acceleration, double cruise_speed){
+    cruise_speed = cruise_speed / Constants.ControlConstants.CLIMB_ENCODER_TO_DISTANCE / 10;
+    max_acceleration = max_acceleration / ControlConstants.CLIMB_ENCODER_TO_DISTANCE / 10;
+    CLIMB_TALON.configMotionAcceleration(max_acceleration);
+    CLIMB_TALON.configMotionCruiseVelocity(cruise_speed);
   }
 
   /**FOR TESTING USE ONLY */
@@ -310,4 +376,18 @@ public class Climb extends SubsystemBase {
     CLIMB_TALON.config_kD(0, d);
     CLIMB_TALON.config_kF(0, f);
   }
+
+  public void setPDFSlot(double p, double d, double f, int slot){
+    CLIMB_TALON.config_kP(slot, p);
+    CLIMB_TALON.config_kD(slot, d);
+    CLIMB_TALON.config_kF(slot, f);
+  }
+/**
+ * 
+ * @param voltage the voltage output, with 1023 being full out
+ */
+public void setVoltage(double voltage) {
+  CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, voltage/1023.0*12);
+}
+
 }
