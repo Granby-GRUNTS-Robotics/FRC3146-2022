@@ -4,13 +4,14 @@
 
 package frc.robot.commands.Magazine;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Magazine;
 
 public class MagIntake extends CommandBase {
 
   Magazine magazine;
+  private double mag_intake_speed;
 
   /** Creates a new MagManualBase. */
   public MagIntake(Magazine magazine) {
@@ -24,8 +25,12 @@ public class MagIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (!magazine.getLimitSwitch()) 
-      magazine.setMagazinePercent(SetpointConstants.MAGAZINE_SPEED);
+    SmartDashboard.setDefaultNumber("intake button magazine speed", 0);
+    SmartDashboard.setDefaultBoolean("reverse limit switch", false);
+    boolean reverse = SmartDashboard.getBoolean("reverse limit switch", false);
+    mag_intake_speed = SmartDashboard.getNumber("intake button magazine speed", 0);
+    if (magazine.getLimitSwitch() == reverse) 
+      magazine.setMagazinePercent(mag_intake_speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

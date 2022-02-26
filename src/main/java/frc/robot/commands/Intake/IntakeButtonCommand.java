@@ -5,8 +5,8 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.SetpointConstants;
 import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 import frc.robot.subsystems.Intake;
 
@@ -16,6 +16,7 @@ public class IntakeButtonCommand extends CommandBase {
   private Timer timer = new Timer();
   private double timegoal = 0;
   private INTAKE_ENUM start_state;
+  private double intake_set_speed;
   public IntakeButtonCommand(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -25,7 +26,9 @@ public class IntakeButtonCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setIntakePercent(SetpointConstants.INTAKE_SPEED);
+    SmartDashboard.setDefaultNumber("Intake Button Speed", 0);
+    intake_set_speed = SmartDashboard.getNumber("Intake Button Speed", 0);
+    intake.setIntakePercent(intake_set_speed);
     timer.start();
     start_state = intake.getIntakePos();
     if (start_state == INTAKE_ENUM.UP){

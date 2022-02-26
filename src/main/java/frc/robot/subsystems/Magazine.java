@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -19,7 +18,6 @@ public class Magazine extends SubsystemBase {
 
   /** Creates a new Magazine. */
   public Magazine() {
-    SmartDashboard.setDefaultNumber("Set Magazine Move Distance", 0);
   }
 
   //sets the percent output of the magazine victor
@@ -34,10 +32,6 @@ public class Magazine extends SubsystemBase {
   //gets digital input
   public boolean getLimitSwitch(){
     return MAGAZINE_LIMIT_SWITCH.get();
-  }
-
-  public double getMagazineMovement(){
-    return SmartDashboard.getNumber("Set Magazine Move Distance", 0);
   }
 
   @Override
