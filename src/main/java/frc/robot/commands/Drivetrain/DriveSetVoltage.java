@@ -4,16 +4,15 @@
 
 package frc.robot.commands.Drivetrain;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveToAngle extends CommandBase {
+public class DriveSetVoltage extends CommandBase {
+  /** Creates a new DriveSetVoltage. */
   private Drivetrain drivetrain;
-  protected double angle;
-  /** Creates a new DriveToAngle. */
-  public DriveToAngle(Drivetrain drivetrain, double angle) {
+  public DriveSetVoltage(Drivetrain drivetrain) {
     this.drivetrain = drivetrain;
-    this.angle = angle;
     addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -21,22 +20,26 @@ public class DriveToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.setGoalAngle(angle);
+    SmartDashboard.setDefaultNumber("Drivetrain Set Voltage Value", 0);
+    double v = SmartDashboard.getNumber("Drivetrain Set Voltage Value", 0);
+    drivetrain.setVoltage(v);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //drivetrain.setGoalAngle(drivetrain.getAngularError());
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    drivetrain.setVoltage(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(drivetrain.getAngularError()) < 5;
+    return false;
   }
 }

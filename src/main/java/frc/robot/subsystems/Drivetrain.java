@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import frc.robot.Constants.ControlConstants;
@@ -36,11 +37,11 @@ public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
-    LEFT_DRIVE_ENCODER.setVelocityConversionFactor(1/10.71 * 5.9 * Math.PI);
-    RIGHT_DRIVE_ENCODER.setVelocityConversionFactor(1/10.71 * 5.9 * Math.PI);
-
-    LEFT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * 5.9 * Math.PI);
-    RIGHT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * 5.9 * Math.PI);
+    //gear ratio and wheel diameter to go from motor rotations or RPM to inches or inches per minute. Divide by 60 to get inches per second for velocity
+    LEFT_DRIVE_ENCODER.setVelocityConversionFactor(1/10.71 * Math.PI * ControlConstants.WHEEL_DIAMETER  / 60.0);
+    RIGHT_DRIVE_ENCODER.setVelocityConversionFactor(1/10.71 * Math.PI * ControlConstants.WHEEL_DIAMETER / 60.0);
+    LEFT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * Math.PI * ControlConstants.WHEEL_DIAMETER); 
+    RIGHT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * Math.PI * ControlConstants.WHEEL_DIAMETER);
 
     LEFT_DRIVE_SPARK_MAX.setInverted(false);
     RIGHT_DRIVE_SPARK_MAX.setInverted(true);
@@ -58,30 +59,29 @@ public class Drivetrain extends SubsystemBase {
     LEFT_FOLLOW_ENCODER.setPosition(0);
     RIGHT_FOLLOW_ENCODER.setPosition(0);
 
-    LEFT_CONTROLLER.setP(ControlConstants.DRIVE_POSITION_kP_L, 0);
-    LEFT_CONTROLLER.setD(ControlConstants.DRIVE_POSITION_kD_L, 0);
-    LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_POSITION_kV_L, 0);
-    RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_POSITION_kP_R, 0);
-    RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_POSITION_kD_R, 0);
-    RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_POSITION_kV_R, 0);
-    LEFT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP_L, 1);
-    LEFT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD_L, 1);
-    LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV_L, 1);
-    RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP_R, 1);
-    RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD_R, 1);
-    RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV_R, 1);
+    LEFT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP, 0);
+    LEFT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD, 0);
+    LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV, 0);
+    RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP, 0);
+    RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD, 0);
+    RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV, 0);
+    LEFT_CONTROLLER.setSmartMotionMaxAccel(ControlConstants.DRIVE_MAX_ACC, 0);
+    LEFT_CONTROLLER.setSmartMotionMaxVelocity(ControlConstants.DRIVE_CRUISE, 0);
+    RIGHT_CONTROLLER.setSmartMotionMaxAccel(ControlConstants.DRIVE_MAX_ACC, 0);
+    RIGHT_CONTROLLER.setSmartMotionMaxVelocity(ControlConstants.DRIVE_CRUISE, 0);
 
     PIGEON.setFusedHeading(0);
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Drive Fused Heading", getFusedHeading());
     // This method will be called once per scheduler run
   }
 
   public void setSpeeds(double left, double right) {
-    LEFT_CONTROLLER.setReference(left, ControlType.kVelocity, 1);
-    RIGHT_CONTROLLER.setReference(right, ControlType.kVelocity, 1);
+    LEFT_CONTROLLER.setReference(left, ControlType.kVelocity, 0, (left==0)? 0 : Math.signum(left) * ControlConstants.DRIVE_ARB_FF);
+    RIGHT_CONTROLLER.setReference(right, ControlType.kVelocity, 0, (right==0)? 0 : Math.signum(right) * ControlConstants.DRIVE_ARB_FF);
   }
 
   public double getRightSpeed(){
@@ -92,23 +92,15 @@ public class Drivetrain extends SubsystemBase {
     return angle / 360 * ControlConstants.DRIVE_WIDTH * Math.PI;
   }
 
-  public double distanceToEncoder(double distance){
-    return distance / ControlConstants.DRIVE_ENCODER_TO_DISTANCE;
-  }
-
-  public double angleToEncoder(double angle){
-    return distanceToEncoder(angleToDistance(angle));
-  }
-
   public void setGoalPositions(double left, double right){
-    LEFT_CONTROLLER.setReference(left, ControlType.kPosition, 0);
-    RIGHT_CONTROLLER.setReference(right, ControlType.kPosition, 0);
+    LEFT_CONTROLLER.setReference(left, ControlType.kSmartMotion, 0, (left==0)? 0 : Math.signum(left) * ControlConstants.DRIVE_ARB_FF);
+    RIGHT_CONTROLLER.setReference(right, ControlType.kSmartMotion, 0, (right==0)? 0 : Math.signum(right) * ControlConstants.DRIVE_ARB_FF);
     goal_position = left;
   }
 
   public void setGoalAngle(double angle){
     goal_angle = getFusedHeading() + angle;
-    goal_position = angleToEncoder(goal_angle);
+    goal_position = angleToDistance(goal_angle);
     setGoalPositions(goal_position, -goal_position);
   }
 
@@ -146,4 +138,15 @@ public class Drivetrain extends SubsystemBase {
     RIGHT_CONTROLLER.setD(d, 0);
     RIGHT_CONTROLLER.setFF(f, 0);
   }
+
+public void setSmartMotionValues(double cruise_speed, double max_acceleration) {
+    LEFT_CONTROLLER.setSmartMotionMaxAccel(max_acceleration, 0);
+    LEFT_CONTROLLER.setSmartMotionMaxVelocity(cruise_speed, 0);
+    RIGHT_CONTROLLER.setSmartMotionMaxAccel(max_acceleration, 0);
+    RIGHT_CONTROLLER.setSmartMotionMaxVelocity(cruise_speed, 0);
+}
+
+public void setVoltage(double voltage) {
+  LEFT_CONTROLLER.setReference(voltage, ControlType.kVoltage);
+}
 }
