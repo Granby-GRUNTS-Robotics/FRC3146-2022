@@ -14,6 +14,9 @@ package frc.robot;
  */
 //TODO fill in constants
 public final class Constants {
+
+    public static int climb_state = 0;
+    
     public static final class PneumaticConstants{
         public static final int PCM_ID = 2;
         public static final int INTAKE_UP_SOLENOID_PORT = 5;
@@ -37,7 +40,7 @@ public final class Constants {
         public static final int RIGHT_FOLLOW_SPARK_ID = 4;
         public static final int SHOOTER_LEAD_SPARK_ID = 6; 
         public static final int SHOOTER_FOLLOW_SPARK_ID = 7;
-        public static final double CLIMB_AMPS = 20;
+        public static final double CLIMB_AMPS = -20;
 
         //victors
         public static final int CLIMB_LEAD_TALON_ID = 11;
@@ -53,43 +56,61 @@ public final class Constants {
         public static final int POTENTIOMETER_PORT = 0;
         public static final int PIGEON_IMU_ID = 1;
 
-        public static final int MAGAZINE_LIMIT_PORT = 3;
-        public static final double CLIMB_ENCODER_TO_DISTANCE = (double) 5 / 16 * Math.PI / 8192; //8192 == counts per rotation. Will be different if we use potentiometer
+        public static final int MAGAZINE_LIMIT_SWITCH_PORT = 3;
+        public static final double CLIMB_ENCODER_TO_DISTANCE = (double) 10 / 16 * Math.PI / 8192; //8192 == counts per rotation. Will be different if we use potentiometer
         public static final double DRIVE_ENCODER_TO_DISTANCE = 6*Math.PI / 10.71; //encoder * DRIVE_ENCODER_TO_DISTANCE = wheel distance
         public static final double DRIVE_WIDTH = 21.5 ;//inches
 
-        public static final double ARM_PISTON_TIME = 2.0;
+        public static final double ARM_PISTON_HORIZONTAL_TIME = 3.0;
+        public static final double ARM_PISTON_VERTICAL_TIME = 1.0;
         public static final double CLAW_PISTON_TIME = 2.0;
-        public static final double RATCHET_PISTON_TIME = 2.0;
+        public static final double RATCHET_PISTON_TIME = 0.5;
 
-        public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE};
+        public static enum BIG_CLIMB_ENUM{PULLWITHPNEUMATICS, HOOK_EXTENDED, HOOK_RESTING, HOOK_RETRACTED, HOOK_MIDDLE, HOOK_CAPTURING, 
+                                          ARM_HORIZONTAL, ARM_VERTICAL, ARM_FLOAT, ARM_BOTH, 
+                                          CLAW_OPEN, CLAW_CLOSED, 
+                                          RATCHET_RATCHETING, RACHET_FREE
+                                         };
+
+        public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE, CAPTURING};
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
-        public static final double SHOOTER_kP = .00049;
+        public static final double SHOOTER_kP = .00025;
         public static final double SHOOTER_kD = 0;
         public static final double SHOOTER_kS = 0.161;
-        public static final double SHOOTER_kV = 0.000187;
+        public static final double SHOOTER_kV = 0.00018;
+
+        public static final double DRIVE_ARB_FF = 0.15;
+
+        public static final double DRIVE_MAX_ACC = 20;
+        public static final double DRIVE_CRUISE = 30;
 
         public static final double DRIVE_POSITION_kP = 0.0;
         public static final double DRIVE_POSITION_kD = 0;
         public static final double DRIVE_POSITION_kS = 0.;
         public static final double DRIVE_POSITION_kV = 0.0;
 
-        public static final double DRIVE_VELOCITY_kP = 0.00;
+        public static final double DRIVE_VELOCITY_kP = 0.003;
         public static final double DRIVE_VELOCITY_kD = 0;
-        public static final double DRIVE_VELOCITY_kS = 0.155;
-        public static final double DRIVE_VELOCITY_kV = 0.00205;
+        public static final double DRIVE_VELOCITY_kV = 0.0062;
+
+        public static final double CLIMB_UP_ARB_FF = 12;
+        public static final double CLIMB_DOWN_ARB_FF = 0;
+
+        public static final double CLIMB_MAX_ACC = 0;
+        public static final double CLIMB_CRUISE = 0;
         
-        public static final double HOOK_UP_kP = 0.0001;
+        public static final double HOOK_UP_kP = 0.1;
         public static final double HOOK_UP_kD = 0;
-        public static final double HOOK_UP_kF = 0;
+        public static final double HOOK_UP_kF = 0.25;
         
-        public static final double HOOK_DOWN_kP = 0.0001;
+        public static final double HOOK_DOWN_kP = 0;
         public static final double HOOK_DOWN_kD = 0;
         public static final double HOOK_DOWN_kF = 0;
 
         public static final double kTHROTTLE_MULTIPLIER = 1;
         public static final double kTWIST_MULTIPLIER = 1;
+        public static final double WHEEL_DIAMETER = 5.9; // approx in inches
     }
 
     public static final class SetpointConstants{
@@ -104,14 +125,13 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = 0.75;
 
-        public static final double HOOK_EXTENDED = 30;
-        public static final double HOOK_RETRACTED = 5;
+        public static final double HOOK_EXTENDED = 26.3;
+        public static final double HOOK_RETRACTED = 0;
         public static final double HOOK_MIDDLE = 15;
-        public static final double HOOK_RESTING = 28;
+        public static final double HOOK_RESTING = 24;
         public static final double HOOK_CAPTURING = 0;
 
-        public static final double HOOK_PRECISON = 100;
-        public static final double CLIMB_PERCENT = 0;
+        public static final double HOOK_PRECISON = 4000;
     }
 
     public static final class LimeLightConstants{

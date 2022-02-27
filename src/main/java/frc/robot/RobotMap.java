@@ -55,7 +55,7 @@ public class RobotMap {
 
     //sensors
     public static final AnalogInput CLIMB_POTENTIOMETER = new AnalogInput(ControlConstants.POTENTIOMETER_PORT);
-    public static final DigitalInput MAGAZINE_LIMIT_SWITCH = new DigitalInput(ControlConstants.MAGAZINE_LIMIT_PORT);
+    public static final DigitalInput MAGAZINE_LIMIT_SWITCH = new DigitalInput(ControlConstants.MAGAZINE_LIMIT_SWITCH_PORT);
 
     public static final PigeonIMU PIGEON = new PigeonIMU(ControlConstants.PIGEON_IMU_ID); 
     
