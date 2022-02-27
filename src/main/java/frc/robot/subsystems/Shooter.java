@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
   private static final RelativeEncoder SHOOTER_LEAD_ENCODER = SHOOTER_LEAD_SPARK_MAX.getEncoder();
   private static final RelativeEncoder SHOOTER_FOLLOW_ENCODER = SHOOTER_FOLLOW_SPARK_MAX.getEncoder();
 
-  private static SparkMaxPIDController leadController = SHOOTER_LEAD_SPARK_MAX.getPIDController();
+  private static SparkMaxPIDController SHOOTER_LEAD_CONTROLLER = SHOOTER_LEAD_SPARK_MAX.getPIDController();
 
   private static double goal_speed;
   
@@ -46,15 +46,15 @@ public class Shooter extends SubsystemBase {
     SHOOTER_LEAD_ENCODER.setPosition(0);
     SHOOTER_FOLLOW_ENCODER.setPosition(0);
     
-    leadController.setP(ControlConstants.SHOOTER_kP);
-    leadController.setI(0);
-    leadController.setD(ControlConstants.SHOOTER_kD);
-    leadController.setFF(ControlConstants.SHOOTER_kV);
+    SHOOTER_LEAD_CONTROLLER.setP(ControlConstants.SHOOTER_kP);
+    SHOOTER_LEAD_CONTROLLER.setI(0);
+    SHOOTER_LEAD_CONTROLLER.setD(ControlConstants.SHOOTER_kD);
+    SHOOTER_LEAD_CONTROLLER.setFF(ControlConstants.SHOOTER_kV);
   }
 
   public void setSpeed(double speed){
     goal_speed = speed / 1.25;
-    leadController.setReference(goal_speed, CANSparkMax.ControlType.kVelocity);
+    SHOOTER_LEAD_CONTROLLER.setReference(goal_speed, CANSparkMax.ControlType.kVelocity);
   }
 
   private double getSpeed(){
@@ -73,5 +73,12 @@ public class Shooter extends SubsystemBase {
     
     // This method will be called once per scheduler run
     shooterSpeedEntry.setDouble(getSpeed()*1.25);
+  }
+
+  /**FOR TESTING USE ONLY */
+  public void setPDF(double p, double d, double f){
+    SHOOTER_LEAD_CONTROLLER.setP(p, 0);
+    SHOOTER_LEAD_CONTROLLER.setD(d, 0);
+    SHOOTER_LEAD_CONTROLLER.setFF(f, 0);
   }
 }

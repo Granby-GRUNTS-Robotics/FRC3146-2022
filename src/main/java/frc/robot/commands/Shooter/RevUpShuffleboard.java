@@ -5,18 +5,22 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 public class RevUpShuffleboard extends RevUpBase {
   /** Creates a new ShooterSpeedBase. */
 
-  protected final Shooter shooter; 
-  protected double speed;
   
   public RevUpShuffleboard(Shooter shooter) {
     super(shooter);
-    this.shooter = shooter;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
+  }
+
+  public boolean part_of_chain = false;
+  public RevUpShuffleboard(Shooter shooter, boolean part_of_chain) {
+    super(shooter);
+    this.part_of_chain = part_of_chain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
@@ -25,19 +29,20 @@ public class RevUpShuffleboard extends RevUpBase {
   @Override
   public void initialize() {
     SmartDashboard.setDefaultNumber("Target Speed", 0);
-  }
-
-
-  @Override
-  public void execute() {
     speed = SmartDashboard.getNumber("Target Speed", 0);
-    shooter.setSpeed(speed);
-
+    super.initialize();
   }
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //shooter.brake();
-    
+    if(!part_of_chain)shooter.brake();
     }
+  
+  @Override
+  public boolean isFinished() {
+    if(part_of_chain){
+      return super.isFinished();
+    }else return false;
+  }
 }

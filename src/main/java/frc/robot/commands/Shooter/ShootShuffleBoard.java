@@ -6,11 +6,10 @@ package frc.robot.commands.Shooter;
 
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
-import frc.robot.commands.Shooter.RevUpShuffleboard;
 
 /** Add your docs here. */
-public class ShootLow extends ShootBase{
-    public ShootLow(Magazine magazine, Shooter shooter){
-        super(magazine, shooter, new RevUpShuffleboard(shooter));
+public class ShootShuffleBoard extends ShootBase{
+    public ShootShuffleBoard(Magazine magazine, Shooter shooter){
+        super(magazine, shooter, new RevUpShuffleboard(shooter, true));
     }
 }
