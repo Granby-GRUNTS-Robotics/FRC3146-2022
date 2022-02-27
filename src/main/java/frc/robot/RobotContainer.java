@@ -13,6 +13,7 @@ import frc.robot.RobotMap.Buttons;
 import frc.robot.commands.Climb.ClimbPidTune;
 import frc.robot.commands.Climb.ClimbSetMove;
 import frc.robot.commands.Climb.ClimbSetSpeed;
+import frc.robot.commands.Climb.ClimbSetVoltage;
 import frc.robot.commands.Climb.DecrementClimbState;
 import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
@@ -62,6 +63,7 @@ public class RobotContainer {
     SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
     SmartDashboard.putData("Climb Set Move", new ClimbSetMove(M_CLIMB));
     SmartDashboard.putData("Climb Set Speed", new ClimbSetSpeed(M_CLIMB));
+    SmartDashboard.putData("Climb Set Voltage", new ClimbSetVoltage(M_CLIMB));
 
     SmartDashboard.putData("Arm Horizontal", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_HORIZONTAL));
     SmartDashboard.putData("Arm Vertical", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_VERTICAL));

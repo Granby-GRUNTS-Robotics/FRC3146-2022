@@ -386,8 +386,10 @@ public class Climb extends SubsystemBase {
  * 
  * @param voltage the voltage output, with 1023 being full out
  */
-public void setVoltage(double voltage) {
-  CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, voltage/1023.0*12);
+public void setVoltage(double voltage) throws Exception{
+  if ((voltage > 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
+    throw new Exception("Ratcheting should be enabled only for pulling upwards!");
+  }else CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, voltage/1023.0*12);
 }
 
 }

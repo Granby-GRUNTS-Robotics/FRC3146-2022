@@ -5,6 +5,7 @@
 package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
@@ -100,6 +101,7 @@ public class StateCommand extends CommandBase {
 
   public void activateState(BIG_CLIMB_ENUM state){
     active_state = state;
+    SmartDashboard.putString("Active State", active_state.toString());
     substate_finished = false;
     switch (state) {
         case PULLWITHPNEUMATICS:
@@ -150,6 +152,7 @@ public class StateCommand extends CommandBase {
 
   @Override
   public void initialize() {
+    state_state = 0;
     timer.start();
   }
 
@@ -162,7 +165,12 @@ public class StateCommand extends CommandBase {
 
     if(substate_finished){
       climb.clearMotionProfile();
-      climb.setVoltage(0);
+      try {
+        climb.setVoltage(0);
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
       state_state++;
     }else{
       switch (finish_type) {
@@ -186,5 +194,10 @@ public class StateCommand extends CommandBase {
     if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS && climb.isHooked()){
       climb.setArm(ARM_ENUM.HORIZONTAL);
     }
+  }
+
+  @Override
+  public boolean isFinished() {
+      return state_list.length == state_state;
   }
 }

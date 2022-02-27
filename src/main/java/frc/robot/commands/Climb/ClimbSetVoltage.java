@@ -23,7 +23,12 @@ public class ClimbSetVoltage extends CommandBase {
     SmartDashboard.setDefaultNumber("Climb Set Voltage Value", 0);
     double x =SmartDashboard.getNumber("Climb Set Voltage Value", 0);
     if (x==0) SmartDashboard.putNumber("Climb Set Voltage Value", 0);
-    climb.setVoltage(x);
+    try {
+      climb.setVoltage(x);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,7 +38,12 @@ public class ClimbSetVoltage extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.setVoltage(0);
+    try {
+      climb.setVoltage(0);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   // Returns true when the command should end.
