@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Drivetrain;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -27,7 +28,9 @@ public class DriveToAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //drivetrain.setGoalAngle(drivetrain.getAngularError());
+    drivetrain.setGoalAngle(drivetrain.getAngularError());
+    SmartDashboard.putNumber("angular error", drivetrain.getAngularError());
+    SmartDashboard.putNumber("counter", counter);
   }
 
   // Called once the command ends or is interrupted.
@@ -35,8 +38,12 @@ public class DriveToAngle extends CommandBase {
   public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
+  int counter = 0;
   @Override
   public boolean isFinished() {
-    return Math.abs(drivetrain.getAngularError()) < 5;
+    if (Math.abs(drivetrain.getAngularError()) < 5){
+      counter++;
+    }else counter = 0;
+    return counter > 200;
   }
 }

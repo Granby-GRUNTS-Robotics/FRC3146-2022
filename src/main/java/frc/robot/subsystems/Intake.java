@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
   
   /** Creates a new Intake and sets inversion */
   public Intake() {
-    INTAKE_VICTOR.setInverted(true);
+    INTAKE_VICTOR.setInverted(false);
   }
 
   
@@ -53,6 +53,10 @@ public class Intake extends SubsystemBase {
     }
   }
 
+  /**
+   * 
+   * @return INTAKE_ENUM position
+   */
   public INTAKE_ENUM getIntakePos() {
       return intake_pos;
   }

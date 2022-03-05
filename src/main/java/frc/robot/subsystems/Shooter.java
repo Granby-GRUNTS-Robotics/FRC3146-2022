@@ -51,20 +51,33 @@ public class Shooter extends SubsystemBase {
     SHOOTER_LEAD_CONTROLLER.setD(ControlConstants.SHOOTER_kD);
     SHOOTER_LEAD_CONTROLLER.setFF(ControlConstants.SHOOTER_kV);
   }
-
+  /**
+   * 
+   * @param speed the speed in RPM of the flywheel
+   */
   public void setSpeed(double speed){
     goal_speed = speed / 1.25;
     SHOOTER_LEAD_CONTROLLER.setReference(goal_speed, CANSparkMax.ControlType.kVelocity);
   }
-
+  /**
+   * 
+   * @return the speed in RPM of the flywheel
+   */
   private double getSpeed(){
     return SHOOTER_LEAD_ENCODER.getVelocity();
   }
 
+  /**
+   * 
+   * @return the error between the target and current speed of the flywheel
+   */
   public double getError(){
     return getSpeed() - goal_speed;
   }
 
+  /**
+   * sets
+   */
   public void brake(){
     SHOOTER_LEAD_SPARK_MAX.setVoltage(0);
   }

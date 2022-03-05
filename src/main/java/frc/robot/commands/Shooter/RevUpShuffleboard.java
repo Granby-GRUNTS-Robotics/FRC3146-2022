@@ -32,17 +32,4 @@ public class RevUpShuffleboard extends RevUpBase {
     speed = SmartDashboard.getNumber("Target Speed", 0);
     super.initialize();
   }
-  
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    if(!part_of_chain)shooter.brake();
-    }
-  
-  @Override
-  public boolean isFinished() {
-    if(part_of_chain){
-      return super.isFinished();
-    }else return false;
-  }
 }

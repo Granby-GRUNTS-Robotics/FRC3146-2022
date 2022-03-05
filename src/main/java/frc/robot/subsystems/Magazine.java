@@ -25,11 +25,17 @@ public class Magazine extends SubsystemBase {
     MAGAZINE_VICTOR.set(ControlMode.PercentOutput, percent);
   }
 
+  /**
+   * sets the percent output of the magazine motor to zero
+   */
   public void brake(){
     setMagazinePercent(0);
   }
 
-  //gets digital input
+  /**
+   * 
+   * @return digital input value
+   */
   public boolean getLimitSwitch(){
     return MAGAZINE_LIMIT_SWITCH.get();
   }

@@ -78,10 +78,10 @@ public class RobotMap {
         }
 
         public static final Button INTAKE_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 2);
-        public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
-        public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
-        public static final Button INTAKE_FLOAT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 5);
-        public static final Button INTAKE_SOFT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 6);
+        public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 6);
+        public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 5);
+        public static final Button INTAKE_FLOAT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
+        public static final Button INTAKE_SOFT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
 
         public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
         public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);

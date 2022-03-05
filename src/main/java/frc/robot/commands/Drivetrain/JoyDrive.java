@@ -40,14 +40,17 @@ public class JoyDrive extends CommandBase {
     modechooser.addOption("throttle", MODE_ENUM.THROTTLE);
     
   }
-
+  private double reversed = 1;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(joy.getRawButtonPressed(11)){
+      reversed = reversed*-1;
+    }
     SmartDashboard.putData("slowmode chooser" , modechooser);
     
     //for tuning
-    double throttle = RobotMap.Buttons.getWithDeadZone(-joy.getY());
+    double throttle = reversed * RobotMap.Buttons.getWithDeadZone(-joy.getY());
     double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist());
     double throttleMult = SmartDashboard.getNumber("throttle", ControlConstants.kTHROTTLE_MULTIPLIER);
     double twistMult = SmartDashboard.getNumber("twist", ControlConstants.kTWIST_MULTIPLIER);

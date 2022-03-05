@@ -24,29 +24,40 @@
       "/LiveWindow/LimeLight": "Subsystem",
       "/LiveWindow/Magazine": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/AAAAAA": "Command",
       "/SmartDashboard/Arm Float": "Command",
       "/SmartDashboard/Arm Horizontal": "Command",
       "/SmartDashboard/Arm Vertical": "Command",
       "/SmartDashboard/Claw Closed": "Command",
       "/SmartDashboard/Claw Open": "Command",
+      "/SmartDashboard/Climb": "Subsystem",
       "/SmartDashboard/Climb PID Set": "Command",
+      "/SmartDashboard/Climb Set Move": "Command",
+      "/SmartDashboard/Climb Set Speed": "Command",
+      "/SmartDashboard/Climb Set Voltage": "Command",
+      "/SmartDashboard/Drive to Location": "Command",
       "/SmartDashboard/Drivetrain PID Set": "Command",
+      "/SmartDashboard/Increment Climb": "Command",
+      "/SmartDashboard/Intake Down": "Command",
+      "/SmartDashboard/Intake Float": "Command",
+      "/SmartDashboard/Intake Soft": "Command",
+      "/SmartDashboard/Intake Up": "Command",
       "/SmartDashboard/Manual Intake": "Command",
       "/SmartDashboard/Manual Magazine Move": "Command",
       "/SmartDashboard/Manual Shooter Speed": "Command",
       "/SmartDashboard/ManualClimbMotor (Joystick-Controlled)": "Command",
       "/SmartDashboard/Ratchet Engaged": "Command",
       "/SmartDashboard/Ratchet Free": "Command",
+      "/SmartDashboard/Shooter PID Set": "Command",
+      "/SmartDashboard/Turn 90 Degrees": "Command",
       "/SmartDashboard/slowmode chooser": "String Chooser"
     }
   },
   "NetworkTables": {
     "SmartDashboard": {
-      "open": true
-    },
-    "climb": {
       "open": true
     }
   }

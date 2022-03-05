@@ -41,8 +41,10 @@ public class Climb extends SubsystemBase {
   private static final Solenoid WINCH_SOLENOID = RobotMap.RATCHET_SOLENOID;
   private RATCHET_ENUM ratchet_state = RATCHET_ENUM.RATCHETING;
   private static final Solenoid CLAW_SOLENOID = RobotMap.CLAW_SOLENOID;
-  private CLAW_ENUM claw_state;
-  private HOOK_ENUM hook_state;
+  private CLAW_ENUM claw_state = CLAW_ENUM.CLOSED;
+  private HOOK_ENUM hook_state = HOOK_ENUM.RETRACTED;
+
+  private double goal_height = 0;
 
   private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_DRIVE_TALON;
   private static final VictorSPX FOLLOW_VICTOR = RobotMap.CLIMB_FOLLOW_VICTOR;
@@ -68,6 +70,7 @@ public class Climb extends SubsystemBase {
     CLIMB_TALON.config_kF(1, ControlConstants.HOOK_DOWN_kF);
 
     CLIMB_TALON.selectProfileSlot(0, 0);
+    setSmartMotionValues(ControlConstants.CLIMB_MAX_ACC, ControlConstants.CLIMB_CRUISE);
 
     addChild("claw", CLAW_SOLENOID);
     addChild("arm horizontal", ARM_HORI_SOLENOID);
@@ -172,6 +175,14 @@ public class Climb extends SubsystemBase {
   public void setHook(HOOK_ENUM pos){
     hook_state = pos;
     switch (pos) {
+      case FIRST:
+        try {
+          setHook(SetpointConstants.HOOK_FIRST_BAR);
+        } catch (Exception e) {
+          e.printStackTrace();
+          System.out.println(e);
+        }
+        break;
       case EXTENDED:
         try {
           setHook(SetpointConstants.HOOK_EXTENDED);
@@ -243,34 +254,47 @@ public class Climb extends SubsystemBase {
    */
   public void setClimbVelocity(double velocity) throws Exception{
     velocity = distanceToEncoderUnits(velocity) / 10.0;
+    CLIMB_TALON.selectProfileSlot(0, 0);
     if ((velocity > 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
     }else{ CLIMB_TALON.set(TalonSRXControlMode.Velocity, velocity); }
   }
-
+  
+  /**
+   *
+   * 
+   * @return the velocity of the climb motor in inches/second of the hook
+   */
   public double getVelocity(){
     return encoderUnitsToDistanct(CLIMB_TALON.getSelectedSensorVelocity()) * 10;
   }
 
+  /**
+   * 
+   * @return the value of the analog potentiometer
+   */
   private double getPotentiometer(){
     return POTENTIOMETER.getValue();
   }
 
+  /**
+   * 
+   * @return the closed loop error of the climb TalonSRX, in encoder units
+   */
   private double getError(){
     return CLIMB_TALON.getClosedLoopError();
   }
 
+  /**
+   * Switches the PID slot of the lead controller based on whether or not we are pulling ourselves up or not. Meant to be called continuously
+   * @throws Exception if trying to work against the ratchet
+   */
   public void switchPID() throws Exception{
     if(isHooked()){
       if (!isAtPosition()) {
         CLIMB_TALON.selectProfileSlot(1, 0);
-        CLIMB_TALON.set(ControlMode.MotionMagic, getError(), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_DOWN_ARB_FF);
+        CLIMB_TALON.set(ControlMode.MotionMagic, getError());
       }else setClimbPercent(0);
-
-    }else {
-      CLIMB_TALON.selectProfileSlot(0, 0);
-      CLIMB_TALON.set(ControlMode.MotionMagic, getError(), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_UP_ARB_FF);
-
     }
   }
   
@@ -280,6 +304,7 @@ public class Climb extends SubsystemBase {
    * @throws Exception if distance is not within range or ratcheting does not match up with movement direction
    */
   public void setHook(double distance) throws Exception{
+    goal_height = distance;
     if (distance < -10 || distance > 40){
       throw new Exception("invalid distance");
     } else if ((getPosition() - distance < 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
@@ -323,38 +348,57 @@ public class Climb extends SubsystemBase {
   }
   /**
    * 
-   * @param distance, the distance in inches above fully pulled down
+   * @param distance, the distance in inches above zero position
    * @return the position in encoder units
    */
   public double distanceToEncoderUnits(double distance){
     return distance/ControlConstants.CLIMB_ENCODER_TO_DISTANCE;
   }
 
+  /**
+   * 
+   * @param encoderUnits, the distance to be converted in encoder units
+   * @return the distance in inches above the zero position
+   */
   public double encoderUnitsToDistanct(double encoderUnits){
     return encoderUnits * ControlConstants.CLIMB_ENCODER_TO_DISTANCE;
   }
 
+  /**
+   * 
+   * @return true if the climb is within HOOK_PRECISION of its target destination
+   */
   public boolean isAtPosition(){
-    return Math.abs(CLIMB_TALON.getClosedLoopError()) < SetpointConstants.HOOK_PRECISON;
+    return Math.abs(getPosition() - goal_height) < SetpointConstants.HOOK_PRECISON;
   }
 
+  /**
+   * clears the motion profile of the climb Talon
+   */
   public void clearMotionProfile(){
     CLIMB_TALON.clearMotionProfileTrajectories();
   }
 
+  /**
+   * 
+   * @return true if the trapezoidal profile is finished
+   */
   public boolean isTrapezoidOver(){
     MotionProfileStatus status = new MotionProfileStatus();
     CLIMB_TALON.getMotionProfileStatus(status);
     return status.isLast;
   }
 
+  /**
+   * sets values on the smart dashboard for drivers to read
+   */
   @Override
   public void periodic() {
     currentEntry.setNumber(getStatorCurrent());
     positionEntry.setNumber(getPosition());
     hookedEntry.setBoolean(isHooked());
-    SmartDashboard.putNumber("climb_state", Constants.climb_state);
     SmartDashboard.putNumber("potentiometer", getPotentiometer());
+    SmartDashboard.putNumber("Goal height", goal_height);
     // This method will be called once per scheduler run
   }
 

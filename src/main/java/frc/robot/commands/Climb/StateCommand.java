@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ControlConstants;
+import frc.robot.Constants.SetpointConstants;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.Constants.ControlConstants.HOOK_ENUM;
 import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
@@ -21,8 +22,8 @@ import frc.robot.subsystems.Climb;
 public class StateCommand extends CommandBase {
   /** Creates a new StateCommandBase. */
   private Climb climb;
-  private static enum FINISH_ENUM{TIME, POSITION};
-  private FINISH_ENUM finish_type;
+  private static enum FINISH_ENUM{TIME, POSITION, SKIP};
+  private FINISH_ENUM finish_type = FINISH_ENUM.TIME;
   private boolean substate_finished;
   BIG_CLIMB_ENUM active_state;
   Timer timer = new Timer();
@@ -50,6 +51,7 @@ public class StateCommand extends CommandBase {
 
   public StateCommand(Climb climb) {
     this.climb = climb;//ratchet arm claw hook
+    addRequirements(climb);
   }
 
   public void setStateList(BIG_CLIMB_ENUM[] state_list){
@@ -58,53 +60,64 @@ public class StateCommand extends CommandBase {
 
   public void setArm(ARM_ENUM arm_state){
     if (climb.getArmState() == arm_state){
-      resetAndSetGoal(0);
+      skipify();
     }else if (arm_state == ARM_ENUM.HORIZONTAL){
-      resetAndSetGoal(ControlConstants.ARM_PISTON_HORIZONTAL_TIME);
-    }else resetAndSetGoal(ControlConstants.ARM_PISTON_VERTICAL_TIME);
-    finish_type = FINISH_ENUM.TIME;
+      timeGoalify(ControlConstants.ARM_PISTON_HORIZONTAL_TIME);
+    }else timeGoalify(ControlConstants.ARM_PISTON_VERTICAL_TIME);
+
     climb.setArm(arm_state);
   }
 
   public void setClaw(CLAW_ENUM claw_state){
     if (climb.getClawState() == claw_state){
-      resetAndSetGoal(0);
-    }else resetAndSetGoal(ControlConstants.CLAW_PISTON_TIME);
-    finish_type = FINISH_ENUM.TIME;
+      skipify();
+    }else {timeGoalify(ControlConstants.CLAW_PISTON_TIME);}
     climb.setClaw(claw_state);
   }
 
   public void setRatchet(RATCHET_ENUM ratchet_state){
     if (climb.getRatchetState() == ratchet_state){
-      resetAndSetGoal(0);
-    }else resetAndSetGoal(ControlConstants.RATCHET_PISTON_TIME);
-    finish_type = FINISH_ENUM.TIME;
+      skipify();
+    }else {timeGoalify(ControlConstants.RATCHET_PISTON_TIME);}
     climb.setRatchet(ratchet_state);
+
+    if (ratchet_state == RATCHET_ENUM.FREE){
+      try {
+        climb.setClimbVelocity(-1);;
+      } catch (Exception e) {
+        //TODO: handle exception
+      }
+    }
   }
 
   public void setHook(HOOK_ENUM hook_state){
-    if (climb.getHookState() != hook_state){
       climb.setHook(hook_state);
-      finish_type = FINISH_ENUM.POSITION;
-    }else substate_finished = true;
+      positionGoalify();
   }
 
-  private void resetAndSetGoal(double timegoal){
+  private void timeGoalify(double timegoal){
+    finish_type = FINISH_ENUM.TIME;
     timer.reset();
-    if(timegoal != 0){
-      this.timegoal = timegoal;
-    }else {
-      substate_finished = true;
-      timer.stop();
-    }
+    this.timegoal = timegoal;
+  }
+
+  private void positionGoalify(){
+    finish_type = FINISH_ENUM.POSITION;
+  }
+
+  private void skipify(){
+    finish_type = FINISH_ENUM.SKIP;
   }
 
   public void activateState(BIG_CLIMB_ENUM state){
     active_state = state;
-    SmartDashboard.putString("Active State", active_state.toString());
-    substate_finished = false;
     switch (state) {
+        case FIRST:
+        setHook(HOOK_ENUM.FIRST);
+      break;
         case PULLWITHPNEUMATICS:
+        setHook(HOOK_ENUM.CAPTURING);
+        
       break;
         case HOOK_EXTENDED:
         setHook(HOOK_ENUM.EXTENDED);
@@ -116,7 +129,7 @@ public class StateCommand extends CommandBase {
         setHook(HOOK_ENUM.RETRACTED);
       break;
         case HOOK_MIDDLE:
-        setHook(HOOK_ENUM.MIDDLE);
+        setHook(HOOK_ENUM.EXTENDED);
       break;
         case HOOK_CAPTURING:
         setHook(HOOK_ENUM.CAPTURING);
@@ -150,40 +163,39 @@ public class StateCommand extends CommandBase {
     }
   }
 
+  private void incrementState(){
+    state_state++;
+  }
+
   @Override
   public void initialize() {
     state_state = 0;
     timer.start();
+    substate_finished = true;
   }
 
   @Override
   public void execute() {
 
-    if (state_list.length > state_state && state_list[state_state] != null){
+    if (state_list.length > state_state && substate_finished){
       activateState(state_list[state_state]);
+      substate_finished = false;
+    }
+      
+    switch (finish_type) {
+      case TIME:
+        if (timegoal < timer.get()) substate_finished = true ;
+        break;
+      case POSITION:
+        if (climb.isAtPosition()) substate_finished = true; 
+        break;
+      case SKIP:
+        substate_finished = true;
+      default:
+        break;
     }
 
-    if(substate_finished){
-      climb.clearMotionProfile();
-      try {
-        climb.setVoltage(0);
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      state_state++;
-    }else{
-      switch (finish_type) {
-        case TIME:
-          substate_finished = timegoal > timer.get();
-          break;
-        case POSITION:
-          substate_finished = climb.isAtPosition() && climb.isTrapezoidOver();
-          break;
-        default:
-          break;
-      }
-    }
+    
     if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.HOOK_RETRACTED || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
       try {
         climb.switchPID();
@@ -192,12 +204,51 @@ public class StateCommand extends CommandBase {
       }
     }
     if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS && climb.isHooked()){
-      climb.setArm(ARM_ENUM.HORIZONTAL);
+      
+      if (climb.getPosition() < SetpointConstants.HOOK_RESTING - 5){
+        climb.setArm(ARM_ENUM.FLOAT);
+        climb.setClaw(CLAW_ENUM.OPEN);
+      }
     }
+    if (active_state == BIG_CLIMB_ENUM.HOOK_MIDDLE){
+      if (climb.getPosition() > SetpointConstants.HOOK_MIDDLE){
+        climb.setArm(ARM_ENUM.HORIZONTAL);
+      }
+    }
+
+    if (substate_finished){
+      incrementState();
+
+      climb.clearMotionProfile();
+      try {
+        climb.setVoltage(0);
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+
+    SmartDashboard.putString("Active State", active_state.toString());
+    SmartDashboard.putNumber("state_state", state_state);
+    SmartDashboard.putNumber("timer value", timer.get());
+    SmartDashboard.putNumber("Timer goal", timegoal);
+    SmartDashboard.putBoolean("Finished state state", substate_finished);
   }
 
   @Override
   public boolean isFinished() {
       return state_list.length == state_state;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    climb.clearMotionProfile();
+    try {
+      climb.setVoltage(0);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    substate_finished = false;
   }
 }

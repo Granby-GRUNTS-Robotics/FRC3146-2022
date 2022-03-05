@@ -28,7 +28,7 @@ public class DriveToLocation extends CommandBase {
     SmartDashboard.setDefaultNumber("Distance", 0);
     //drivetrain.resetEncoders();
     distance = SmartDashboard.getNumber("Distance", 0);
-    drivetrain.setGoalPositions(distance + drivetrain.getLeftPosition(), distance + drivetrain.getRightPosition());
+    drivetrain.setGoalPositionsTrapezoid(distance + drivetrain.getLeftPosition(), distance + drivetrain.getRightPosition());
 
   }
 

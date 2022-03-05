@@ -33,8 +33,7 @@ public class MagMoveBase extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.setDefaultNumber("Set Magazine Move Distance", 0);
-    movement_time = SmartDashboard.getNumber("Set Magazine Move Distance", 0);
+    timer.reset();
     timer.start();
     magazine.setMagazinePercent((movement_time<=0)?-SetpointConstants.MAGAZINE_SPEED:SetpointConstants.MAGAZINE_SPEED);
   }
@@ -43,7 +42,6 @@ public class MagMoveBase extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     magazine.brake();
-    timer.stop();
   }
 
   // Returns true when the command should end.

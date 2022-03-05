@@ -15,6 +15,7 @@ import frc.robot.commands.Climb.ClimbSetMove;
 import frc.robot.commands.Climb.ClimbSetSpeed;
 import frc.robot.commands.Climb.ClimbSetVoltage;
 import frc.robot.commands.Climb.DecrementClimbState;
+import frc.robot.commands.Climb.FullClimbNoStops;
 import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
 import frc.robot.commands.Climb.MoveToClimbState;
@@ -59,6 +60,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    SmartDashboard.putData("Climb",M_CLIMB);
     SmartDashboard.putData("ManualClimbMotor (Joystick-Controlled)", new ManualClimbMotor(M_CLIMB, Buttons.BUTTON_Y));
     SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
     SmartDashboard.putData("Climb Set Move", new ClimbSetMove(M_CLIMB));
@@ -86,6 +88,10 @@ public class RobotContainer {
     SmartDashboard.putData("Intake Up", new MoveIntakeUp(M_INTAKE));
     SmartDashboard.putData("Intake Soft", new MoveIntakeSoft(M_INTAKE));
     SmartDashboard.putData("Intake Float", new MoveIntakeFloat(M_INTAKE));
+
+    SmartDashboard.putData("AAAAAA", new MoveToClimbState(M_CLIMB));
+
+    SmartDashboard.putData("Increment Climb", new IncrementClimbState(M_CLIMB));
     
     M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
     // Configure the button bindings
@@ -120,7 +126,6 @@ public class RobotContainer {
     .whenReleased(new MoveToClimbState(M_CLIMB));
     Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-  
   }
 
   /**
