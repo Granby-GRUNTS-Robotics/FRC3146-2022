@@ -4,7 +4,8 @@
 
 package frc.robot.commands.Drivetrain;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -26,10 +27,8 @@ public class DriveToLocation extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.setDefaultNumber("Distance", 0);
-    //drivetrain.resetEncoders();
-    distance = SmartDashboard.getNumber("Distance", 0);
-    drivetrain.setGoalPositionsTrapezoid(distance + drivetrain.getLeftPosition(), distance + drivetrain.getRightPosition());
+    drivetrain.setBrakeMode(IdleMode.kBrake);
+    drivetrain.setGoalPositionsTrapezoid(distance, distance);
 
   }
 
@@ -45,6 +44,6 @@ public class DriveToLocation extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(drivetrain.getLinearError()) < 1;
+    return Math.abs(drivetrain.getLinearError()) < 1.0;
   }
 }

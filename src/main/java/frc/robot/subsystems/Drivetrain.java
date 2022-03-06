@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -105,8 +106,22 @@ public class Drivetrain extends SubsystemBase {
    * @param right the right goal speed, in inches per second, of the robot
    */
   public void setSpeeds(double left, double right) {
-    LEFT_CONTROLLER.setReference(left, ControlType.kVelocity, 0, (left==0)? 0 : Math.signum(left) * ControlConstants.DRIVE_ARB_FF);
-    RIGHT_CONTROLLER.setReference(right, ControlType.kVelocity, 0, (right==0)? 0 : Math.signum(right) * ControlConstants.DRIVE_ARB_FF);
+    LEFT_CONTROLLER.setReference(left, ControlType.kVelocity);
+    RIGHT_CONTROLLER.setReference(right, ControlType.kVelocity);
+  }
+
+  /**
+   * only sets mode if different from current mode.
+   * Sets brake mode of all 4 drive motors
+   * @param mode the brake mode, either coast or 
+   */
+  public void setBrakeMode(IdleMode mode){
+    if(LEFT_DRIVE_SPARK_MAX.getIdleMode() != mode){
+      LEFT_DRIVE_SPARK_MAX.setIdleMode(mode);
+      LEFT_FOLLOW_SPARK_MAX.setIdleMode(mode);
+      RIGHT_DRIVE_SPARK_MAX.setIdleMode(mode);
+      RIGHT_FOLLOW_SPARK_MAX.setIdleMode(mode);
+    }
   }
 
   /**
@@ -133,8 +148,8 @@ public class Drivetrain extends SubsystemBase {
    * @param right the goal position of the right side of the robot, in inches
    */
   public void setGoalPositionsTrapezoid(double left, double right){
-    LEFT_CONTROLLER.setReference(left, ControlType.kSmartMotion, 0, (left==0)? 0 : Math.signum(left) * ControlConstants.DRIVE_ARB_FF);
-    RIGHT_CONTROLLER.setReference(right, ControlType.kSmartMotion, 0, (right==0)? 0 : Math.signum(right) * ControlConstants.DRIVE_ARB_FF);
+    LEFT_CONTROLLER.setReference(left + getLeftPosition(), ControlType.kSmartMotion, 0);
+    RIGHT_CONTROLLER.setReference(right + getRightPosition(), ControlType.kSmartMotion, 0);
     goal_position = left;
   }
 
@@ -153,7 +168,6 @@ public class Drivetrain extends SubsystemBase {
   public void setGoalAngle(double angle){
     goal_angle = PIGEON.getFusedHeading() + angle;
     goal_position = angleToDistance(angle);
-    //if (goal_position > 20) goal_position = 20;
     setGoalPositionsRelative(-goal_position, +goal_position);
   }
 

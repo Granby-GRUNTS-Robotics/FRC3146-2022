@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Drivetrain;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,7 +40,7 @@ public class JoyDrive extends CommandBase {
     modechooser.addOption("both", MODE_ENUM.BOTH);
     modechooser.addOption("twist", MODE_ENUM.TWIST);
     modechooser.addOption("throttle", MODE_ENUM.THROTTLE);
-    
+    drive.setBrakeMode(IdleMode.kCoast);
   }
   private double reversed = 1;
   // Called every time the scheduler runs while the command is scheduled.
