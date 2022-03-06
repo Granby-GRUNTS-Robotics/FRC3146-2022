@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -305,7 +304,7 @@ public class Climb extends SubsystemBase {
    */
   public void setHook(double distance) throws Exception{
     goal_height = distance;
-    if (distance < -10 || distance > 40){
+    if (distance < -5 || distance > 30){
       throw new Exception("invalid distance");
     } else if ((getPosition() - distance < 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
@@ -313,12 +312,12 @@ public class Climb extends SubsystemBase {
       if (isHooked()) {
         if (!isAtPosition()) {
           CLIMB_TALON.selectProfileSlot(1, 0);
-          CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_DOWN_ARB_FF);
+          CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance));
         }else setClimbPercent(0);
         
       } else {
         CLIMB_TALON.selectProfileSlot(0, 0);
-        CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance), DemandType.ArbitraryFeedForward, ControlConstants.CLIMB_UP_ARB_FF);
+        CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance));
       }
     }
   }

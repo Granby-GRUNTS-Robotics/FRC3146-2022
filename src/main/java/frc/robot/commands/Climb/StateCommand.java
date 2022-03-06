@@ -114,8 +114,8 @@ public class StateCommand extends CommandBase {
         setHook(HOOK_ENUM.FIRST);
       break;
         case PULLWITHPNEUMATICS:
+        timeGoalify(1.5);
         setHook(HOOK_ENUM.CAPTURING);
-        
       break;
         case HOOK_EXTENDED:
         setHook(HOOK_ENUM.EXTENDED);
@@ -126,7 +126,7 @@ public class StateCommand extends CommandBase {
         case HOOK_RETRACTED:
         setHook(HOOK_ENUM.RETRACTED);
       break;
-        case HOOK_MIDDLE:
+        case HOOK_SWING_UP:
         setHook(HOOK_ENUM.EXTENDED);
       break;
         case HOOK_CAPTURING:
@@ -172,6 +172,10 @@ public class StateCommand extends CommandBase {
     substate_finished = true;
   }
 
+  private boolean passedTimeGoal(){
+    return timer.get() > timegoal;
+  }
+
   @Override
   public void execute() {
 
@@ -182,7 +186,7 @@ public class StateCommand extends CommandBase {
       
     switch (finish_type) {
       case TIME:
-        if (timegoal < timer.get()) substate_finished = true ;
+        if (passedTimeGoal()) substate_finished = true ;
         break;
       case POSITION:
         if (climb.isAtPosition()) substate_finished = true; 
@@ -201,14 +205,17 @@ public class StateCommand extends CommandBase {
         e.printStackTrace();
       }
     }
-    if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS && climb.isHooked()){
+    if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
       
-      if (climb.getPosition() < SetpointConstants.HOOK_RESTING - 5){
-        climb.setArm(ARM_ENUM.FLOAT);
+      if (climb.getPosition() < SetpointConstants.HOOK_RESTING - 5.){
+        climb.setArm(ARM_ENUM.HORIZONTAL);
+      }
+      if (passedTimeGoal()){
         climb.setClaw(CLAW_ENUM.OPEN);
+        climb.setArm(ARM_ENUM.VERTICAL);
       }
     }
-    if (active_state == BIG_CLIMB_ENUM.HOOK_MIDDLE){
+    if (active_state == BIG_CLIMB_ENUM.HOOK_SWING_UP){
       if (climb.getPosition() > SetpointConstants.HOOK_MIDDLE){
         climb.setArm(ARM_ENUM.HORIZONTAL);
       }
