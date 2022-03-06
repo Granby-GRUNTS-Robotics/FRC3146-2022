@@ -7,7 +7,7 @@ package frc.robot.commands.Intake;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Intake;
 
-/** Add your docs here. */
+/** moves the intake for picking up balls */
 public class IntakeIn extends IntakeSpeedBase{
     public IntakeIn(Intake intake){
         super(intake, true);
