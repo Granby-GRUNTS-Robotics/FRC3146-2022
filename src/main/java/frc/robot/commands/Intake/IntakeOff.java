@@ -9,7 +9,7 @@ import frc.robot.subsystems.Intake;
 /** turns off the intake */
 public class IntakeOff extends IntakeSpeedBase{
     public IntakeOff(Intake intake){
-        super(intake);
+        super(intake, true);
         percent = 0;
     }
 }

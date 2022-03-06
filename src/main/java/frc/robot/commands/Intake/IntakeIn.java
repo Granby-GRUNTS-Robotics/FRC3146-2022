@@ -10,7 +10,7 @@ import frc.robot.subsystems.Intake;
 /** Add your docs here. */
 public class IntakeIn extends IntakeSpeedBase{
     public IntakeIn(Intake intake){
-        super(intake);
+        super(intake, true);
         percent = SetpointConstants.INTAKE_SPEED;
     }
 }

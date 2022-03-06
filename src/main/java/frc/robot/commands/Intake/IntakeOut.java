@@ -10,7 +10,7 @@ import frc.robot.subsystems.Intake;
 /** moves the intake for ejecting balls */
 public class IntakeOut extends IntakeSpeedBase{
     public IntakeOut(Intake intake){
-        super(intake);
+        super(intake, false);
         percent = -SetpointConstants.INTAKE_SPEED;
     }
 }
