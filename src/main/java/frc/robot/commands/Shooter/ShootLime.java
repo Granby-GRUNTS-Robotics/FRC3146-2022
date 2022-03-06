@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Shooter;
 
+import frc.robot.commands.LimeTurnOff;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
@@ -12,5 +13,6 @@ import frc.robot.subsystems.Shooter;
 public class ShootLime extends ShootBase{
     public ShootLime(Magazine magazine, Shooter shooter, LimeLight limeLight){
         super(magazine, shooter, new RevUpLime(shooter, limeLight));
+        addCommands(new LimeTurnOff(limeLight));
     }
 }

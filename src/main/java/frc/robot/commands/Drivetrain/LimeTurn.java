@@ -12,9 +12,15 @@ import frc.robot.subsystems.LimeLight;
  * or constant uploading of the X coordinate, but that might introduce some phase lag (supposedly the limelight updates values pretty quickly but I don't believe it) 
 */
 public class LimeTurn extends DriveToAngle {
-
+    private LimeLight limeLight;
     public LimeTurn(Drivetrain drivetrain, LimeLight limeLight) {
         super(drivetrain, 0);
-        angle = limeLight.getX();
+        this.limeLight = limeLight;
         addRequirements(limeLight);    
-    }}
+    }
+    @Override
+    public void initialize() {
+        angle = limeLight.getX();
+        super.initialize();
+    }
+}

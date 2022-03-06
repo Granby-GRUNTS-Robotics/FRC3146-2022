@@ -9,13 +9,15 @@ import frc.robot.subsystems.Shooter;
 
 /** rev up based on the distance to the goal. Calculated using the angle of the goal on the limelight */
 public class RevUpLime extends RevUpBase{
+    private LimeLight limeLight;
     public RevUpLime(Shooter shooter, LimeLight limeLight){
         super(shooter);
-        speed = limeLight.calculateFlyWheelSpeed();
+        this.limeLight = limeLight;
+        addRequirements(limeLight);
     }
-    public RevUpLime(Shooter shooter, LimeLight limeLight, boolean fixed){
-        super(shooter);
-        speed = limeLight.calculateFlyWheelSpeed() * 60;
-        if(fixed){speed = limeLight.fixFlyWheelSpeed(speed);}
+    @Override
+    public void initialize() {
+        speed = limeLight.calculateFlyWheelSpeed(limeLight.getDistanceFromAngle());
+        super.initialize();
     }
 }
