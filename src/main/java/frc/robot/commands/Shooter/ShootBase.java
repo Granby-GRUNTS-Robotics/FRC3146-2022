@@ -5,6 +5,7 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Magazine.BackSpace;
 import frc.robot.commands.Magazine.Feed;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
@@ -15,6 +16,6 @@ public class ShootBase extends SequentialCommandGroup {
   public ShootBase(Magazine magazine, Shooter shooter, RevUpBase speedBase) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(speedBase, new Feed(magazine), new ShooterBrake(shooter));
+    addCommands(new BackSpace(magazine), speedBase, new Feed(magazine), new ShooterBrake(shooter));
   }
 }
