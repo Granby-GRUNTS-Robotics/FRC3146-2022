@@ -15,9 +15,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LimeLight extends SubsystemBase {
   /** Creates a new LimeLight. */
   public LimeLight() {
-    ledMode.setNumber(1);
-    SmartDashboard.putNumber("Flywheel Speed Multiplier", 0.0);
     //start by turning off the LEDs. We don't want to be blinding people if we can at all help it
+    setLEDS(false);
+    SmartDashboard.setDefaultNumber("Flywheel Speed Multiplier", LimeLightConstants.LIME_FIXER_VALUE);
+    SmartDashboard.setDefaultNumber("Goal Relative Height", LimeLightConstants.GOAL_RELATIVE_HEIGHT_FEET);
+    SmartDashboard.setDefaultNumber("LimelightX", 0);
   }
 
   /**
@@ -33,8 +35,10 @@ public class LimeLight extends SubsystemBase {
   NetworkTableEntry ta = table.getEntry("ta");
   NetworkTableEntry tv = table.getEntry("tv");
   NetworkTableEntry ledMode = table.getEntry("ledMode");
-  private double flyWheelFixer = 1.1;
+
   //variables until tuned, then will become constants
+  private double flyWheelFixer = 0;
+  private double height = 0;
 
   /**
    * 
@@ -54,49 +58,29 @@ public class LimeLight extends SubsystemBase {
 
   /**
    * 
-   * This section has a LOT of math that may or may not work very well
+   * has a bit of math, but don't worry about it unless you have taken trig
+   * @return the distance, in inches, from the edge of the target
    */
-
-  private double calculateDistanceWithAngle(){
-    return LimeLightConstants.GOAL_RELATIVE_HEIGHT_M/(Math.tan(LimeLightConstants.LIMELIGHT_MOUNTING_ANGLE+Math.toRadians(ty.getDouble(0.0))));
+  public double getDistanceFromAngle(){
+    return height/(Math.tan(LimeLightConstants.LIMELIGHT_MOUNTING_ANGLE+Math.toRadians(ty.getDouble(0.0))));
   }
 
-
-  private double calculateBallSpeed(){
-    double x = calculateDistanceWithAngle();
-    return Math.sqrt(
-      (9.8 * Math.pow(x, 2) / 2)
-      /
-      (
-        (Math.tan(LimeLightConstants.SHOOTER_ANGLE) - LimeLightConstants.GOAL_RELATIVE_HEIGHT_M + 1) 
-        * 
-        (Math.pow(Math.cos(LimeLightConstants.SHOOTER_ANGLE) , 2))
-      )
-    );
-  }
-
-  public double calculateFlyWheelSpeed(){
-    double v = calculateBallSpeed();
-    return 
-      v
-      * Math.sqrt(
-        (
-          (
-            (LimeLightConstants.BALL_MOMENT/Math.pow(LimeLightConstants.BALL_RADIUS, 2))+
-            (Math.pow(LimeLightConstants.BALL_MASS, 2))+
-            (LimeLightConstants.WHEEL_MOMENT/Math.pow(LimeLightConstants.WHEEL_RADIUS, 2))
-          )/LimeLightConstants.WHEEL_MOMENT
-        )
-      );
-  }
-
+  /**
+   * 
+   * @return whether or not the limelight has a valid target
+   */
   public boolean hasTarget(){
-    return (int)tv.getNumber(0) == 1;
+    return tv.getNumber(0.0) == (Number)1.0;
   }
 
   //in case we ever need to augment the calculations. Which, let's all be honest, we probably will have to. So I added in a basic thing for testing
-  public double fixFlyWheelSpeed(double flyWheelSpeed){
-    return flyWheelSpeed * flyWheelFixer;
+  /**
+   * 
+   * @param distance, the distance, in inches, from the target 
+   * @return a suitable flywheel speed
+   */
+  public double calculateFlyWheelSpeed(double distance){
+    return Math.pow(distance, 2.0) * flyWheelFixer;
   }
 
   @Override
@@ -105,12 +89,12 @@ public class LimeLight extends SubsystemBase {
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
     double area = ta.getDouble(0.0);
-    double distance = calculateDistanceWithAngle();
-    flyWheelFixer = SmartDashboard.getNumber("Flywheel Speed Multiplier", 1.1);
+    height = SmartDashboard.getNumber("Goal Relative Height", LimeLightConstants.GOAL_RELATIVE_HEIGHT_FEET);
+    flyWheelFixer = SmartDashboard.getNumber("Flywheel Speed Multiplier", LimeLightConstants.LIME_FIXER_VALUE);
     //post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("Distance From Target (m)", distance);
+    SmartDashboard.putNumber("Distance From Target (in)", getDistanceFromAngle());
   }
 }
