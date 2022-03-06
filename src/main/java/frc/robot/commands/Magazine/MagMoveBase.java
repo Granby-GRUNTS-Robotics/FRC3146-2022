@@ -18,6 +18,7 @@ public class MagMoveBase extends CommandBase {
   
   /** Creates a new MagBase. */
   public MagMoveBase(Magazine magazine) {
+    timer  = new Timer();
     this.magazine = magazine;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(magazine);
@@ -26,6 +27,7 @@ public class MagMoveBase extends CommandBase {
   /** Creates a new MagBase. */
   public MagMoveBase(Magazine magazine, double movement_time) {
     this.movement_time = movement_time;
+    timer = new Timer();
     this.magazine = magazine;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(magazine);
