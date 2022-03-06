@@ -10,12 +10,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.RobotMap.Buttons;
+import frc.robot.commands.LimeTurnAndShoot;
+import frc.robot.commands.LimeTurnOff;
+import frc.robot.commands.LimeTurnOn;
+import frc.robot.commands.Autonomous.AutoFromLine;
 import frc.robot.commands.Climb.ClimbPidTune;
 import frc.robot.commands.Climb.ClimbSetMove;
 import frc.robot.commands.Climb.ClimbSetSpeed;
 import frc.robot.commands.Climb.ClimbSetVoltage;
 import frc.robot.commands.Climb.DecrementClimbState;
-import frc.robot.commands.Climb.FullClimbNoStops;
 import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
 import frc.robot.commands.Climb.MoveToClimbState;
@@ -24,22 +27,27 @@ import frc.robot.commands.Drivetrain.DrivePIDTune;
 import frc.robot.commands.Drivetrain.DriveToAngle;
 import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Drivetrain.JoyDrive;
+import frc.robot.commands.Drivetrain.LimeTurn;
 import frc.robot.commands.Intake.IntakeButtonCommand;
-import frc.robot.commands.Intake.ManualIntakeMotor;
+import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.MoveIntakeDown;
 import frc.robot.commands.Intake.MoveIntakeFloat;
 import frc.robot.commands.Intake.MoveIntakeSoft;
 import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Magazine.MagIntake;
+import frc.robot.commands.Magazine.MagIntakeBraker;
 import frc.robot.commands.Magazine.MagMoveBase;
+import frc.robot.commands.Magazine.MagazineOut;
 import frc.robot.commands.Shooter.RevUpShuffleboard;
 import frc.robot.commands.Shooter.ShootHigh;
+import frc.robot.commands.Shooter.ShootLime;
 import frc.robot.commands.Shooter.ShootShuffleBoard;
 import frc.robot.commands.Shooter.ShooterBrake;
 import frc.robot.commands.Shooter.ShooterPIDTune;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
@@ -55,7 +63,7 @@ public class RobotContainer {
   private static final Intake M_INTAKE = new Intake();
   private static final Shooter M_SHOOTER = new Shooter();
   private static final Drivetrain M_DRIVETRAIN = new Drivetrain();
-  //private static final LimeLight M_LIME_LIGHT = new LimeLight();
+  private static final LimeLight M_LIME_LIGHT = new LimeLight();
   private static final Magazine M_MAGAZINE = new Magazine();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -78,10 +86,14 @@ public class RobotContainer {
     SmartDashboard.putData("Drivetrain PID Set", new DrivePIDTune(M_DRIVETRAIN));
     SmartDashboard.putData("Drive to Location", new DriveToLocation(M_DRIVETRAIN, 24));
     SmartDashboard.putData("Turn 90 Degrees", new DriveToAngle(M_DRIVETRAIN, 90));
+
+    SmartDashboard.putData("LimeLED On", new LimeTurnOn(M_LIME_LIGHT));
+    SmartDashboard.putData("Lime Turn", new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
+    SmartDashboard.putData("Lime Set Speed Shoot", new ShootLime(M_MAGAZINE, M_SHOOTER, M_LIME_LIGHT));
+    SmartDashboard.putData("LimeLED Off", new LimeTurnOff(M_LIME_LIGHT));
     
     SmartDashboard.putData("Manual Shooter Speed", new RevUpShuffleboard(M_SHOOTER));
     SmartDashboard.putData("Shooter PID Set", new ShooterPIDTune(M_SHOOTER));
-    SmartDashboard.putData("Manual Intake", new ManualIntakeMotor(M_INTAKE));
     SmartDashboard.putData("Manual Magazine Move", new MagMoveBase(M_MAGAZINE));
 
     SmartDashboard.putData("Intake Down", new MoveIntakeDown(M_INTAKE));
@@ -89,7 +101,7 @@ public class RobotContainer {
     SmartDashboard.putData("Intake Soft", new MoveIntakeSoft(M_INTAKE));
     SmartDashboard.putData("Intake Float", new MoveIntakeFloat(M_INTAKE));
 
-    SmartDashboard.putData("AAAAAA", new MoveToClimbState(M_CLIMB));
+    SmartDashboard.putData("Move To Climb State", new MoveToClimbState(M_CLIMB));
 
     SmartDashboard.putData("Increment Climb", new IncrementClimbState(M_CLIMB));
     
@@ -106,19 +118,21 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    Buttons.INTAKE_BUTTON.whileActiveOnce(new IntakeButtonCommand(M_INTAKE))
-    .whileActiveOnce(new MagIntake(M_MAGAZINE));
+    Buttons.INTAKE_BUTTON.whenHeld(new IntakeButtonCommand(M_INTAKE))
+    .whenHeld(new MagIntake(M_MAGAZINE).andThen(new MagIntakeBraker(M_MAGAZINE)));
 
     Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));
     Buttons.INTAKE_FLOAT_BUTTON.whenPressed(new MoveIntakeFloat(M_INTAKE));
     Buttons.INTAKE_SOFT_BUTTON.whenPressed(new MoveIntakeSoft(M_INTAKE));
     Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE));
 
-    Buttons.shootButton.whenReleased(new ShooterBrake(M_SHOOTER));
+    Buttons.EJECT_BUTTON.whenHeld(new MagazineOut(M_MAGAZINE)).whenHeld(new IntakeOut(M_INTAKE));
 
-    Buttons.LOW_GOAL_BUTTON.and(Buttons.shootButton).whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER));
-    Buttons.HIGH_GOAL_BUTTON.and(Buttons.shootButton).whileActiveOnce(new ShootHigh(M_MAGAZINE,M_SHOOTER));
-    //Buttons.shootButton.whileActiveOnce(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE));
+    Buttons.SHOOT_BUTTON.whenReleased(new ShooterBrake(M_SHOOTER));
+
+    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER));
+    Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER));
+    Buttons.LIME_SHOOT_TRIGGER.whileActiveOnce(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE));
     
     
     //Only uncomment once all testing has been done
@@ -126,6 +140,7 @@ public class RobotContainer {
     .whenReleased(new MoveToClimbState(M_CLIMB));
     Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
+    
   }
 
   /**
@@ -135,6 +150,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER);
   }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.MotorConstants;
 import frc.robot.Constants.PneumaticConstants;
@@ -62,9 +64,7 @@ public class RobotMap {
     public static final Joystick DRIVE_JOYSTICK = new Joystick(ControlConstants.DRIVE_CONTROLLER_PORT);
     public static final Joystick BUTTON_JOYSTICK = new Joystick(ControlConstants.BUTTON_JOYSTICK_PORT);
 
-    public static final class Buttons{
-        public static final Button shootButton = new JoystickButton(DRIVE_JOYSTICK, 1);
-        
+    public static final class Buttons{        
         public static final DoubleSupplier BUTTON_Y = new DoubleSupplier() {
             public double getAsDouble() {
                 double x = -BUTTON_JOYSTICK.getRawAxis(1);
@@ -78,13 +78,31 @@ public class RobotMap {
         }
 
         public static final Button INTAKE_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 2);
+        public static final Button EJECT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 10);
         public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 6);
         public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 5);
         public static final Button INTAKE_FLOAT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
         public static final Button INTAKE_SOFT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
 
+        public static final Button SHOOT_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 1);
         public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
         public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
+
+        public static final Trigger LOW_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
+            public boolean getAsBoolean() {
+                return LOW_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+            };
+        });
+        public static final Trigger HIGH_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
+            public boolean getAsBoolean() {
+                return HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+            };
+        });
+        public static final Trigger LIME_SHOOT_TRIGGER = new Trigger(new BooleanSupplier() {
+            public boolean getAsBoolean() {
+                return !LOW_GOAL_BUTTON.get() && !HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+            };
+        });
         
         public static final Button CLIMB_BACKWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 7);
         public static final Button CLIMB_FORWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 8);

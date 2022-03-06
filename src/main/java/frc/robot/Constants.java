@@ -81,6 +81,7 @@ public final class Constants {
         //for joy drive. Might keep it in, might not
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
+        //PID, motion control, feed forward values
         public static final double SHOOTER_kP = .00025;
         public static final double SHOOTER_kD = 0;
         public static final double SHOOTER_kS = 0.161;
@@ -91,7 +92,7 @@ public final class Constants {
         public static final double DRIVE_MAX_ACC = 20;
         public static final double DRIVE_CRUISE = 30;
 
-        public static final double DRIVE_POSITION_kP = 0.0005;
+        public static final double DRIVE_POSITION_kP = 0.00025;
         public static final double DRIVE_POSITION_kD = 0;
         public static final double DRIVE_POSITION_kS = 0.;
         public static final double DRIVE_POSITION_kV = 0.0;
@@ -124,14 +125,13 @@ public final class Constants {
     public static final class SetpointConstants{
         public static final double SHOOTER_SPEED_LOW = 1000;
         public static final double SHOOTER_SPEED_HIGH = 1000;
-        public static final double SHOOTER_PRECISISON = 10;
+        public static final double SHOOTER_PRECISISON = 30;
 
-
-        public static final double MAGAZINE_SPEED = 0.3;
-        public static final double MAGAZINE_INTAKE_SPEED = 0.75;
+        public static final double MAGAZINE_SPEED = 1.0;
+        public static final double MAGAZINE_INTAKE_SPEED = 0.6;
         public static final double MAGAZINE_PRECISION = 10;
-        public static final double MAGAZINE_BACKSPACE_DISTANCE = -0.2;
-        public static final double MAGAZINE_FEED_DISTANCE = 5;
+        public static final double MAGAZINE_BACKSPACE_DISTANCE = -0.05;
+        public static final double MAGAZINE_FEED_DISTANCE = 3;
 
         public static final double INTAKE_SPEED = 0.75;
 
@@ -146,14 +146,8 @@ public final class Constants {
     }
 
     public static final class LimeLightConstants{
-        public static final double GOAL_RELATIVE_HEIGHT_M = 2.5;
-        public static final double SHOOTER_ANGLE = Math.toRadians(0);
-        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(0);
-        public static final double BALL_MOMENT = 0;
-        public static final double BALL_MASS = 0;
-        public static final double BALL_RADIUS = 0;
-        public static final double WHEEL_RADIUS = 0;
-        public static final double WHEEL_MOMENT = 0;
-
+        public static final double GOAL_RELATIVE_HEIGHT_FEET = 5.91;
+        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(45);
+        public static final double LIME_FIXER_VALUE = 100.;
     }
 }
