@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Climb;
 
+/**
+ * Sets the PID values for the climb subsystem
+ */
 public class ClimbPidTune extends InstantCommand {
   private Climb climb;
   /** Creates a new ClimbPidTune. */
@@ -20,17 +23,19 @@ public class ClimbPidTune extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.setDefaultNumber("Climb PID Slot", 0);
     SmartDashboard.setDefaultNumber("Climb P", 0);
     SmartDashboard.setDefaultNumber("Climb D", 0);
     SmartDashboard.setDefaultNumber("Climb FF", 0);
     SmartDashboard.setDefaultNumber("Climb Max Acc", 0);
     SmartDashboard.setDefaultNumber("Climb Cruise Speed", 0);
+    int slot = (int)SmartDashboard.getNumber("Climb PID Slot", 0);
     double p = SmartDashboard.getNumber("Climb P", 0);
     double d = SmartDashboard.getNumber("Climb D", 0);
     double f = SmartDashboard.getNumber("Climb FF", 0);
     double a = SmartDashboard.getNumber("Climb Max Acc", 0);
     double v = SmartDashboard.getNumber("Climb Cruise Speed", 0);
     climb.setSmartMotionValues(a, v);
-    climb.setPDF(p, d, f);
+    climb.setPDFSlot(p, d, f, slot);
   }
 }
