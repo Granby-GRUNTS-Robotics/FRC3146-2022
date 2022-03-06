@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.subsystems.Climb;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**FULL CLIMB POG. As of 3/5/2022 is UNFINISHED */
 public class FullClimbNoStops extends StateCommand {
   /** Creates a new MoveToClimbState. */
   public static int climb_state;

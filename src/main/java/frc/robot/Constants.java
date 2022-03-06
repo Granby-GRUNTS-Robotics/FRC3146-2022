@@ -18,6 +18,7 @@ public final class Constants {
     public static int climb_state = 0;
     
     public static final class PneumaticConstants{
+        //PCM ID, solenoid ports
         public static final int PCM_ID = 2;
         public static final int INTAKE_UP_SOLENOID_PORT = 5;
         public static final int INTAKE_DOWN_SOLENOID_PORT = 4;
@@ -25,7 +26,7 @@ public final class Constants {
         public static final int ARM_HORI_SOLENOID_PORT = 3;
         public static final int RATCHET_SOLENOID_PORT = 0;
         public static final int CLAW_SOLENOID_PORT = 1;
-
+        //"double solenoids" have 4 permutations. Normal solenoids only have 2 states
         public static enum INTAKE_ENUM {UP, DOWN, FLOAT, SOFT};
         public static enum ARM_ENUM {HORIZONTAL, VERTICAL, FLOAT, BOTH};
         public static enum CLAW_ENUM {OPEN, CLOSED};
@@ -42,7 +43,7 @@ public final class Constants {
         public static final int SHOOTER_FOLLOW_SPARK_ID = 7;
         public static final double CLIMB_AMPS = -30;
 
-        //victors
+        //CTRE (victors and talons)
         public static final int CLIMB_LEAD_TALON_ID = 11;
         public static final int CLIMB_FOLLOW_VICTOR_ID = 10;
         public static final int INTAKE_VICTOR_ID = 12;
@@ -50,29 +51,34 @@ public final class Constants {
     }
 
     public static final class ControlConstants{
+
         public static final int DRIVE_CONTROLLER_PORT = 0;
         public static final int BUTTON_JOYSTICK_PORT = 1;
 
+        //sensors
         public static final int POTENTIOMETER_PORT = 0;
         public static final int PIGEON_IMU_ID = 1;
-
         public static final int MAGAZINE_LIMIT_SWITCH_PORT = 0;
+
+        //conversion factors
         public static final double CLIMB_ENCODER_TO_DISTANCE = (double) 10 / 16 * Math.PI / 8192; //8192 == counts per rotation. Will be different if we use potentiometer
         public static final double DRIVE_ENCODER_TO_DISTANCE = 6*Math.PI / 10.71; //encoder * DRIVE_ENCODER_TO_DISTANCE = wheel distance
         public static final double DRIVE_WIDTH = 21.5 ;//inches
 
+        //timings
         public static final double ARM_PISTON_HORIZONTAL_TIME = 2.0;
         public static final double ARM_PISTON_VERTICAL_TIME = 0.75;
         public static final double CLAW_PISTON_TIME = 0.3;
         public static final double RATCHET_PISTON_TIME = 0.2;
-
-        public static enum BIG_CLIMB_ENUM{PULLWITHPNEUMATICS, HOOK_EXTENDED, HOOK_RESTING, HOOK_RETRACTED, HOOK_MIDDLE, HOOK_CAPTURING, 
+        //eek
+        public static enum BIG_CLIMB_ENUM{PULLWITHPNEUMATICS, HOOK_EXTENDED, HOOK_RESTING, HOOK_RETRACTED, HOOK_SWING_UP, HOOK_CAPTURING, 
                                           ARM_HORIZONTAL, ARM_VERTICAL, ARM_FLOAT, ARM_BOTH, 
                                           CLAW_OPEN, CLAW_CLOSED, 
                                           RATCHET_RATCHETING, RACHET_FREE, FIRST
                                          };
-
         public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE, CAPTURING, FIRST};
+
+        //for joy drive. Might keep it in, might not
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
         public static final double SHOOTER_kP = .00025;
@@ -108,7 +114,8 @@ public final class Constants {
         public static final double HOOK_DOWN_kP = 0.1;
         public static final double HOOK_DOWN_kD = 0;
         public static final double HOOK_DOWN_kF = 0.335;
-
+        
+        //drivetrain control constants
         public static final double kTHROTTLE_MULTIPLIER = 30;
         public static final double kTWIST_MULTIPLIER = 20;
         public static final double WHEEL_DIAMETER = 5.9; // approx in inches

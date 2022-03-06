@@ -18,6 +18,8 @@ import frc.robot.Constants.ControlConstants;
 public class Drivetrain extends SubsystemBase {
   
   private static final PigeonIMU PIGEON = RobotMap.PIGEON;
+
+  //for auto movement and error detection. Because APPARENTLY there is no reason for us to ever need to get the closed-loop error of our systems. That could never happen
   private double goal_position;
   private double goal_angle;
   
@@ -43,22 +45,26 @@ public class Drivetrain extends SubsystemBase {
     LEFT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * Math.PI * ControlConstants.WHEEL_DIAMETER); 
     RIGHT_DRIVE_ENCODER.setPositionConversionFactor(1/10.71 * Math.PI * ControlConstants.WHEEL_DIAMETER);
 
+    //only have to invert drive spark maxes, you set the followers' inversions relative to their leaders
     LEFT_DRIVE_SPARK_MAX.setInverted(false);
     RIGHT_DRIVE_SPARK_MAX.setInverted(true);
-
+    //see, I told you sos
     LEFT_FOLLOW_SPARK_MAX.follow(LEFT_DRIVE_SPARK_MAX, false);
     RIGHT_FOLLOW_SPARK_MAX.follow(RIGHT_DRIVE_SPARK_MAX, false);
 
+    //Spark Maxes are put on 40 amp breakers, but lets all be honest, if we end up drawing 40 amps on them then something is definitely wrong
     RIGHT_DRIVE_SPARK_MAX.setSmartCurrentLimit(40);
     LEFT_DRIVE_SPARK_MAX.setSmartCurrentLimit(40);
     RIGHT_FOLLOW_SPARK_MAX.setSmartCurrentLimit(40);
     LEFT_FOLLOW_SPARK_MAX.setSmartCurrentLimit(40);
 
+    //not really necessary, because all encoder work should be done relatively, but it's just a nice peace of mind thing
     LEFT_DRIVE_ENCODER.setPosition(0);
     RIGHT_DRIVE_ENCODER.setPosition(0);
     LEFT_FOLLOW_ENCODER.setPosition(0);
     RIGHT_FOLLOW_ENCODER.setPosition(0);
 
+    //different PID slots for velocity-based and position-based control. Ironically, the trapezoidal motion control for linear movement uses velocity-based control, so we really only need position-based PID for turning
     LEFT_CONTROLLER.setP(ControlConstants.DRIVE_VELOCITY_kP, 0);
     LEFT_CONTROLLER.setD(ControlConstants.DRIVE_VELOCITY_kD, 0);
     LEFT_CONTROLLER.setFF(ControlConstants.DRIVE_VELOCITY_kV, 0);
@@ -72,12 +78,18 @@ public class Drivetrain extends SubsystemBase {
     RIGHT_CONTROLLER.setP(ControlConstants.DRIVE_POSITION_kP, 1);
     RIGHT_CONTROLLER.setD(ControlConstants.DRIVE_POSITION_kD, 1);
     RIGHT_CONTROLLER.setFF(ControlConstants.DRIVE_POSITION_kV, 1);
+
+    //for trapezoidal motion following
     LEFT_CONTROLLER.setSmartMotionMaxAccel(ControlConstants.DRIVE_MAX_ACC, 0);
     LEFT_CONTROLLER.setSmartMotionMaxVelocity(ControlConstants.DRIVE_CRUISE, 0);
     RIGHT_CONTROLLER.setSmartMotionMaxAccel(ControlConstants.DRIVE_MAX_ACC, 0);
     RIGHT_CONTROLLER.setSmartMotionMaxVelocity(ControlConstants.DRIVE_CRUISE, 0);
 
+    //same as resetting encoders. Doesn't do anything, everything is done relatively, but it's still nice to have.
     PIGEON.setFusedHeading(0);
+
+    //default to brake for autonomous
+    setBrakeMode(IdleMode.kBrake);
   }
 
   @Override
@@ -116,6 +128,7 @@ public class Drivetrain extends SubsystemBase {
 
   /**
    * Moves the robot to a set position using a trapezoidal motion curve
+   * relative, not absolute
    * @param left the goal position of the left side of the robot, in inches
    * @param right the goal position of the right side of the robot, in inches
    */

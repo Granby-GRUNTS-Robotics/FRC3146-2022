@@ -76,7 +76,7 @@ public class Shooter extends SubsystemBase {
   }
 
   /**
-   * sets
+   * sets the lead spark max to zero volts. Will take time to spin down, as the wheel is in coast mode
    */
   public void brake(){
     SHOOTER_LEAD_SPARK_MAX.setVoltage(0);

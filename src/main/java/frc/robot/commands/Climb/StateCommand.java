@@ -16,9 +16,7 @@ import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
 import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
 import frc.robot.subsystems.Climb;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**moves climb to given BIG_CLIMB_ENUM state */
 public class StateCommand extends CommandBase {
   /** Creates a new StateCommandBase. */
   private Climb climb;

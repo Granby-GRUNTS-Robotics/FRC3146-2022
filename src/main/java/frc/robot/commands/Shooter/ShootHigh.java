@@ -7,7 +7,7 @@ package frc.robot.commands.Shooter;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
-/** Add your docs here. */
+/** high shot */
 public class ShootHigh extends ShootBase {
 
     public ShootHigh(Magazine magazine, Shooter shooter)  {

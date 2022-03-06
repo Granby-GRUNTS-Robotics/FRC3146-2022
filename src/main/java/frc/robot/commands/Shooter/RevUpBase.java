@@ -7,7 +7,7 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Shooter;
-
+/**base class for revving up the flywheel.*/
 public class RevUpBase extends CommandBase {
   /** Creates a new ShooterSpeedBase. */
 

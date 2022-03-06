@@ -7,7 +7,7 @@ package frc.robot.commands.Intake;
 import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 import frc.robot.subsystems.Intake;
 
-/** Add your docs here. */
+/** Intake Down*/
 public class MoveIntakeDown extends MoveIntakeBase{
     public MoveIntakeDown(Intake intake){
         super(intake);

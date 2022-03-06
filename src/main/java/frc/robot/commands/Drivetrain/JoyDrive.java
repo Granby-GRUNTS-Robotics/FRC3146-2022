@@ -12,7 +12,7 @@ import frc.robot.RobotMap;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.ControlConstants.MODE_ENUM;
 import frc.robot.subsystems.Drivetrain;
-
+/**drive with joystick */
 public class JoyDrive extends CommandBase {
   
   SendableChooser<MODE_ENUM> modechooser = new SendableChooser<MODE_ENUM>();

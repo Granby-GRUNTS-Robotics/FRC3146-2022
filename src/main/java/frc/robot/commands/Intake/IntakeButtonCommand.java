@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 import frc.robot.subsystems.Intake;
-
+/**turns intake on. When finished, turns intake off.
+ * Also moves pneumatics down hard and then soft
+ */
 public class IntakeButtonCommand extends CommandBase {
   /** Creates a new IntakeButtonCommand. */
   private Intake intake;

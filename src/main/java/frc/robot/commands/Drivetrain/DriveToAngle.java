@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
+/**drives to set angle. Uses Pigeon for feedback */
 public class DriveToAngle extends CommandBase {
   private Drivetrain drivetrain;
   protected double angle;

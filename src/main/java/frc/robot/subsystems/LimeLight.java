@@ -17,8 +17,16 @@ public class LimeLight extends SubsystemBase {
   public LimeLight() {
     ledMode.setNumber(1);
     SmartDashboard.putNumber("Flywheel Speed Multiplier", 0.0);
+    //start by turning off the LEDs. We don't want to be blinding people if we can at all help it
   }
 
+  /**
+   * network tables for limelight
+   * tx is x position of target
+   * ty is y position of target
+   * ta is area of target
+   * ledMode controls LED's on or off. 1 is off, 3 is on
+   */
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-granby");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
@@ -26,6 +34,7 @@ public class LimeLight extends SubsystemBase {
   NetworkTableEntry tv = table.getEntry("tv");
   NetworkTableEntry ledMode = table.getEntry("ledMode");
   private double flyWheelFixer = 1.1;
+  //variables until tuned, then will become constants
 
   /**
    * 

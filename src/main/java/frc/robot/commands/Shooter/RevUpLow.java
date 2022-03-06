@@ -6,7 +6,7 @@ package frc.robot.commands.Shooter;
 
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Shooter;
-
+/**low shot */
 public class RevUpLow extends RevUpBase {
 
   /** Creates a new SetShooterSpeed. */

@@ -7,7 +7,7 @@ package frc.robot.commands.Shooter;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
-/** Add your docs here. */
+/** shoots based on shuffleboard value. great for testing, probably shouldn't be used in competition */
 public class ShootShuffleBoard extends ShootBase{
     public ShootShuffleBoard(Magazine magazine, Shooter shooter){
         super(magazine, shooter, new RevUpShuffleboard(shooter, true));

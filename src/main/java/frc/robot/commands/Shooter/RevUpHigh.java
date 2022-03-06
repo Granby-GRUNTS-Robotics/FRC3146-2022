@@ -7,7 +7,7 @@ package frc.robot.commands.Shooter;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Shooter;
 
-/** Add your docs here. */
+/** high shot */
 public class RevUpHigh extends RevUpBase {
 
     public RevUpHigh(Shooter shooter) {

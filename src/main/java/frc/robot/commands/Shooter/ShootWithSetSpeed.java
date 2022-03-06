@@ -7,7 +7,7 @@ package frc.robot.commands.Shooter;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
-/** Add your docs here. */
+/** Shoots with arbitrary given speed. Great for repeatable auto shots */
 public class ShootWithSetSpeed extends ShootBase{
     public ShootWithSetSpeed(Magazine magazine, Shooter shooter, double speed){
         super(magazine, shooter, new RevUpSet(shooter, speed));

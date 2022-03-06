@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
 public class ClimbSetMove extends CommandBase {
-  /** Creates a new ClimbSetVelocity. */
   private Climb climb;
+  /** Creates a new ClimbSetVelocity. */
   public ClimbSetMove(Climb climb) {
     this.climb = climb;
     addRequirements(climb);

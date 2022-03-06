@@ -6,7 +6,7 @@ package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Shooter;
-
+/**for testing only. Revs up based on values on the shuffleboard */
 public class RevUpShuffleboard extends RevUpBase {
   /** Creates a new ShooterSpeedBase. */
 

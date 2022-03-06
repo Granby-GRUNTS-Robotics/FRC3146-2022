@@ -9,9 +9,7 @@ import frc.robot.commands.Magazine.Feed;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**base for shooting. Backspaces, revs up(the thing that will change), feeds, and then brakes the shooter (except it doesn't really do that, because the shooter motor is in coast mode) */
 public class ShootBase extends SequentialCommandGroup {
   /** Creates a new ShootBase. */
   public ShootBase(Magazine magazine, Shooter shooter, RevUpBase speedBase) {

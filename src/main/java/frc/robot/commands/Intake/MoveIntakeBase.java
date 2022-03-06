@@ -8,10 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 import frc.robot.subsystems.Intake;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-/**need to define INTAKE_ENUM pos variable in order to work properly */
+/**intake solenoid base class */
 public class MoveIntakeBase extends InstantCommand {
   private Intake intake;
   protected INTAKE_ENUM pos;

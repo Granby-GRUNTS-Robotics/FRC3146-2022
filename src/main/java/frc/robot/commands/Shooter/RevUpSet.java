@@ -5,7 +5,7 @@
 package frc.robot.commands.Shooter;
 
 import frc.robot.subsystems.Shooter;
-
+/**revs up with arbitrarily defined speed. Great for repeatable auto shots */
 public class RevUpSet extends RevUpBase {
   /** Creates a new SetShooterSpeed. */
   public RevUpSet(Shooter shooter, double speed) {

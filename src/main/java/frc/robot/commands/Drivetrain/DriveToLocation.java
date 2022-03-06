@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
+/**drives to a set distance */
 public class DriveToLocation extends CommandBase {
   private Drivetrain drivetrain;
   private double distance;

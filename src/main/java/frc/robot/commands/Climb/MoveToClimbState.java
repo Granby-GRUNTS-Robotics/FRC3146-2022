@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.subsystems.Climb;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**list of climb states. We will determine where brakes are necessary (hopefully nowhere) and then add that to FullClimbNoStops (which should really be called FullClimbLessStops) */
 public class MoveToClimbState extends StateCommand {
   /** Creates a new MoveToClimbState. */
   public static int climb_state;

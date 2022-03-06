@@ -12,9 +12,7 @@ import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**turns on limelight, finds good target, and then turns and shoots */
 public class LimeTurnAndShoot extends SequentialCommandGroup {
   /** Creates a new LimeTurnAndShoot. */
   public LimeTurnAndShoot(Drivetrain drivetrain, LimeLight limeLight, Shooter shooter, Magazine magazine) {

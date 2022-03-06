@@ -7,7 +7,7 @@ package frc.robot.commands.Shooter;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Shooter;
 
-/** Add your docs here. */
+/** rev up based on the distance to the goal. Calculated using the angle of the goal on the limelight */
 public class RevUpLime extends RevUpBase{
     public RevUpLime(Shooter shooter, LimeLight limeLight){
         super(shooter);

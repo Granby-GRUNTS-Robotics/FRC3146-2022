@@ -6,7 +6,7 @@ package frc.robot.commands.Magazine;
 
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Magazine;
-
+/**feed for shooting balls. stil need to decrease feed distance */
 public class Feed extends MagMoveBase {
   /** Creates a new BackSpace. */
   public Feed(Magazine magazine) {

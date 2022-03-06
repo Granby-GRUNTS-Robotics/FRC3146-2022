@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Magazine;
 
+/**moves magazine in, command ends when switch is triggered */
 public class MagIntake extends CommandBase {
 
   Magazine magazine;

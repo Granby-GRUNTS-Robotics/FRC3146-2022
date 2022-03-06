@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Magazine;
-
+/**base class for manually moving the magazine
+ * implemented by the feed and backspace commands
+ */
 public class MagMoveBase extends CommandBase {
   private final Magazine magazine;
   protected double movement_time = 0;

@@ -6,7 +6,7 @@ package frc.robot.commands.Intake;
 
 import frc.robot.subsystems.Intake;
 
-/** Add your docs here. */
+/** turns off the intake */
 public class IntakeOff extends IntakeSpeedBase{
     public IntakeOff(Intake intake){
         super(intake);

@@ -22,6 +22,7 @@ public class Intake extends SubsystemBase {
   
   /** Creates a new Intake and sets inversion */
   public Intake() {
+    //positive percent brings motors toward the shooter
     INTAKE_VICTOR.setInverted(false);
   }
 
