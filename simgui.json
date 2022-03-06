@@ -5,6 +5,18 @@
         "visible": true
       }
     },
+    "Other Devices": {
+      "SPARK MAX [3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [8]": {
+        "header": {
+          "open": true
+        }
+      }
+    },
     "Solenoids": {
       "2": {
         "header": {
@@ -45,10 +57,14 @@
       "/SmartDashboard/Intake Float": "Command",
       "/SmartDashboard/Intake Soft": "Command",
       "/SmartDashboard/Intake Up": "Command",
+      "/SmartDashboard/Lime On": "Command",
+      "/SmartDashboard/Lime Set Speed": "Command",
+      "/SmartDashboard/Lime Turn": "Command",
       "/SmartDashboard/Manual Intake": "Command",
       "/SmartDashboard/Manual Magazine Move": "Command",
       "/SmartDashboard/Manual Shooter Speed": "Command",
       "/SmartDashboard/ManualClimbMotor (Joystick-Controlled)": "Command",
+      "/SmartDashboard/Move To Climb State": "Command",
       "/SmartDashboard/Ratchet Engaged": "Command",
       "/SmartDashboard/Ratchet Free": "Command",
       "/SmartDashboard/Shooter PID Set": "Command",
