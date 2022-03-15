@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -35,6 +37,8 @@ public class Shooter extends SubsystemBase {
     NetworkTable shootTable = inst.getTable("shoot");
     shooterSpeedEntry = shootTable.getEntry("Shooter Speed");
 
+    SHOOTER_LEAD_ENCODER.setVelocityConversionFactor(1);
+
     SHOOTER_LEAD_SPARK_MAX.setInverted(false);
     SHOOTER_FOLLOW_SPARK_MAX.setInverted(false);
 
@@ -46,18 +50,18 @@ public class Shooter extends SubsystemBase {
     SHOOTER_LEAD_ENCODER.setPosition(0);
     SHOOTER_FOLLOW_ENCODER.setPosition(0);
     
-    SHOOTER_LEAD_CONTROLLER.setP(ControlConstants.SHOOTER_kP);
-    SHOOTER_LEAD_CONTROLLER.setI(0);
-    SHOOTER_LEAD_CONTROLLER.setD(ControlConstants.SHOOTER_kD);
-    SHOOTER_LEAD_CONTROLLER.setFF(ControlConstants.SHOOTER_kV);
+    SHOOTER_LEAD_CONTROLLER.setP(ControlConstants.SHOOTER_kP, 0);
+    SHOOTER_LEAD_CONTROLLER.setI(0 , 0);
+    SHOOTER_LEAD_CONTROLLER.setD(ControlConstants.SHOOTER_kD , 0);
+    SHOOTER_LEAD_CONTROLLER.setFF(ControlConstants.SHOOTER_kV, 0);
   }
   /**
    * 
    * @param speed the speed in RPM of the flywheel
    */
   public void setSpeed(double speed){
-    goal_speed = speed / 1.25;
-    SHOOTER_LEAD_CONTROLLER.setReference(goal_speed, CANSparkMax.ControlType.kVelocity);
+    goal_speed = speed;
+    SHOOTER_LEAD_CONTROLLER.setReference(goal_speed, ControlType.kVelocity, 0);
   }
   /**
    * 
@@ -85,12 +89,15 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     
     // This method will be called once per scheduler run
-    shooterSpeedEntry.setDouble(getSpeed()*1.25);
+    shooterSpeedEntry.setDouble(getSpeed());
   }
 
   /**FOR TESTING USE ONLY */
-  public void setPDF(double p, double d, double f){
+  public void setPDF(double p, double i, double d, double f, double iMaxAccum){
     SHOOTER_LEAD_CONTROLLER.setP(p, 0);
+    SHOOTER_LEAD_CONTROLLER.setI(i, 0);
+    SHOOTER_LEAD_CONTROLLER.setSmartMotionMaxVelocity(iMaxAccum, 0);
+    SHOOTER_LEAD_CONTROLLER.setSmartMotionAccelStrategy(AccelStrategy.kSCurve, 0);
     SHOOTER_LEAD_CONTROLLER.setD(d, 0);
     SHOOTER_LEAD_CONTROLLER.setFF(f, 0);
   }

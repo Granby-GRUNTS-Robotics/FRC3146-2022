@@ -28,8 +28,18 @@ public class RevUpShuffleboard extends RevUpBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.setDefaultNumber("Target Speed", 0);
-    speed = SmartDashboard.getNumber("Target Speed", 0);
+    SmartDashboard.setDefaultNumber("Target Shooter Speed", 0);
+    speed = SmartDashboard.getNumber("Target Shooter Speed", 0);
     super.initialize();
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+      shooter.brake();
+  }
+
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }

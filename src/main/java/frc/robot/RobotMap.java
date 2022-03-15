@@ -72,8 +72,8 @@ public class RobotMap {
             };
         };
 
-        public static double getWithDeadZone(double value){
-                if (Math.abs(value) < 0.05) value = 0; else value = (Math.abs(value) - 0.05) * (1.0/0.95) * Math.signum(value);
+        public static double getWithDeadZone(double value, double threshold){
+                if (Math.abs(value) < threshold) value = 0; else value = (Math.abs(value) - threshold) * (1.0/0.95) * Math.signum(value);
                 return value;
         }
 

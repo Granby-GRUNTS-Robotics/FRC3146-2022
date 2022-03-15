@@ -5,6 +5,7 @@
 package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Drivetrain.DriveToAngle;
 import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOff;
@@ -19,22 +20,13 @@ import frc.robot.subsystems.Shooter;
 /**
  * very basic autonomous routine starting from initiation zone, moving forwards to collect ball and shooting towards target
  */
-public class AutoFromLine extends SequentialCommandGroup {
+public class AutoWithTurn extends SequentialCommandGroup {
   /** Creates a new AutoFromLine. 
    * very basic autonomous routine starting from initiation zone, moving forwards to collect ball and shooting towards target
   */
-  public AutoFromLine(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
+  public AutoWithTurn(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new ShootWithSetSpeed(magazine, shooter, 4200), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
-  }
-
-  /** Creates a new AutoFromLine. 
-   *  very basic autonomous routine starting from initiation zone, moving forwards to collect ball and shooting towards target, with set distance and flywheel speed values
-  */
-  public AutoFromLine(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter, double distance, double flywheel_speed) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, distance), new ShootWithSetSpeed(magazine, shooter, flywheel_speed));
+    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new DriveToAngle(drivetrain, 20), new ShootWithSetSpeed(magazine, shooter, 4200), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
   }
 }

@@ -33,6 +33,7 @@ public class JoyDrive extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.setDefaultNumber("throttle", ControlConstants.kTHROTTLE_MULTIPLIER);
+    SmartDashboard.setDefaultNumber("thresh", 0.08);
     SmartDashboard.setDefaultNumber("twist", ControlConstants.kTWIST_MULTIPLIER);
     SmartDashboard.setDefaultNumber("slowmodehigh", 0.75);
     SmartDashboard.setDefaultNumber("slowmodelow", 0.5);
@@ -41,6 +42,8 @@ public class JoyDrive extends CommandBase {
     modechooser.addOption("twist", MODE_ENUM.TWIST);
     modechooser.addOption("throttle", MODE_ENUM.THROTTLE);
     drive.setBrakeMode(IdleMode.kCoast);
+
+    drive.setPIDF(0, 0, ControlConstants.DRIVE_VELOCITY_kV, 0);
   }
   private double reversed = 1;
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,8 +55,9 @@ public class JoyDrive extends CommandBase {
     SmartDashboard.putData("slowmode chooser" , modechooser);
     
     //for tuning
-    double throttle = reversed * RobotMap.Buttons.getWithDeadZone(-joy.getY());
-    double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist());
+    double thresh = SmartDashboard.getNumber("thresh", 0.08);
+    double throttle = reversed * RobotMap.Buttons.getWithDeadZone(-joy.getY(),thresh);
+    double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist(), thresh);
     double throttleMult = SmartDashboard.getNumber("throttle", ControlConstants.kTHROTTLE_MULTIPLIER);
     double twistMult = SmartDashboard.getNumber("twist", ControlConstants.kTWIST_MULTIPLIER);
     double slowmodehi = SmartDashboard.getNumber("slowmodehigh", 0.75);
@@ -68,8 +72,9 @@ public class JoyDrive extends CommandBase {
     if (mode == MODE_ENUM.BOTH || mode == MODE_ENUM.THROTTLE) throttleMult = throttleMult * ((joy.getRawButton(2)) ? slowfinal : 1);
     double left = throttle*throttleMult + twist*twistMult;
     double right = throttle*throttleMult - twist*twistMult;
-
+    if(left !=0 && right !=0){
     drive.setSpeeds(left, right);
+    }else drive.brake();
   }
 
   // Called once the command ends or is interrupted.

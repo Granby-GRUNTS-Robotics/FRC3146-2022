@@ -89,36 +89,36 @@ public final class Constants {
 
         public static final double DRIVE_ARB_FF = -0.15;
 
-        public static final double DRIVE_MAX_ACC = 20;
-        public static final double DRIVE_CRUISE = 30;
+        public static final double DRIVE_MAX_ACC = 30;
+        public static final double DRIVE_CRUISE = 50;
 
-        public static final double DRIVE_POSITION_kP = 0.00025;
-        public static final double DRIVE_POSITION_kD = 0;
+        public static final double DRIVE_POSITION_kP = 0.06;
+        public static final double DRIVE_POSITION_kD = 0.0007;
         public static final double DRIVE_POSITION_kS = 0.;
         public static final double DRIVE_POSITION_kV = 0.0;
 
-        public static final double DRIVE_VELOCITY_kP = 0.003;
-        public static final double DRIVE_VELOCITY_kD = 0;
+        public static final double DRIVE_VELOCITY_kP = 0.03;
+        public static final double DRIVE_VELOCITY_kD = 0.0003;
         public static final double DRIVE_VELOCITY_kV = 0.0062;
 
         public static final double CLIMB_UP_ARB_FF = 0;
         public static final double CLIMB_DOWN_ARB_FF = 12;
 
-        public static final double CLIMB_MAX_ACC = 8;
-        public static final double CLIMB_CRUISE = 16
+        public static final double CLIMB_MAX_ACC = 20;
+        public static final double CLIMB_CRUISE = 40
         ;
         
-        public static final double HOOK_UP_kP = 0.1;
+        public static final double HOOK_UP_kP = 0.05;
         public static final double HOOK_UP_kD = 0;
-        public static final double HOOK_UP_kF = 0.3;
+        public static final double HOOK_UP_kF = 0.165;
         
-        public static final double HOOK_DOWN_kP = 0.1;
+        public static final double HOOK_DOWN_kP = 0.005;
         public static final double HOOK_DOWN_kD = 0;
-        public static final double HOOK_DOWN_kF = 0.335;
+        public static final double HOOK_DOWN_kF = 0.27;
         
         //drivetrain control constants
-        public static final double kTHROTTLE_MULTIPLIER = 30;
-        public static final double kTWIST_MULTIPLIER = 20;
+        public static final double kTHROTTLE_MULTIPLIER = 100;
+        public static final double kTWIST_MULTIPLIER = 40;
         public static final double WHEEL_DIAMETER = 5.9; // approx in inches
     }
 
@@ -131,18 +131,18 @@ public final class Constants {
         public static final double MAGAZINE_INTAKE_SPEED = 0.6;
         public static final double MAGAZINE_PRECISION = 10;
         public static final double MAGAZINE_BACKSPACE_DISTANCE = -0.05;
-        public static final double MAGAZINE_FEED_DISTANCE = 3;
+        public static final double MAGAZINE_FEED_DISTANCE = 1.5;
 
         public static final double INTAKE_SPEED = 0.75;
 
         public static final double HOOK_EXTENDED = 27.5;
-        public static final double HOOK_FIRST_BAR = 23;
+        public static final double HOOK_FIRST_BAR = 22;
         public static final double HOOK_RETRACTED = 2;
         public static final double HOOK_MIDDLE = 7;
         public static final double HOOK_RESTING = 25.4;
         public static final double HOOK_CAPTURING = -1.25;
 
-        public static final double HOOK_PRECISON = 0.5;
+        public static final double HOOK_PRECISON = 0.1;
     }
 
     public static final class LimeLightConstants{

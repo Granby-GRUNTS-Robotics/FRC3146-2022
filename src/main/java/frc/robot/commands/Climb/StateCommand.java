@@ -114,7 +114,7 @@ public class StateCommand extends CommandBase {
         setHook(HOOK_ENUM.FIRST);
       break;
         case PULLWITHPNEUMATICS:
-        timeGoalify(1.5);
+        climb.setArm(ARM_ENUM.FLOAT);
         setHook(HOOK_ENUM.CAPTURING);
       break;
         case HOOK_EXTENDED:
@@ -199,18 +199,10 @@ public class StateCommand extends CommandBase {
 
     
     if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.HOOK_RETRACTED || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
-      try {
-        climb.switchPID();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      
     }
     if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
-      
-      if (climb.getPosition() < SetpointConstants.HOOK_RESTING - 5.){
-        climb.setArm(ARM_ENUM.HORIZONTAL);
-      }
-      if (passedTimeGoal()){
+      if (climb.getPosition() > 15.0){
         climb.setClaw(CLAW_ENUM.OPEN);
         climb.setArm(ARM_ENUM.VERTICAL);
       }

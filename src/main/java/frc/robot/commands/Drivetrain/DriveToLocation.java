@@ -39,11 +39,13 @@ public class DriveToLocation extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    drivetrain.brake();;
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(drivetrain.getLinearError()) < 1.0;
+    return Math.abs(drivetrain.getLinearError()) < 0.5;
   }
 }

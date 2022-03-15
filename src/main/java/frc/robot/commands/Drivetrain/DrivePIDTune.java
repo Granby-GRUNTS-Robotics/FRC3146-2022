@@ -30,7 +30,7 @@ public class DrivePIDTune extends InstantCommand {
     double f = SmartDashboard.getNumber("Drivetrain FF", 0);
     double a = SmartDashboard.getNumber("Drivetrain Max Acc", 0);
     double v = SmartDashboard.getNumber("Drivetrain Cruise Speed", 0);
-    drivetrain.setSmartMotionValues(a, v);
-    drivetrain.setPIDF(p, d, f);
+    //drivetrain.setSmartMotionValues(a, v);
+    drivetrain.setPIDF(p, d, f, 1);
   }
 }

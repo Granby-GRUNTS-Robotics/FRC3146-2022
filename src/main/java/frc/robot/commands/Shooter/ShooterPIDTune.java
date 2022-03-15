@@ -21,11 +21,15 @@ public class ShooterPIDTune extends InstantCommand {
   @Override
   public void initialize() {
     SmartDashboard.setDefaultNumber("Shooter P", 0);
+    SmartDashboard.setDefaultNumber("Shooter I", 0);
     SmartDashboard.setDefaultNumber("Shooter D", 0);
     SmartDashboard.setDefaultNumber("Shooter FF", 0);
+    SmartDashboard.setDefaultNumber("Shooter I Max", 0);
     double p = SmartDashboard.getNumber("Shooter P", 0);
+    double i = SmartDashboard.getNumber("Shooter I", 0);
     double d = SmartDashboard.getNumber("Shooter D", 0);
     double f = SmartDashboard.getNumber("Shooter FF", 0);
-    shooter.setPDF(p, d, f);
+    double imax = SmartDashboard.getNumber("Shooter I Max", 0);
+    shooter.setPDF(p, i, d, f, imax);
   }
 }

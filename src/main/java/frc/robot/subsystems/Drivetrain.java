@@ -141,6 +141,11 @@ public class Drivetrain extends SubsystemBase {
     return angle / 360 * ControlConstants.DRIVE_WIDTH * Math.PI;
   }
 
+  public void brake(){
+    LEFT_DRIVE_SPARK_MAX.set(0);
+    RIGHT_DRIVE_SPARK_MAX.set(0);
+  }
+
   /**
    * Moves the robot to a set position using a trapezoidal motion curve
    * relative, not absolute
@@ -150,7 +155,7 @@ public class Drivetrain extends SubsystemBase {
   public void setGoalPositionsTrapezoid(double left, double right){
     LEFT_CONTROLLER.setReference(left + getLeftPosition(), ControlType.kSmartMotion, 0);
     RIGHT_CONTROLLER.setReference(right + getRightPosition(), ControlType.kSmartMotion, 0);
-    goal_position = left;
+    goal_position = left + getLeftPosition();
   }
 
   public void setGoalPositionsRelative(double left, double right){
@@ -220,13 +225,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**FOR TESTING USE ONLY */
-  public void setPIDF(double p, double d, double f){
-    LEFT_CONTROLLER.setP(p, 0);
-    LEFT_CONTROLLER.setD(d, 0);
-    LEFT_CONTROLLER.setFF(f, 0);
-    RIGHT_CONTROLLER.setP(p, 0);
-    RIGHT_CONTROLLER.setD(d, 0);
-    RIGHT_CONTROLLER.setFF(f, 0);
+  public void setPIDF(double p, double d, double f, int port){
+    LEFT_CONTROLLER.setP(p, port);
+    LEFT_CONTROLLER.setD(d, port);
+    LEFT_CONTROLLER.setFF(f, port);
+    RIGHT_CONTROLLER.setP(p, port);
+    RIGHT_CONTROLLER.setD(d, port);
+    RIGHT_CONTROLLER.setFF(f, port);
   }
 
 public void setSmartMotionValues(double cruise_speed, double max_acceleration) {

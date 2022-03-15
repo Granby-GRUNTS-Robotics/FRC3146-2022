@@ -20,7 +20,7 @@ public class LimeTurn extends DriveToAngle {
     }
     @Override
     public void initialize() {
-        angle = limeLight.getX();
+        angle = -limeLight.getX();
         super.initialize();
     }
 }

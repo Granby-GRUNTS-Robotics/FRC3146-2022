@@ -35,6 +35,7 @@ public class LimeTurnOn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return limeLight.hasTarget();
+    return true;
+    //limeLight.hasTarget();
   }
 }

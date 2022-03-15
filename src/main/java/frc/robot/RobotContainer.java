@@ -4,16 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.RobotMap.Buttons;
 import frc.robot.commands.LimeTurnAndShoot;
 import frc.robot.commands.LimeTurnOff;
 import frc.robot.commands.LimeTurnOn;
 import frc.robot.commands.Autonomous.AutoFromLine;
+import frc.robot.commands.Autonomous.AutoWithTurn;
 import frc.robot.commands.Climb.ClimbPidTune;
 import frc.robot.commands.Climb.ClimbSetMove;
 import frc.robot.commands.Climb.ClimbSetSpeed;
@@ -22,6 +26,7 @@ import frc.robot.commands.Climb.DecrementClimbState;
 import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
 import frc.robot.commands.Climb.MoveToClimbState;
+import frc.robot.commands.Climb.PIDSlotSwitch;
 import frc.robot.commands.Climb.StateCommand;
 import frc.robot.commands.Drivetrain.DrivePIDTune;
 import frc.robot.commands.Drivetrain.DriveToAngle;
@@ -35,7 +40,6 @@ import frc.robot.commands.Intake.MoveIntakeFloat;
 import frc.robot.commands.Intake.MoveIntakeSoft;
 import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Magazine.MagIntake;
-import frc.robot.commands.Magazine.MagIntakeBraker;
 import frc.robot.commands.Magazine.MagMoveBase;
 import frc.robot.commands.Magazine.MagazineOut;
 import frc.robot.commands.Shooter.RevUpShuffleboard;
@@ -65,15 +69,27 @@ public class RobotContainer {
   private static final Drivetrain M_DRIVETRAIN = new Drivetrain();
   private static final LimeLight M_LIME_LIGHT = new LimeLight();
   private static final Magazine M_MAGAZINE = new Magazine();
+  private static final SendableChooser<Command> auto_chooser = new SendableChooser<Command>();
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    SmartDashboard.putData("Climb",M_CLIMB);
+    CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(1);
+
+    auto_chooser.addOption("Line", new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
+    auto_chooser.addOption("Turn", new AutoWithTurn(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
+    SmartDashboard.putData(auto_chooser);
+    SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
+    SmartDashboard.putData("Reset Climb Encoder", new InstantCommand(()->M_CLIMB.resetEncoder(), M_CLIMB));
+    /*
     SmartDashboard.putData("ManualClimbMotor (Joystick-Controlled)", new ManualClimbMotor(M_CLIMB, Buttons.BUTTON_Y));
     SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
     SmartDashboard.putData("Climb Set Move", new ClimbSetMove(M_CLIMB));
     SmartDashboard.putData("Climb Set Speed", new ClimbSetSpeed(M_CLIMB));
     SmartDashboard.putData("Climb Set Voltage", new ClimbSetVoltage(M_CLIMB));
+    SmartDashboard.putData("Climb Set PID Port", new PIDSlotSwitch(M_CLIMB));
+    
 
     SmartDashboard.putData("Arm Horizontal", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_HORIZONTAL));
     SmartDashboard.putData("Arm Vertical", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_VERTICAL));
@@ -87,24 +103,29 @@ public class RobotContainer {
     SmartDashboard.putData("Drive to Location", new DriveToLocation(M_DRIVETRAIN, 24));
     SmartDashboard.putData("Turn 90 Degrees", new DriveToAngle(M_DRIVETRAIN, 90));
 
-    SmartDashboard.putData("LimeLED On", new LimeTurnOn(M_LIME_LIGHT));
+    
     SmartDashboard.putData("Lime Turn", new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
     SmartDashboard.putData("Lime Set Speed Shoot", new ShootLime(M_MAGAZINE, M_SHOOTER, M_LIME_LIGHT));
-    SmartDashboard.putData("LimeLED Off", new LimeTurnOff(M_LIME_LIGHT));
     
-    SmartDashboard.putData("Manual Shooter Speed", new RevUpShuffleboard(M_SHOOTER));
-    SmartDashboard.putData("Shooter PID Set", new ShooterPIDTune(M_SHOOTER));
+    
+    
+    
     SmartDashboard.putData("Manual Magazine Move", new MagMoveBase(M_MAGAZINE));
 
     SmartDashboard.putData("Intake Down", new MoveIntakeDown(M_INTAKE));
     SmartDashboard.putData("Intake Up", new MoveIntakeUp(M_INTAKE));
     SmartDashboard.putData("Intake Soft", new MoveIntakeSoft(M_INTAKE));
     SmartDashboard.putData("Intake Float", new MoveIntakeFloat(M_INTAKE));
+    */
 
     SmartDashboard.putData("Move To Climb State", new MoveToClimbState(M_CLIMB));
 
     SmartDashboard.putData("Increment Climb", new IncrementClimbState(M_CLIMB));
-    
+
+    SmartDashboard.putData("LimeLED On", new LimeTurnOn(M_LIME_LIGHT));
+    SmartDashboard.putData("LimeLED Off", new LimeTurnOff(M_LIME_LIGHT));
+    SmartDashboard.putData("Shooter PID Set", new ShooterPIDTune(M_SHOOTER));
+    SmartDashboard.putData("Manual Shooter Speed", new RevUpShuffleboard(M_SHOOTER));
     M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
     // Configure the button bindings
     configureButtonBindings();
@@ -119,7 +140,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     Buttons.INTAKE_BUTTON.whenHeld(new IntakeButtonCommand(M_INTAKE))
-    .whenHeld(new MagIntake(M_MAGAZINE).andThen(new MagIntakeBraker(M_MAGAZINE)));
+    .whenHeld(new MagIntake(M_MAGAZINE));
 
     Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));
     Buttons.INTAKE_FLOAT_BUTTON.whenPressed(new MoveIntakeFloat(M_INTAKE));
@@ -132,7 +153,7 @@ public class RobotContainer {
 
     Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER));
     Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER));
-    Buttons.LIME_SHOOT_TRIGGER.whileActiveOnce(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE));
+    Buttons.LIME_SHOOT_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
     
     
     //Only uncomment once all testing has been done
@@ -150,6 +171,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER);
+    return auto_chooser.getSelected();
   }
 }

@@ -10,6 +10,6 @@ import frc.robot.subsystems.Shooter;
 /** Shoots with arbitrary given speed. Great for repeatable auto shots */
 public class ShootWithSetSpeed extends ShootBase{
     public ShootWithSetSpeed(Magazine magazine, Shooter shooter, double speed){
-        super(magazine, shooter, new RevUpSet(shooter, speed));
+        super(magazine, shooter, new RevUpSet(shooter, speed), true);
     }
 }

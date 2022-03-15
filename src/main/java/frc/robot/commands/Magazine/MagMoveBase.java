@@ -15,11 +15,13 @@ public class MagMoveBase extends CommandBase {
   private final Magazine magazine;
   protected double movement_time;
   private final Timer timer;
+  protected double speed;
   
   /** Creates a new MagBase. */
   public MagMoveBase(Magazine magazine) {
     timer  = new Timer();
     this.magazine = magazine;
+    speed = SetpointConstants.MAGAZINE_SPEED;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(magazine);
   }
@@ -38,7 +40,7 @@ public class MagMoveBase extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-    magazine.setMagazinePercent((movement_time<=0)?-SetpointConstants.MAGAZINE_SPEED:SetpointConstants.MAGAZINE_SPEED);
+    magazine.setMagazinePercent((movement_time<=0)?-speed:speed);
   }
 
   // Called once the command ends or is interrupted.

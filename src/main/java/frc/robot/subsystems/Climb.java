@@ -58,7 +58,7 @@ public class Climb extends SubsystemBase {
     CLIMB_TALON.setSensorPhase(true); // clockwise looking at the encoder from the outside moves the hook out. Reversed Talon to make positive outwards. Reversed Sensor to match Talon
     
     //limits current draw to 35 amps
-    CLIMB_TALON.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 0, 0.5));
+    CLIMB_TALON.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 50, 0, 0.5));
     
     CLIMB_TALON.config_kP(0, ControlConstants.HOOK_UP_kP);
     CLIMB_TALON.config_kD(0, ControlConstants.HOOK_UP_kD);
@@ -173,6 +173,10 @@ public class Climb extends SubsystemBase {
   */
   public void setHook(HOOK_ENUM pos){
     hook_state = pos;
+    if(pos == HOOK_ENUM.CAPTURING){
+      switchPID(1);
+    }else switchPID(0);
+
     switch (pos) {
       case FIRST:
         try {
@@ -226,6 +230,10 @@ public class Climb extends SubsystemBase {
         break;
       
     }
+  }
+
+  public void resetEncoder(){
+    CLIMB_TALON.setSelectedSensorPosition(0);
   }
 
   /**
@@ -288,14 +296,10 @@ public class Climb extends SubsystemBase {
    * Switches the PID slot of the lead controller based on whether or not we are pulling ourselves up or not. Meant to be called continuously
    * @throws Exception if trying to work against the ratchet
    */
-  public void switchPID() throws Exception{
-    if(isHooked()){
-      if (!isAtPosition()) {
-        CLIMB_TALON.selectProfileSlot(1, 0);
-        CLIMB_TALON.set(ControlMode.MotionMagic, getError());
-      }else setClimbPercent(0);
-    }
+  public void switchPID(int port){
+    CLIMB_TALON.selectProfileSlot(port, 0);
   }
+  
   
   /**
    * exception if distance is not within reasonable bounds or winch is not in correct state
@@ -309,16 +313,7 @@ public class Climb extends SubsystemBase {
     } else if ((getPosition() - distance < 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
     }else{ 
-      if (isHooked()) {
-        if (!isAtPosition()) {
-          CLIMB_TALON.selectProfileSlot(1, 0);
-          CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance));
-        }else setClimbPercent(0);
-        
-      } else {
-        CLIMB_TALON.selectProfileSlot(0, 0);
         CLIMB_TALON.set(ControlMode.MotionMagic, distanceToEncoderUnits(distance));
-      }
     }
   }
 
@@ -395,6 +390,9 @@ public class Climb extends SubsystemBase {
   public void periodic() {
     currentEntry.setNumber(getStatorCurrent());
     positionEntry.setNumber(getPosition());
+    SmartDashboard.putNumber("Position Error", goal_height - getPosition());
+    SmartDashboard.putNumber("Error", getError()* ControlConstants.CLIMB_ENCODER_TO_DISTANCE);
+    SmartDashboard.putNumber("Velocity", getVelocity());
     hookedEntry.setBoolean(isHooked());
     SmartDashboard.putNumber("potentiometer", getPotentiometer());
     SmartDashboard.putNumber("Goal height", goal_height);
@@ -420,8 +418,9 @@ public class Climb extends SubsystemBase {
     CLIMB_TALON.config_kF(0, f);
   }
 
-  public void setPDFSlot(double p, double d, double f, int slot){
+  public void setPDFSlot(double p, double i, double d, double f, int slot){
     CLIMB_TALON.config_kP(slot, p);
+    CLIMB_TALON.config_kI(slot, i);
     CLIMB_TALON.config_kD(slot, d);
     CLIMB_TALON.config_kF(slot, f);
   }
