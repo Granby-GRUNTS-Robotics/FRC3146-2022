@@ -36,7 +36,7 @@ public class Shooter extends SubsystemBase {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable shootTable = inst.getTable("shoot");
     shooterSpeedEntry = shootTable.getEntry("Shooter Speed");
-
+    
     SHOOTER_LEAD_ENCODER.setVelocityConversionFactor(1);
 
     SHOOTER_LEAD_SPARK_MAX.setInverted(false);

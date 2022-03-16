@@ -82,7 +82,7 @@ public class RobotContainer {
     SmartDashboard.putData(auto_chooser);
     SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
     SmartDashboard.putData("Reset Climb Encoder", new InstantCommand(()->M_CLIMB.resetEncoder(), M_CLIMB));
-    /*
+    
     SmartDashboard.putData("ManualClimbMotor (Joystick-Controlled)", new ManualClimbMotor(M_CLIMB, Buttons.BUTTON_Y));
     SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
     SmartDashboard.putData("Climb Set Move", new ClimbSetMove(M_CLIMB));
@@ -98,7 +98,7 @@ public class RobotContainer {
     SmartDashboard.putData("Claw Closed", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.CLAW_CLOSED));
     SmartDashboard.putData("Ratchet Engaged", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RATCHET_RATCHETING));
     SmartDashboard.putData("Ratchet Free", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RACHET_FREE));
-
+    /*
     SmartDashboard.putData("Drivetrain PID Set", new DrivePIDTune(M_DRIVETRAIN));
     SmartDashboard.putData("Drive to Location", new DriveToLocation(M_DRIVETRAIN, 24));
     SmartDashboard.putData("Turn 90 Degrees", new DriveToAngle(M_DRIVETRAIN, 90));

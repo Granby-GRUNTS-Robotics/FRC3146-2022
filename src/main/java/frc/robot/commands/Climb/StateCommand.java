@@ -15,6 +15,7 @@ import frc.robot.Constants.PneumaticConstants.ARM_ENUM;
 import frc.robot.Constants.PneumaticConstants.CLAW_ENUM;
 import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drivetrain;
 
 /**moves climb to given BIG_CLIMB_ENUM state */
 public class StateCommand extends CommandBase {
@@ -113,12 +114,19 @@ public class StateCommand extends CommandBase {
         case FIRST:
         setHook(HOOK_ENUM.FIRST);
       break;
+        case WAIT:
+        timeGoalify(0.3);
+      break;
         case PULLWITHPNEUMATICS:
         climb.setArm(ARM_ENUM.FLOAT);
         setHook(HOOK_ENUM.CAPTURING);
       break;
         case HOOK_EXTENDED:
         setHook(HOOK_ENUM.EXTENDED);
+      break;
+        case HOOK_OFF_PREV:
+        climb.setArm(ARM_ENUM.FLOAT);
+        setHook(HOOK_ENUM.OFF_PREVIOUS);
       break;
         case HOOK_RESTING:
         setHook(HOOK_ENUM.RESTING);
@@ -155,6 +163,9 @@ public class StateCommand extends CommandBase {
       break;
         case RACHET_FREE:
         setRatchet(RATCHET_ENUM.FREE);
+      break;
+      case LAST:
+        setHook(HOOK_ENUM.OFF_PREVIOUS);
       break;
       default:
         break;
@@ -200,11 +211,11 @@ public class StateCommand extends CommandBase {
     
     if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.HOOK_RETRACTED || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
       
-    }
-    if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
-      if (climb.getPosition() > 15.0){
-        climb.setClaw(CLAW_ENUM.OPEN);
-        climb.setArm(ARM_ENUM.VERTICAL);
+      if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
+        if (climb.getPosition() > 15.0){
+          climb.setClaw(CLAW_ENUM.OPEN);
+          climb.setArm(ARM_ENUM.VERTICAL);
+        }
       }
     }
     if (active_state == BIG_CLIMB_ENUM.HOOK_SWING_UP){

@@ -32,37 +32,29 @@ public class JoyDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.setDefaultNumber("throttle", ControlConstants.kTHROTTLE_MULTIPLIER);
-    SmartDashboard.setDefaultNumber("thresh", 0.08);
-    SmartDashboard.setDefaultNumber("twist", ControlConstants.kTWIST_MULTIPLIER);
-    SmartDashboard.setDefaultNumber("slowmodehigh", 0.75);
-    SmartDashboard.setDefaultNumber("slowmodelow", 0.5);
-  
-    modechooser.addOption("both", MODE_ENUM.BOTH);
-    modechooser.addOption("twist", MODE_ENUM.TWIST);
-    modechooser.addOption("throttle", MODE_ENUM.THROTTLE);
     drive.setBrakeMode(IdleMode.kCoast);
 
     drive.setPIDF(0, 0, ControlConstants.DRIVE_VELOCITY_kV, 0);
+    SmartDashboard.putData("slowmode chooser" , modechooser);
   }
   private double reversed = 1;
+  private double throttleMult = ControlConstants.kTHROTTLE_MULTIPLIER;
+  private double twistMult = ControlConstants.kTWIST_MULTIPLIER;
+  private double slowmodehi =  0.75;
+  private double slowmodelo =  0.5;
+  private double difference = slowmodehi - slowmodelo;
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(joy.getRawButtonPressed(11)){
       reversed = reversed*-1;
     }
-    SmartDashboard.putData("slowmode chooser" , modechooser);
     
-    //for tuning
-    double thresh = SmartDashboard.getNumber("thresh", 0.08);
+    double thresh = 0.08;
     double throttle = reversed * RobotMap.Buttons.getWithDeadZone(-joy.getY(),thresh);
     double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist(), thresh);
-    double throttleMult = SmartDashboard.getNumber("throttle", ControlConstants.kTHROTTLE_MULTIPLIER);
-    double twistMult = SmartDashboard.getNumber("twist", ControlConstants.kTWIST_MULTIPLIER);
-    double slowmodehi = SmartDashboard.getNumber("slowmodehigh", 0.75);
-    double slowmodelo = SmartDashboard.getNumber("slowmodelow", 0.5);
-    double difference = slowmodehi - slowmodelo;
+    
 
     double slowfinal = ((1 - joy.getRawAxis(3))/2) * difference + slowmodelo;
     SmartDashboard.putNumber("slowfinal", slowfinal);

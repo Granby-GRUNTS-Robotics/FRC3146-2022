@@ -74,9 +74,9 @@ public final class Constants {
         public static enum BIG_CLIMB_ENUM{PULLWITHPNEUMATICS, HOOK_EXTENDED, HOOK_RESTING, HOOK_RETRACTED, HOOK_SWING_UP, HOOK_CAPTURING, 
                                           ARM_HORIZONTAL, ARM_VERTICAL, ARM_FLOAT, ARM_BOTH, 
                                           CLAW_OPEN, CLAW_CLOSED, 
-                                          RATCHET_RATCHETING, RACHET_FREE, FIRST
+                                          RATCHET_RATCHETING, RACHET_FREE, FIRST, LAST, HOOK_OFF_PREV, WAIT
                                          };
-        public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE, CAPTURING, FIRST};
+        public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE, CAPTURING, FIRST, OFF_PREVIOUS};
 
         //for joy drive. Might keep it in, might not
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
@@ -112,12 +112,12 @@ public final class Constants {
         public static final double HOOK_UP_kD = 0;
         public static final double HOOK_UP_kF = 0.165;
         
-        public static final double HOOK_DOWN_kP = 0.005;
+        public static final double HOOK_DOWN_kP = 0.15;
         public static final double HOOK_DOWN_kD = 0;
-        public static final double HOOK_DOWN_kF = 0.27;
+        public static final double HOOK_DOWN_kF = 0.227;
         
         //drivetrain control constants
-        public static final double kTHROTTLE_MULTIPLIER = 100;
+        public static final double kTHROTTLE_MULTIPLIER = 30;
         public static final double kTWIST_MULTIPLIER = 40;
         public static final double WHEEL_DIAMETER = 5.9; // approx in inches
     }
@@ -140,9 +140,10 @@ public final class Constants {
         public static final double HOOK_RETRACTED = 2;
         public static final double HOOK_MIDDLE = 7;
         public static final double HOOK_RESTING = 25.4;
-        public static final double HOOK_CAPTURING = -1.25;
+        public static final double HOOK_CAPTURING = -1.5;
+        public static final double HOOK_OFF_PREV = 20;
 
-        public static final double HOOK_PRECISON = 0.1;
+        public static final double HOOK_PRECISON = 0.5;
     }
 
     public static final class LimeLightConstants{

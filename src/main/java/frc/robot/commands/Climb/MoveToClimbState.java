@@ -7,6 +7,7 @@ package frc.robot.commands.Climb;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drivetrain;
 
 /**list of climb states. We will determine where brakes are necessary (hopefully nowhere) and then add that to FullClimbNoStops (which should really be called FullClimbLessStops) */
 public class MoveToClimbState extends StateCommand {
@@ -34,7 +35,7 @@ public class MoveToClimbState extends StateCommand {
           setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.HOOK_SWING_UP, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.HOOK_RESTING});
           break;
         case 4:
-          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.HOOK_RESTING, BIG_CLIMB_ENUM.PULLWITHPNEUMATICS, 
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.HOOK_RESTING, BIG_CLIMB_ENUM.HOOK_OFF_PREV, BIG_CLIMB_ENUM.WAIT, BIG_CLIMB_ENUM.PULLWITHPNEUMATICS, 
                                              BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.RACHET_FREE, BIG_CLIMB_ENUM.HOOK_RETRACTED});
           break;
         case 5:
@@ -43,7 +44,7 @@ public class MoveToClimbState extends StateCommand {
           break;
         case 6:
           //same as 4?
-          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.ARM_FLOAT, BIG_CLIMB_ENUM.FIRST });
+          setStateList(new BIG_CLIMB_ENUM[]{ BIG_CLIMB_ENUM.RATCHET_RATCHETING, BIG_CLIMB_ENUM.ARM_VERTICAL, BIG_CLIMB_ENUM.CLAW_CLOSED, BIG_CLIMB_ENUM.ARM_FLOAT, BIG_CLIMB_ENUM.LAST });
           break;
         default:
           break;

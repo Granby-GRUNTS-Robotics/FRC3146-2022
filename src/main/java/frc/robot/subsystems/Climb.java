@@ -175,7 +175,8 @@ public class Climb extends SubsystemBase {
     hook_state = pos;
     if(pos == HOOK_ENUM.CAPTURING){
       switchPID(1);
-    }else switchPID(0);
+    }else {switchPID(0);
+    }
 
     switch (pos) {
       case FIRST:
@@ -186,6 +187,14 @@ public class Climb extends SubsystemBase {
           System.out.println(e);
         }
         break;
+      case OFF_PREVIOUS:
+      try {
+        setHook(SetpointConstants.HOOK_OFF_PREV);
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println(e);
+      }
+      break;
       case EXTENDED:
         try {
           setHook(SetpointConstants.HOOK_EXTENDED);
