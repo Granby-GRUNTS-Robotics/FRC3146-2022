@@ -32,14 +32,4 @@ public class RevUpShuffleboard extends RevUpBase {
     speed = SmartDashboard.getNumber("Target Shooter Speed", 0);
     super.initialize();
   }
-
-  @Override
-  public void end(boolean interrupted) {
-      shooter.brake();
-  }
-
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
 }
