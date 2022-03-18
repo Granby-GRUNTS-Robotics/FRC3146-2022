@@ -90,7 +90,7 @@ public class StateCommand extends CommandBase {
   }
 
   public void setHook(HOOK_ENUM hook_state){
-      climb.setHook(hook_state);
+    climb.setHook(hook_state);
       positionGoalify();
   }
 
@@ -113,7 +113,7 @@ public class StateCommand extends CommandBase {
     switch (state) {
         case FIRST:
         setHook(HOOK_ENUM.FIRST);
-      break;
+      break; case PIDZERO: climb.switchPID(0); timeGoalify(0.1); break; case PIDONE: climb.switchPID(1); skipify(); break;
         case WAIT:
         timeGoalify(0.3);
       break;
@@ -207,10 +207,8 @@ public class StateCommand extends CommandBase {
       default:
         break;
     }
-
     
     if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.HOOK_RETRACTED || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
-      
       if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
         if (climb.getPosition() > 15.0){
           climb.setClaw(CLAW_ENUM.OPEN);
@@ -221,6 +219,9 @@ public class StateCommand extends CommandBase {
     if (active_state == BIG_CLIMB_ENUM.HOOK_SWING_UP){
       if (climb.getPosition() > SetpointConstants.HOOK_MIDDLE){
         climb.setArm(ARM_ENUM.HORIZONTAL);
+      }
+      if(climb.getPosition() > SetpointConstants.HOOK_RESTING){
+        climb.setArm(ARM_ENUM.VERTICAL);
       }
     }
 

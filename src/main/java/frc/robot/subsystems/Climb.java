@@ -173,10 +173,6 @@ public class Climb extends SubsystemBase {
   */
   public void setHook(HOOK_ENUM pos){
     hook_state = pos;
-    if(pos == HOOK_ENUM.CAPTURING){
-      switchPID(1);
-    }else {switchPID(0);
-    }
 
     switch (pos) {
       case FIRST:
@@ -401,7 +397,7 @@ public class Climb extends SubsystemBase {
     positionEntry.setNumber(getPosition());
     SmartDashboard.putNumber("Position Error", goal_height - getPosition());
     SmartDashboard.putNumber("Error", getError()* ControlConstants.CLIMB_ENCODER_TO_DISTANCE);
-    SmartDashboard.putNumber("Velocity", getVelocity());
+    SmartDashboard.putNumber("Climb Velocity", getVelocity());
     hookedEntry.setBoolean(isHooked());
     SmartDashboard.putNumber("potentiometer", getPotentiometer());
     SmartDashboard.putNumber("Goal height", goal_height);

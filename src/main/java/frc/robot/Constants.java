@@ -68,13 +68,13 @@ public final class Constants {
         //timings
         public static final double ARM_PISTON_HORIZONTAL_TIME = 2.0;
         public static final double ARM_PISTON_VERTICAL_TIME = 0.75;
-        public static final double CLAW_PISTON_TIME = 0.3;
+        public static final double CLAW_PISTON_TIME = 0.8;
         public static final double RATCHET_PISTON_TIME = 0.2;
         //eek
         public static enum BIG_CLIMB_ENUM{PULLWITHPNEUMATICS, HOOK_EXTENDED, HOOK_RESTING, HOOK_RETRACTED, HOOK_SWING_UP, HOOK_CAPTURING, 
                                           ARM_HORIZONTAL, ARM_VERTICAL, ARM_FLOAT, ARM_BOTH, 
                                           CLAW_OPEN, CLAW_CLOSED, 
-                                          RATCHET_RATCHETING, RACHET_FREE, FIRST, LAST, HOOK_OFF_PREV, WAIT
+                                          RATCHET_RATCHETING, RACHET_FREE, FIRST, LAST, HOOK_OFF_PREV, WAIT, PIDZERO, PIDONE
                                          };
         public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE, CAPTURING, FIRST, OFF_PREVIOUS};
 
@@ -140,9 +140,9 @@ public final class Constants {
         public static final double HOOK_FIRST_BAR = 22;
         public static final double HOOK_RETRACTED = 2;
         public static final double HOOK_MIDDLE = 7;
-        public static final double HOOK_RESTING = 25.4;
+        public static final double HOOK_RESTING = 24;
         public static final double HOOK_CAPTURING = -1.5;
-        public static final double HOOK_OFF_PREV = 20;
+        public static final double HOOK_OFF_PREV = 17;
 
         public static final double HOOK_PRECISON = 0.5;
     }
