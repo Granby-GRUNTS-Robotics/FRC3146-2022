@@ -123,8 +123,8 @@ public final class Constants {
     }
 
     public static final class SetpointConstants{
-        public static final double SHOOTER_SPEED_LOW = 3660;
-        public static final double SHOOTER_SPEED_HIGH = 4500;
+        public static final double SHOOTER_SPEED_LOW = 2000;
+        public static final double SHOOTER_SPEED_HIGH = 3660;
         public static final double SHOOTER_PRECISISON = 30
         ;
 
