@@ -7,6 +7,7 @@ package frc.robot.commands.Climb;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.PneumaticConstants.RATCHET_ENUM;
 import frc.robot.subsystems.Climb;
 /**moves climb with joystick */
 public class ManualClimbMotor extends CommandBase {
@@ -28,6 +29,10 @@ public class ManualClimbMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (Y_AXIS.getAsDouble() > 0){
+      climb.setRatchet(RATCHET_ENUM.FREE);
+    }else {climb.setRatchet(RATCHET_ENUM.RATCHETING);}
+    
     try {
       climb.setClimbPercent(Y_AXIS.getAsDouble());
     } catch (Exception e) {

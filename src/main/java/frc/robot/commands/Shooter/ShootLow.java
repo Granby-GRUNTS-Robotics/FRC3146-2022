@@ -9,9 +9,9 @@ import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
 /** high shot */
-public class ShootHigh extends ShootBase {
+public class ShootLow extends ShootBase {
 
-    public ShootHigh(Magazine magazine, Shooter shooter)  {
-        super(magazine, shooter, new RevUpSet(shooter, SetpointConstants.SHOOTER_SPEED_HIGH));
+    public ShootLow(Magazine magazine, Shooter shooter)  {
+        super(magazine, shooter, new RevUpSet(shooter, SetpointConstants.SHOOTER_SPEED_LOW));
         //TODO Auto-generated constructor stub
     }}
