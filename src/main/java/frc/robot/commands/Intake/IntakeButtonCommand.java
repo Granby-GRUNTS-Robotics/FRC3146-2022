@@ -49,6 +49,7 @@ public class IntakeButtonCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.setIntakePercent(0);
+    intake.setIntakeSolenoids(INTAKE_ENUM.UP);
     timer.stop();
     timer.reset();
   }
