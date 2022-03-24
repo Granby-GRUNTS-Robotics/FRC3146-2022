@@ -85,8 +85,8 @@ public class RobotMap {
         public static final Button INTAKE_SOFT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
 
         public static final Button SHOOT_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 1);
-        public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
-        public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
+        public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
+        public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
 
         public static final Trigger LOW_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
