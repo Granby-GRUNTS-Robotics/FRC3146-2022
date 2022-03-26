@@ -138,7 +138,7 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = 0.75;
 
-        public static final double HOOK_EXTENDED = 27.5;
+        public static final double HOOK_EXTENDED = 26.5;
         public static final double HOOK_FIRST_BAR = 22;
         public static final double HOOK_RETRACTED = 2;
         public static final double HOOK_MIDDLE = 7;

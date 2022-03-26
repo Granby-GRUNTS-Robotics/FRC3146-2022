@@ -230,7 +230,14 @@ public class StateCommand extends CommandBase {
         if (climb.isAtPosition() || passedTimeGoal()) substate_finished = true;
         break;
       case LIMIT_SWITCH:
-        if (climb.getLimitSwitch()) substate_finished = true;
+        if (climb.getLimitSwitch()) {
+          substate_finished = true;
+          try {
+            climb.setClimbPercent(0);
+          } catch (Exception e) {
+            //TODO: handle exception
+          }
+        }
         break;
       default:
         break;
@@ -241,6 +248,14 @@ public class StateCommand extends CommandBase {
         if (climb.getPosition() > 15.0){
           climb.setClaw(CLAW_ENUM.OPEN);
           climb.setArm(ARM_ENUM.VERTICAL);
+        }
+      }
+      if (climb.getLimitSwitch()) {
+        try {
+          climb.setClimbPercent(0);
+          climb.clearMotionProfile();
+        } catch (Exception e) {
+          //TODO: handle exception
         }
       }
     }

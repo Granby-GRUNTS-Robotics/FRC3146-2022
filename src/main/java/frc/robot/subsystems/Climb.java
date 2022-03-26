@@ -399,6 +399,7 @@ public class Climb extends SubsystemBase {
    */
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("Climb Limit Switch", getLimitSwitch());
     currentEntry.setNumber(getStatorCurrent());
     positionEntry.setNumber(getPosition());
     SmartDashboard.putNumber("Position Error", goal_height - getPosition());
