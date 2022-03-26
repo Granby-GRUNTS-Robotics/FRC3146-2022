@@ -26,7 +26,7 @@ public class AutoFromLine extends SequentialCommandGroup {
   public AutoFromLine(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new ShootWithSetSpeed(magazine, shooter, 4200), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
+    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new ShootWithSetSpeed(magazine, shooter, 4200, intake), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
   }
 
   /** Creates a new AutoFromLine. 
@@ -35,6 +35,6 @@ public class AutoFromLine extends SequentialCommandGroup {
   public AutoFromLine(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter, double distance, double flywheel_speed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, distance), new ShootWithSetSpeed(magazine, shooter, flywheel_speed));
+    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, distance), new ShootWithSetSpeed(magazine, shooter, flywheel_speed, intake));
   }
 }
