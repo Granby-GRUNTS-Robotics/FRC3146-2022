@@ -128,7 +128,7 @@ public final class Constants {
         public static final double SHOOTER_PRECISISON = 30
         ;
         public static final double PROTECTED_SHOOTING_ANGLE = -28.30;
-
+        public static final double PROTECTED_SHOOTING_SPEED = 0;
         public static final double MAGAZINE_SPEED = 0.8;
         public static final double MAGAZINE_INTAKE_SPEED = 0.6;
         public static final double MAGAZINE_PRECISION = 10;
