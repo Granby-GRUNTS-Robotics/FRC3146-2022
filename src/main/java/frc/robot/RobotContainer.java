@@ -77,8 +77,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CameraServer.startAutomaticCapture(0);
-    CameraServer.startAutomaticCapture(1);
-
+    SmartDashboard.setDefaultNumber("Auto Start Time", 0);
     auto_chooser.addOption("Line", new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     auto_chooser.addOption("Turn", new AutoWithTurn(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     SmartDashboard.putData(auto_chooser);
@@ -161,7 +160,7 @@ public class RobotContainer {
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-    Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
+    Buttons.CLIMB_BACKWARDS_BUTTON
     .whenReleased(new MoveToClimbState(M_CLIMB));
     
   }
