@@ -28,12 +28,7 @@ public class IntakeButtonCommand extends CommandBase {
   @Override
   public void initialize() {
     intake.setIntakePercent(Constants.SetpointConstants.INTAKE_SPEED);
-    timer.start();
-    start_state = intake.getIntakePos();
-    if (start_state == INTAKE_ENUM.UP){
-      intake.setIntakeSolenoids(INTAKE_ENUM.DOWN);
-      timegoal = 1;
-    }
+    intake.setIntakeSolenoids(INTAKE_ENUM.PARTIAL_DOWN);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,8 +44,7 @@ public class IntakeButtonCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.setIntakePercent(0);
-    timer.stop();
-    timer.reset();
+    intake.setIntakeSolenoids(INTAKE_ENUM.PARTIAL_UP);
   }
 
   // Returns true when the command should end.
