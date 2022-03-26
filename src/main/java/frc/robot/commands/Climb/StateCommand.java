@@ -21,7 +21,7 @@ import frc.robot.subsystems.Drivetrain;
 public class StateCommand extends CommandBase {
   /** Creates a new StateCommandBase. */
   private Climb climb;
-  private static enum FINISH_ENUM{TIME, POSITION, SKIP};
+  private static enum FINISH_ENUM{TIME, POSITION, SKIP, TIMEOUT, LIMIT_SWITCH};
   private FINISH_ENUM finish_type = FINISH_ENUM.TIME;
   private boolean substate_finished;
   BIG_CLIMB_ENUM active_state;
@@ -120,6 +120,7 @@ public class StateCommand extends CommandBase {
         case PULLWITHPNEUMATICS:
         climb.setArm(ARM_ENUM.FLOAT);
         setHook(HOOK_ENUM.CAPTURING);
+        timeOutify(5);
       break;
         case HOOK_EXTENDED:
         setHook(HOOK_ENUM.EXTENDED);
@@ -139,6 +140,7 @@ public class StateCommand extends CommandBase {
       break;
         case HOOK_CAPTURING:
         setHook(HOOK_ENUM.CAPTURING);
+        timeOutify(3);
       break;
         case ARM_HORIZONTAL:
         setArm(ARM_ENUM.HORIZONTAL);
@@ -167,10 +169,30 @@ public class StateCommand extends CommandBase {
       case LAST:
         setHook(HOOK_ENUM.OFF_PREVIOUS);
       break;
+      case PULL_UNTIL_SWITCH:
+        try {
+          climb.setClimbPercent(-0.4);
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        limitGoalify();
+      break;
       default:
         break;
     }
   }
+
+  private void limitGoalify() {
+    finish_type = FINISH_ENUM.LIMIT_SWITCH;
+  }
+
+
+  private void timeOutify(double timegoal) {
+    timeGoalify(timegoal);
+    finish_type = FINISH_ENUM.TIMEOUT;
+  }
+
 
   private void incrementState(){
     state_state++;
@@ -204,6 +226,12 @@ public class StateCommand extends CommandBase {
         break;
       case SKIP:
         substate_finished = true;
+      case TIMEOUT:
+        if (climb.isAtPosition() || passedTimeGoal()) substate_finished = true;
+        break;
+      case LIMIT_SWITCH:
+        if (climb.getLimitSwitch()) substate_finished = true;
+        break;
       default:
         break;
     }
@@ -219,9 +247,6 @@ public class StateCommand extends CommandBase {
     if (active_state == BIG_CLIMB_ENUM.HOOK_SWING_UP){
       if (climb.getPosition() > SetpointConstants.HOOK_MIDDLE){
         climb.setArm(ARM_ENUM.HORIZONTAL);
-      }
-      if(climb.getPosition() > SetpointConstants.HOOK_RESTING){
-        climb.setArm(ARM_ENUM.VERTICAL);
       }
     }
 

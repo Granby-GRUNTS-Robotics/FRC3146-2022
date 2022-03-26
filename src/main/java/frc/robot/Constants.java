@@ -59,6 +59,7 @@ public final class Constants {
         public static final int POTENTIOMETER_PORT = 0;
         public static final int PIGEON_IMU_ID = 1;
         public static final int MAGAZINE_LIMIT_SWITCH_PORT = 0;
+        public static final int CLIMB_LIMIT_SWITCH_PORT = 1;
 
         //conversion factors
         public static final double CLIMB_ENCODER_TO_DISTANCE = (double) 10 / 16 * Math.PI / 8192; //8192 == counts per rotation. Will be different if we use potentiometer
@@ -74,7 +75,7 @@ public final class Constants {
         public static enum BIG_CLIMB_ENUM{PULLWITHPNEUMATICS, HOOK_EXTENDED, HOOK_RESTING, HOOK_RETRACTED, HOOK_SWING_UP, HOOK_CAPTURING, 
                                           ARM_HORIZONTAL, ARM_VERTICAL, ARM_FLOAT, ARM_BOTH, 
                                           CLAW_OPEN, CLAW_CLOSED, 
-                                          RATCHET_RATCHETING, RACHET_FREE, FIRST, LAST, HOOK_OFF_PREV, WAIT, PIDZERO, PIDONE
+                                          RATCHET_RATCHETING, RACHET_FREE, FIRST, LAST, HOOK_OFF_PREV, WAIT, PIDZERO, PIDONE, PULL_UNTIL_SWITCH
                                          };
         public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE, CAPTURING, FIRST, OFF_PREVIOUS};
 
