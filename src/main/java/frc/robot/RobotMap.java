@@ -77,8 +77,8 @@ public class RobotMap {
                 return value;
         }
 
-        public static final Button INTAKE_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 2);
-        public static final Button EJECT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 10);
+        public static final Button INTAKE_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 1);
+        public static final Button EJECT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 2);
         public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 6);
         public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 5);
         public static final Button INTAKE_PARTIAL_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
