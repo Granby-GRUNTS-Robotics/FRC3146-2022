@@ -24,5 +24,6 @@ public class ProtectedShooting extends SequentialCommandGroup {
   public ProtectedShooting(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
     
     //Drive to location allows the robot to move a given distance
-    addCommands(new DriveToLocation(drivetrain, 58.75), new DriveToAngle(drivetrain, Constants.SetpointConstants.PROTECTED_SHOOTING_ANGLE), new ShootWithSetSpeed(magazine, shooter, Constants.SetpointConstants.PROTECTED_SHOOTING_SPEED));
+    addCommands(new DriveToLocation(drivetrain, 58.75), new DriveToAngle(drivetrain, Constants.SetpointConstants.PROTECTED_SHOOTING_ANGLE), new ShootWithSetSpeed(magazine, shooter, Constants.SetpointConstants.PROTECTED_SHOOTING_SPEED, intake));
+  }
 }
