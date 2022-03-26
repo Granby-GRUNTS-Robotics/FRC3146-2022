@@ -13,24 +13,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.RobotMap.Buttons;
-import frc.robot.commands.LimeTurnAndShoot;
 import frc.robot.commands.LimeTurnOff;
 import frc.robot.commands.LimeTurnOn;
 import frc.robot.commands.Autonomous.AutoFromLine;
 import frc.robot.commands.Autonomous.AutoWithTurn;
-import frc.robot.commands.Climb.ClimbPidTune;
-import frc.robot.commands.Climb.ClimbSetMove;
-import frc.robot.commands.Climb.ClimbSetSpeed;
-import frc.robot.commands.Climb.ClimbSetVoltage;
 import frc.robot.commands.Climb.DecrementClimbState;
 import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
 import frc.robot.commands.Climb.MoveToClimbState;
-import frc.robot.commands.Climb.PIDSlotSwitch;
 import frc.robot.commands.Climb.StateCommand;
-import frc.robot.commands.Drivetrain.DrivePIDTune;
-import frc.robot.commands.Drivetrain.DriveToAngle;
-import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Drivetrain.JoyDrive;
 import frc.robot.commands.Drivetrain.LimeTurn;
 import frc.robot.commands.Intake.IntakeButtonCommand;
@@ -40,14 +31,10 @@ import frc.robot.commands.Intake.MoveIntakeFloat;
 import frc.robot.commands.Intake.MoveIntakeSoft;
 import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Magazine.MagIntake;
-import frc.robot.commands.Magazine.MagMoveBase;
 import frc.robot.commands.Magazine.MagazineOut;
-import frc.robot.commands.Shooter.RevUpShuffleboard;
 import frc.robot.commands.Shooter.ShootHigh;
-import frc.robot.commands.Shooter.ShootLime;
-import frc.robot.commands.Shooter.ShootShuffleBoard;
+import frc.robot.commands.Shooter.ShootLow;
 import frc.robot.commands.Shooter.ShooterBrake;
-import frc.robot.commands.Shooter.ShooterPIDTune;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -75,57 +62,15 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CameraServer.startAutomaticCapture(0);
-    CameraServer.startAutomaticCapture(1);
-
+    SmartDashboard.setDefaultNumber("Auto Start Time", 0);
     auto_chooser.addOption("Line", new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     auto_chooser.addOption("Turn", new AutoWithTurn(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     SmartDashboard.putData(auto_chooser);
-    SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
-    SmartDashboard.putData("Reset Climb Encoder", new InstantCommand(()->M_CLIMB.resetEncoder(), M_CLIMB));
-    
     SmartDashboard.putData("ManualClimbMotor (Joystick-Controlled)", new ManualClimbMotor(M_CLIMB, Buttons.BUTTON_Y));
-    SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
-    SmartDashboard.putData("Climb Set Move", new ClimbSetMove(M_CLIMB));
-    SmartDashboard.putData("Climb Set Speed", new ClimbSetSpeed(M_CLIMB));
-    SmartDashboard.putData("Climb Set Voltage", new ClimbSetVoltage(M_CLIMB));
-    SmartDashboard.putData("Climb Set PID Port", new PIDSlotSwitch(M_CLIMB));
-    
-
-    SmartDashboard.putData("Arm Horizontal", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_HORIZONTAL));
-    SmartDashboard.putData("Arm Vertical", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_VERTICAL));
-    SmartDashboard.putData("Arm Float", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_FLOAT));
-    SmartDashboard.putData("Claw Open", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.CLAW_OPEN));
-    SmartDashboard.putData("Claw Closed", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.CLAW_CLOSED));
-    SmartDashboard.putData("Ratchet Engaged", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RATCHET_RATCHETING));
-    SmartDashboard.putData("Ratchet Free", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RACHET_FREE));
-    /*
-    SmartDashboard.putData("Drivetrain PID Set", new DrivePIDTune(M_DRIVETRAIN));
-    SmartDashboard.putData("Drive to Location", new DriveToLocation(M_DRIVETRAIN, 24));
-    SmartDashboard.putData("Turn 90 Degrees", new DriveToAngle(M_DRIVETRAIN, 90));
-
-    
-    SmartDashboard.putData("Lime Turn", new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
-    SmartDashboard.putData("Lime Set Speed Shoot", new ShootLime(M_MAGAZINE, M_SHOOTER, M_LIME_LIGHT));
-    
-    
-    
-    
-    SmartDashboard.putData("Manual Magazine Move", new MagMoveBase(M_MAGAZINE));
-
-    SmartDashboard.putData("Intake Down", new MoveIntakeDown(M_INTAKE));
-    SmartDashboard.putData("Intake Up", new MoveIntakeUp(M_INTAKE));
-    SmartDashboard.putData("Intake Soft", new MoveIntakeSoft(M_INTAKE));
-    SmartDashboard.putData("Intake Float", new MoveIntakeFloat(M_INTAKE));
-    */
-
-    SmartDashboard.putData("Move To Climb State", new MoveToClimbState(M_CLIMB));
-
-    SmartDashboard.putData("Increment Climb", new IncrementClimbState(M_CLIMB));
 
     SmartDashboard.putData("LimeLED On", new LimeTurnOn(M_LIME_LIGHT));
     SmartDashboard.putData("LimeLED Off", new LimeTurnOff(M_LIME_LIGHT));
-    SmartDashboard.putData("Shooter PID Set", new ShooterPIDTune(M_SHOOTER));
-    SmartDashboard.putData("Manual Shooter Speed", new RevUpShuffleboard(M_SHOOTER));
+
     M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
     // Configure the button bindings
     configureButtonBindings();
@@ -151,7 +96,7 @@ public class RobotContainer {
 
     Buttons.SHOOT_BUTTON.whenReleased(new ShooterBrake(M_SHOOTER));
 
-    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER));
+    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootLow(M_MAGAZINE,M_SHOOTER));
     Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER));
     Buttons.LIME_SHOOT_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
     
@@ -159,7 +104,7 @@ public class RobotContainer {
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-    Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
+    Buttons.CLIMB_BACKWARDS_BUTTON
     .whenReleased(new MoveToClimbState(M_CLIMB));
     
   }

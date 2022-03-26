@@ -399,15 +399,7 @@ public class Climb extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    currentEntry.setNumber(getStatorCurrent());
     positionEntry.setNumber(getPosition());
-    SmartDashboard.putNumber("Position Error", goal_height - getPosition());
-    SmartDashboard.putNumber("Error", getError()* ControlConstants.CLIMB_ENCODER_TO_DISTANCE);
-    SmartDashboard.putNumber("Climb Velocity", getVelocity());
-    hookedEntry.setBoolean(isHooked());
-    SmartDashboard.putNumber("potentiometer", getPotentiometer());
-    SmartDashboard.putNumber("Goal height", goal_height);
-    // This method will be called once per scheduler run
   }
 
   /**
