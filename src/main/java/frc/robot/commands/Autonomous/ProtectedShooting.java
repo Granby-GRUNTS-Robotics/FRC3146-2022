@@ -10,6 +10,9 @@ import frc.robot.commands.Drivetrain.DriveToAngle;
 import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Shooter.ShootWithSetSpeed;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,5 +24,5 @@ public class ProtectedShooting extends SequentialCommandGroup {
   public ProtectedShooting(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
     
     //Drive to location allows the robot to move a given distance
-    addCommands(new DriveToLocation(drivetrain, 58.75), new DriveToAngle(drivetrain, Constants.SetpointConstants.PROTECTED_SHOOTING_ANGLE), new ShootWithSetSpeed(magazine, shooter, speed));
+    addCommands(new DriveToLocation(drivetrain, 58.75), new DriveToAngle(drivetrain, Constants.SetpointConstants.PROTECTED_SHOOTING_ANGLE), new ShootWithSetSpeed(magazine, shooter, Constants.SetpointConstants.PROTECTED_SHOOTING_SPEED));
 }
