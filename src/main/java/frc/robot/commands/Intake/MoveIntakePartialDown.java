@@ -7,11 +7,12 @@ package frc.robot.commands.Intake;
 import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 import frc.robot.subsystems.Intake;
 
-/** Intake Float*/
-public class MoveIntakeFloat extends MoveIntakeBase {
-    public MoveIntakeFloat(Intake intake) {
+/** Intake soft and smoof like BTS Butter */
+public class MoveIntakePartialDown extends MoveIntakeBase{
+
+    public MoveIntakePartialDown(Intake intake) {
         super(intake);
-        pos = INTAKE_ENUM.FLOAT;
+        pos = INTAKE_ENUM.PARTIAL_DOWN;
     }
     
 }

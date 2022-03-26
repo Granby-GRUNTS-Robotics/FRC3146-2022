@@ -31,8 +31,8 @@ public class RobotMap {
     //solenoids/pneumatics
     public static final PneumaticsControlModule PNEUMATICS_BASE = new PneumaticsControlModule(PneumaticConstants.PCM_ID);
     
-    public static final Solenoid INTAKE_UP_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.INTAKE_UP_SOLENOID_PORT);
-    public static final Solenoid INTAKE_DOWN_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.INTAKE_DOWN_SOLENOID_PORT);    
+    public static final Solenoid INTAKE_MAIN_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.INTAKE_UP_SOLENOID_PORT);
+    public static final Solenoid INTAKE_SECONDARY_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.INTAKE_DOWN_SOLENOID_PORT);    
     
     public static final Solenoid ARM_VERT_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.ARM_VERT_SOLENOID_PORT);
     public static final Solenoid ARM_HORI_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.ARM_HORI_SOLENOID_PORT);
@@ -81,8 +81,8 @@ public class RobotMap {
         public static final Button EJECT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 10);
         public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 6);
         public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 5);
-        public static final Button INTAKE_FLOAT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
-        public static final Button INTAKE_SOFT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
+        public static final Button INTAKE_PARTIAL_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
+        public static final Button INTAKE_PARTIAL_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
 
         public static final Button SHOOT_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 1);
         public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);

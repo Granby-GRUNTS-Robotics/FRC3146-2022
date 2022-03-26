@@ -11,6 +11,6 @@ import frc.robot.subsystems.Intake;
 public class MoveIntakeDown extends MoveIntakeBase{
     public MoveIntakeDown(Intake intake){
         super(intake);
-        pos = INTAKE_ENUM.DOWN;
+        pos = INTAKE_ENUM.FULL_DOWN;
     }
 }

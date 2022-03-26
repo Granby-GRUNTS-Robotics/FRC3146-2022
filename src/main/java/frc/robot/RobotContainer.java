@@ -38,8 +38,8 @@ import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOff;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.MoveIntakeDown;
-import frc.robot.commands.Intake.MoveIntakeFloat;
-import frc.robot.commands.Intake.MoveIntakeSoft;
+import frc.robot.commands.Intake.MoveIntakePartialDown;
+import frc.robot.commands.Intake.MoveIntakePartialUp;
 import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Magazine.MagIntake;
 import frc.robot.commands.Magazine.MagMoveBase;
@@ -145,16 +145,16 @@ public class RobotContainer {
     .whenHeld(new MagIntake(M_MAGAZINE));
 
     Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));
-    Buttons.INTAKE_FLOAT_BUTTON.whenPressed(new MoveIntakeFloat(M_INTAKE));
-    Buttons.INTAKE_SOFT_BUTTON.whenPressed(new MoveIntakeSoft(M_INTAKE));
+    Buttons.INTAKE_PARTIAL_UP_BUTTON.whenPressed(new MoveIntakePartialUp(M_INTAKE));
+    Buttons.INTAKE_PARTIAL_DOWN_BUTTON.whenPressed(new MoveIntakePartialDown(M_INTAKE));
     Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE));
 
     Buttons.EJECT_BUTTON.whenHeld(new MagazineOut(M_MAGAZINE)).whenHeld(new IntakeOut(M_INTAKE));
 
     Buttons.SHOOT_BUTTON.whenReleased(new ShooterBrake(M_SHOOTER));
 
-    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER));
-    Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER));
+    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER, M_INTAKE));
+    Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER, M_INTAKE));
     Buttons.LIME_SHOOT_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
     
     
