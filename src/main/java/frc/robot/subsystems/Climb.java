@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -48,6 +49,7 @@ public class Climb extends SubsystemBase {
   private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_DRIVE_TALON;
   private static final VictorSPX FOLLOW_VICTOR = RobotMap.CLIMB_FOLLOW_VICTOR;
   private static final AnalogInput POTENTIOMETER = RobotMap.CLIMB_POTENTIOMETER;
+  private static final DigitalInput CLIMB_LIMIT_SWITCH = RobotMap.CLIMB_LIMIT_SWITCH;
 
   /** Creates a new Climb. */
   public Climb() {
@@ -116,6 +118,10 @@ public class Climb extends SubsystemBase {
    */
   public ARM_ENUM getArmState() {
       return arm_state;
+  }
+
+  public boolean getLimitSwitch(){
+    return !CLIMB_LIMIT_SWITCH.get();
   }
 
   /** sets claw position 
