@@ -15,9 +15,6 @@ import frc.robot.subsystems.Intake;
 public class IntakeButtonCommand extends CommandBase {
   /** Creates a new IntakeButtonCommand. */
   private Intake intake;
-  private Timer timer = new Timer();
-  private double timegoal = 0;
-  private INTAKE_ENUM start_state;
   public IntakeButtonCommand(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -28,30 +25,19 @@ public class IntakeButtonCommand extends CommandBase {
   @Override
   public void initialize() {
     intake.setIntakePercent(Constants.SetpointConstants.INTAKE_SPEED);
-    timer.start();
-    start_state = intake.getIntakePos();
-    if (start_state == INTAKE_ENUM.UP){
-      intake.setIntakeSolenoids(INTAKE_ENUM.DOWN);
-      timegoal = 1;
-    }
+    intake.setIntakeSolenoids(INTAKE_ENUM.FULL_DOWN);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (timer.get() > timegoal && start_state == INTAKE_ENUM.UP){
-      if (intake.getIntakePos() != INTAKE_ENUM.SOFT)
-      intake.setIntakeSolenoids(INTAKE_ENUM.SOFT);
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.setIntakePercent(0);
-    intake.setIntakeSolenoids(INTAKE_ENUM.UP);
-    timer.stop();
-    timer.reset();
+    intake.setIntakeSolenoids(INTAKE_ENUM.FULL_UP);
   }
 
   // Returns true when the command should end.

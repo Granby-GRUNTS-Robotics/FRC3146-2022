@@ -15,9 +15,9 @@ import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 public class Intake extends SubsystemBase {
   
   private static final VictorSPX INTAKE_VICTOR = RobotMap.INTAKE_VICTOR;
-  private static final Solenoid INTAKE_UP_SOLENOID = RobotMap.INTAKE_UP_SOLENOID;
-  private static final Solenoid INTAKE_DOWN_SOLENOID = RobotMap.INTAKE_DOWN_SOLENOID;
-  private static INTAKE_ENUM intake_pos = INTAKE_ENUM.UP;
+  private static final Solenoid INTAKE_MAIN_SOLENOID = RobotMap.INTAKE_MAIN_SOLENOID;
+  private static final Solenoid INTAKE_SECONDARY_SOLENOID = RobotMap.INTAKE_SECONDARY_SOLENOID;
+  private static INTAKE_ENUM intake_pos = INTAKE_ENUM.FULL_UP;
 
   
   /** Creates a new Intake and sets inversion */
@@ -33,21 +33,21 @@ public class Intake extends SubsystemBase {
   public void setIntakeSolenoids(INTAKE_ENUM pos){
     intake_pos = pos;
     switch (pos) {
-      case UP:
-        INTAKE_UP_SOLENOID.set(false);
-        INTAKE_DOWN_SOLENOID.set(false);
+      case FULL_UP:
+        INTAKE_MAIN_SOLENOID.set(false);
+        INTAKE_SECONDARY_SOLENOID.set(false);
         break;
-      case DOWN:
-        INTAKE_UP_SOLENOID.set(true);
-        INTAKE_DOWN_SOLENOID.set(true);
+      case FULL_DOWN:
+        INTAKE_MAIN_SOLENOID.set(true);
+        INTAKE_SECONDARY_SOLENOID.set(true);
         break;
-      case SOFT:
-        INTAKE_DOWN_SOLENOID.set(true);
-        INTAKE_UP_SOLENOID.set(false);
+      case PARTIAL_DOWN:
+        INTAKE_SECONDARY_SOLENOID.set(true);
+        INTAKE_MAIN_SOLENOID.set(false);
         break;
-      case FLOAT:
-        INTAKE_DOWN_SOLENOID.set(false);
-        INTAKE_UP_SOLENOID.set(true);
+      case PARTIAL_UP:
+        INTAKE_SECONDARY_SOLENOID.set(false);
+        INTAKE_MAIN_SOLENOID.set(true);
         break;  
       default:
         break;

@@ -27,7 +27,7 @@ public final class Constants {
         public static final int RATCHET_SOLENOID_PORT = 0;
         public static final int CLAW_SOLENOID_PORT = 1;
         //"double solenoids" have 4 permutations. Normal solenoids only have 2 states
-        public static enum INTAKE_ENUM {UP, DOWN, FLOAT, SOFT};
+        public static enum INTAKE_ENUM {FULL_UP, FULL_DOWN, PARTIAL_UP, PARTIAL_DOWN};
         public static enum ARM_ENUM {HORIZONTAL, VERTICAL, FLOAT, BOTH};
         public static enum CLAW_ENUM {OPEN, CLOSED};
         public static enum RATCHET_ENUM {RATCHETING, FREE};
