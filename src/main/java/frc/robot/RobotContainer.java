@@ -34,6 +34,8 @@ import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Drivetrain.JoyDrive;
 import frc.robot.commands.Drivetrain.LimeTurn;
 import frc.robot.commands.Intake.IntakeButtonCommand;
+import frc.robot.commands.Intake.IntakeIn;
+import frc.robot.commands.Intake.IntakeOff;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.MoveIntakeDown;
 import frc.robot.commands.Intake.MoveIntakeFloat;
@@ -139,7 +141,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    Buttons.INTAKE_BUTTON.whenHeld(new IntakeButtonCommand(M_INTAKE))
+    Buttons.INTAKE_BUTTON.whenHeld(new IntakeIn(M_INTAKE)).whenReleased(new IntakeOff(M_INTAKE))
     .whenHeld(new MagIntake(M_MAGAZINE));
 
     Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));

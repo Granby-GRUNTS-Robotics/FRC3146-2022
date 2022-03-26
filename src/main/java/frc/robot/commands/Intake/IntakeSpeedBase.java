@@ -10,10 +10,10 @@ import frc.robot.subsystems.Intake;
 /**intake for autonomous */
 public class IntakeSpeedBase extends CommandBase {
   private Intake intake;
-  boolean ends;
+  boolean is_instantaneous;
   protected double percent;
-  public IntakeSpeedBase(Intake intake, boolean ends) {
-    this.ends = ends;
+  public IntakeSpeedBase(Intake intake, boolean is_instantaneous) {
+    this.is_instantaneous = is_instantaneous;
     this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
@@ -26,10 +26,10 @@ public class IntakeSpeedBase extends CommandBase {
   }
   @Override
   public void end(boolean interrupted) {
-      if(!ends)intake.setIntakePercent(0);
+      if(!is_instantaneous)intake.setIntakePercent(0);
   }
   @Override
   public boolean isFinished() {
-      return ends;
+      return is_instantaneous;
   }
 }
