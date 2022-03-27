@@ -14,6 +14,6 @@ import frc.robot.subsystems.Shooter;
 public class ShootLime extends ShootBase{
     public ShootLime(Magazine magazine, Shooter shooter, LimeLight limeLight, Intake intake){
         super(magazine, shooter, new RevUpLime(shooter, limeLight), intake);
-        addCommands(new LimeTurnOff(limeLight));
+        //addCommands(new LimeTurnOff(limeLight));
     }
 }

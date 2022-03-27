@@ -19,6 +19,6 @@ public class LimeTurnAndShoot extends SequentialCommandGroup {
   public LimeTurnAndShoot(Drivetrain drivetrain, LimeLight limeLight, Shooter shooter, Magazine magazine, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new LimeTurnOn(limeLight), new LimeTurn(drivetrain, limeLight), new ShootLime(magazine, shooter, limeLight, intake));
+    addCommands(new LimeTurn(drivetrain, limeLight), new ShootLime(magazine, shooter, limeLight, intake));
   }
 }

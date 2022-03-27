@@ -89,20 +89,28 @@ public class RobotMap {
         public static final Button SHOOT_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 1);
         public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
         public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
+        public static final Button LIME_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 6);
 
         public static final Trigger LOW_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
                 return LOW_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
             };
         });
+
+        public static final Trigger LIME_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
+            public boolean getAsBoolean() {
+                return LIME_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+            };
+        });
+
         public static final Trigger HIGH_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
                 return HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
             };
         });
-        public static final Trigger LIME_SHOOT_TRIGGER = new Trigger(new BooleanSupplier() {
+        public static final Trigger LIME_TURN_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
-                return !LOW_GOAL_BUTTON.get() && !HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+                return !LIME_GOAL_BUTTON.get() && !LOW_GOAL_BUTTON.get() && !HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
             };
         });
         

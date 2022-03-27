@@ -140,7 +140,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    Buttons.INTAKE_BUTTON.whenHeld(new IntakeIn(M_INTAKE)).whenReleased(new IntakeOff(M_INTAKE))
+    Buttons.INTAKE_BUTTON.whenHeld(new IntakeButtonCommand(M_INTAKE))
     .whenHeld(new MagIntake(M_MAGAZINE));
 
     Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));
@@ -154,8 +154,8 @@ public class RobotContainer {
 
     Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER, M_INTAKE));
     Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER, M_INTAKE));
-    Buttons.LIME_SHOOT_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
-    
+    Buttons.LIME_TURN_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
+    Buttons.LIME_GOAL_TRIGGER.whileActiveOnce(new ShootLime(M_MAGAZINE, M_SHOOTER,M_LIME_LIGHT,M_INTAKE));
     
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))

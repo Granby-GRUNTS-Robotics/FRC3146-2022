@@ -171,7 +171,7 @@ public class StateCommand extends CommandBase {
       break;
       case PULL_UNTIL_SWITCH:
         try {
-          climb.setClimbPercent(-0.4);
+          climb.setClimbPercent(-0.6);
         } catch (Exception e) {
           // TODO Auto-generated catch block
           e.printStackTrace();

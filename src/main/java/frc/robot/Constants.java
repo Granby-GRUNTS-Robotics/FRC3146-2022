@@ -83,7 +83,7 @@ public final class Constants {
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
         //PID, motion control, feed forward values
-        public static final double SHOOTER_kP = 0.00015;
+        public static final double SHOOTER_kP = 0.00025;
         public static final double SHOOTER_kD = 0;
         public static final double SHOOTER_kS = 0.161;
         public static final double SHOOTER_kV = 0.000185;
@@ -126,7 +126,7 @@ public final class Constants {
     public static final class SetpointConstants{
         public static final double SHOOTER_SPEED_LOW = 2000;
         public static final double SHOOTER_SPEED_HIGH = 3660;
-        public static final double SHOOTER_PRECISISON = 30
+        public static final double SHOOTER_PRECISISON = 40
         ;
         public static final double PROTECTED_SHOOTING_ANGLE = -28.30;
         public static final double PROTECTED_SHOOTING_SPEED = 0;
