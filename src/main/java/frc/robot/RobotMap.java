@@ -51,7 +51,7 @@ public class RobotMap {
 
     //victors
     public static final TalonSRX CLIMB_DRIVE_TALON = new TalonSRX(MotorConstants.CLIMB_LEAD_TALON_ID);
-    public static final VictorSPX CLIMB_FOLLOW_VICTOR = new VictorSPX(MotorConstants.CLIMB_FOLLOW_VICTOR_ID);
+    public static final TalonSRX CLIMB_FOLLOW_TALON = new TalonSRX(MotorConstants.CLIMB_FOLLOW_TALON_ID);
     public static final VictorSPX INTAKE_VICTOR = new VictorSPX(MotorConstants.INTAKE_VICTOR_ID);
     public static final VictorSPX MAGAZINE_VICTOR = new VictorSPX(MotorConstants.MAGAZINE_VICTOR_ID);
 
