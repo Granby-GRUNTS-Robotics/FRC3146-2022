@@ -45,7 +45,7 @@ public final class Constants {
 
         //CTRE (victors and talons)
         public static final int CLIMB_LEAD_TALON_ID = 11;
-        public static final int CLIMB_FOLLOW_VICTOR_ID = 10;
+        public static final int CLIMB_FOLLOW_TALON_ID = 10;
         public static final int INTAKE_VICTOR_ID = 12;
         public static final int MAGAZINE_VICTOR_ID = 5;
     }
@@ -105,8 +105,8 @@ public final class Constants {
         public static final double CLIMB_UP_ARB_FF = 0;
         public static final double CLIMB_DOWN_ARB_FF = 12;
 
-        public static final double CLIMB_MAX_ACC = 20;
-        public static final double CLIMB_CRUISE = 40
+        public static final double CLIMB_MAX_ACC = 10;
+        public static final double CLIMB_CRUISE = 20
         ;
         
         public static final double HOOK_UP_kP = 0.05;

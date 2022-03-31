@@ -31,7 +31,8 @@ import frc.robot.RobotMap;
 
 public class Climb extends SubsystemBase {
 
-  private NetworkTableEntry currentEntry;
+  private NetworkTableEntry leadCurrentEntry;
+  private NetworkTableEntry followCurrentEntry;
   private NetworkTableEntry hookedEntry;
   private NetworkTableEntry positionEntry;
 
@@ -46,21 +47,22 @@ public class Climb extends SubsystemBase {
 
   private double goal_height = 0;
 
-  private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_DRIVE_TALON;
-  private static final VictorSPX FOLLOW_VICTOR = RobotMap.CLIMB_FOLLOW_VICTOR;
+  private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_FOLLOW_TALON;
+  private static final TalonSRX FOLLOW_TALON = RobotMap.CLIMB_DRIVE_TALON;
   private static final AnalogInput POTENTIOMETER = RobotMap.CLIMB_POTENTIOMETER;
   private static final DigitalInput CLIMB_LIMIT_SWITCH = RobotMap.CLIMB_LIMIT_SWITCH;
 
   /** Creates a new Climb. */
   public Climb() {
-    FOLLOW_VICTOR.follow(CLIMB_TALON);
-    FOLLOW_VICTOR.setInverted(false);
+    FOLLOW_TALON.follow(CLIMB_TALON);
+    FOLLOW_TALON.setInverted(false);
     CLIMB_TALON.setInverted(false);
     CLIMB_TALON.setSelectedSensorPosition(0);
     CLIMB_TALON.setSensorPhase(true); // clockwise looking at the encoder from the outside moves the hook out. Reversed Talon to make positive outwards. Reversed Sensor to match Talon
     
     //limits current draw to 35 amps
     CLIMB_TALON.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 50, 0, 0.5));
+    FOLLOW_TALON.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 50, 0, 0.5));
     
     CLIMB_TALON.config_kP(0, ControlConstants.HOOK_UP_kP);
     CLIMB_TALON.config_kD(0, ControlConstants.HOOK_UP_kD);
@@ -80,7 +82,8 @@ public class Climb extends SubsystemBase {
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable climbTable = inst.getTable("climb");
-    currentEntry = climbTable.getEntry("current");
+    leadCurrentEntry = climbTable.getEntry("lead climb current");
+    followCurrentEntry = climbTable.getEntry("follow climb current");
     positionEntry = climbTable.getEntry("position");
     hookedEntry = climbTable.getEntry("is_hooked");
   }
@@ -263,7 +266,8 @@ public class Climb extends SubsystemBase {
     if ((percent > 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
     }else{
-    CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, percent);}
+    CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, percent);
+  }
   }
 
   /**
@@ -333,15 +337,18 @@ public class Climb extends SubsystemBase {
    * @return true if current of lead motor exceeds climb threshold
    */
   public boolean isHooked(){
-    return (getStatorCurrent() < MotorConstants.CLIMB_AMPS); 
+    return (getLeadStatorCurrent() < MotorConstants.CLIMB_AMPS); 
   }
 
   /**
    * 
    * @return the current being drawn by the Lead Talon in amps
    */
-  public double getStatorCurrent(){
+  public double getLeadStatorCurrent(){
     return CLIMB_TALON.getStatorCurrent();
+  }
+  public double getFollowStatorCurrent(){
+    return FOLLOW_TALON.getStatorCurrent();
   }
 
   /**
@@ -400,11 +407,17 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Climb Limit Switch", getLimitSwitch());
-    currentEntry.setNumber(getStatorCurrent());
+    SmartDashboard.putNumber("Ratiod", getLeadStatorCurrent()/getFollowStatorCurrent());
+    leadCurrentEntry.setNumber(getLeadStatorCurrent());
+    followCurrentEntry.setNumber(getFollowStatorCurrent());
+    SmartDashboard.putNumber("Lead Motor Voltage", CLIMB_TALON.getMotorOutputVoltage());
+    SmartDashboard.putNumber("Follow Motor Voltage", FOLLOW_TALON.getMotorOutputVoltage());
+    SmartDashboard.putNumber("Lead Motor Control Temp", CLIMB_TALON.getTemperature());
+    SmartDashboard.putNumber("Follow Mototr Control Temp", FOLLOW_TALON.getTemperature());
     positionEntry.setNumber(getPosition());
     SmartDashboard.putNumber("Position Error", goal_height - getPosition());
     SmartDashboard.putNumber("Error", getError()* ControlConstants.CLIMB_ENCODER_TO_DISTANCE);
-    SmartDashboard.putNumber("Climb Velocity", getVelocity());
+    SmartDashboard.putNumber("Climb Velocity", getVelocity()); 
     hookedEntry.setBoolean(isHooked());
     SmartDashboard.putNumber("potentiometer", getPotentiometer());
     SmartDashboard.putNumber("Goal height", goal_height);
