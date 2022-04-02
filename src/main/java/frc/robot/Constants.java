@@ -83,7 +83,7 @@ public final class Constants {
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
         //PID, motion control, feed forward values
-        public static final double SHOOTER_kP = 0.00025;
+        public static final double SHOOTER_kP = 0.00027;
         public static final double SHOOTER_kD = 0;
         public static final double SHOOTER_kS = 0.161;
         public static final double SHOOTER_kV = 0.000185;
@@ -105,8 +105,8 @@ public final class Constants {
         public static final double CLIMB_UP_ARB_FF = 0;
         public static final double CLIMB_DOWN_ARB_FF = 12;
 
-        public static final double CLIMB_MAX_ACC = 10;
-        public static final double CLIMB_CRUISE = 20
+        public static final double CLIMB_MAX_ACC = 20;
+        public static final double CLIMB_CRUISE = 40;
         ;
         
         public static final double HOOK_UP_kP = 0.05;
@@ -118,7 +118,7 @@ public final class Constants {
         public static final double HOOK_DOWN_kF = 0.227;
         
         //drivetrain control constants
-        public static final double kTHROTTLE_MULTIPLIER = 30;
+        public static final double kTHROTTLE_MULTIPLIER = 100;
         public static final double kTWIST_MULTIPLIER = 40;
         public static final double WHEEL_DIAMETER = 5.9; // approx in inches
     }
@@ -126,11 +126,11 @@ public final class Constants {
     public static final class SetpointConstants{
         public static final double SHOOTER_SPEED_LOW = 2000;
         public static final double SHOOTER_SPEED_HIGH = 3660;
-        public static final double SHOOTER_PRECISISON = 40
+        public static final double SHOOTER_PRECISISON = 30
         ;
         public static final double PROTECTED_SHOOTING_ANGLE = -28.30;
         public static final double PROTECTED_SHOOTING_SPEED = 0;
-        public static final double MAGAZINE_SPEED = 0.8;
+        public static final double MAGAZINE_SPEED = 0.6;
         public static final double MAGAZINE_INTAKE_SPEED = 0.6;
         public static final double MAGAZINE_PRECISION = 10;
         public static final double MAGAZINE_BACKSPACE_DISTANCE = -0.05;
@@ -151,7 +151,8 @@ public final class Constants {
 
     public static final class LimeLightConstants{
         public static final double GOAL_RELATIVE_HEIGHT_FEET = 5.91;
-        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(45);
+        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(45
+        );
         public static final double LIME_FIXER_VALUE = 100.;
     }
 }

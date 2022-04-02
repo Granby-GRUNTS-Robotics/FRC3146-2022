@@ -160,7 +160,7 @@ public class RobotContainer {
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-    Buttons.CLIMB_BACKWARDS_BUTTON
+    Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
     
   }
