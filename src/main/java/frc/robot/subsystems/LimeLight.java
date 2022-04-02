@@ -49,6 +49,14 @@ public class LimeLight extends SubsystemBase {
   }
 
   /**
+   * 
+   * @return true if leds are on, false if leds are off
+   */
+  public boolean getLedMode() {
+      return (ledMode.getDouble(0.0) == 3);
+  }
+
+  /**
    * turns on or off Limelight LEDs
    * @param state true is on, false is off
    */
@@ -70,7 +78,7 @@ public class LimeLight extends SubsystemBase {
    * @return whether or not the limelight has a valid target
    */
   public boolean hasTarget(){
-    return tv.getNumber(0.0) == (Number)1.0;
+    return tv.getDouble(0.0) == 1.0;
   }
 
   //in case we ever need to augment the calculations. Which, let's all be honest, we probably will have to. So I added in a basic thing for testing

@@ -87,6 +87,7 @@ public class RobotMap {
         public static final Button INTAKE_PARTIAL_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
 
         public static final Button SHOOT_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 1);
+        public static final Button SLOW_MODE_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 2);
         public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
         public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
         public static final Button LIME_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 6);

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.RobotMap.Buttons;
+import frc.robot.commands.LimeToggle;
 import frc.robot.commands.LimeTurnAndShoot;
 import frc.robot.commands.LimeTurnOff;
 import frc.robot.commands.LimeTurnOn;
@@ -143,9 +144,11 @@ public class RobotContainer {
     Buttons.INTAKE_BUTTON.whenHeld(new IntakeButtonCommand(M_INTAKE))
     .whenHeld(new MagIntake(M_MAGAZINE));
 
-    Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));
-    Buttons.INTAKE_PARTIAL_UP_BUTTON.whenPressed(new MoveIntakePartialUp(M_INTAKE));
-    Buttons.INTAKE_PARTIAL_DOWN_BUTTON.whenPressed(new MoveIntakePartialDown(M_INTAKE));
+    Buttons.SLOW_MODE_BUTTON.whenPressed(new LimeToggle(M_LIME_LIGHT));
+
+    Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
+    Buttons.INTAKE_PARTIAL_UP_BUTTON.whenPressed(new MoveIntakePartialUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
+    Buttons.INTAKE_PARTIAL_DOWN_BUTTON.whenPressed(new MoveIntakePartialDown(M_INTAKE).andThen(new IntakeIn(M_INTAKE)));
     Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE));
 
     Buttons.EJECT_BUTTON.whenHeld(new MagazineOut(M_MAGAZINE)).whenHeld(new IntakeOut(M_INTAKE));
