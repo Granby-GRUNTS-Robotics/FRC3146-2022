@@ -170,8 +170,9 @@ public class StateCommand extends CommandBase {
         setHook(HOOK_ENUM.OFF_PREVIOUS);
       break;
       case PULL_UNTIL_SWITCH:
+        climb.setArm(ARM_ENUM.FLOAT);
         try {
-          climb.setClimbPercent(-0.6);
+          climb.setClimbPercent(-1.0);
         } catch (Exception e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
@@ -243,8 +244,8 @@ public class StateCommand extends CommandBase {
         break;
     }
     
-    if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.HOOK_RETRACTED || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
-      if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
+    if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.PULL_UNTIL_SWITCH || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
+      if (active_state == BIG_CLIMB_ENUM.PULL_UNTIL_SWITCH){
         if (climb.getPosition() > 15.0){
           climb.setClaw(CLAW_ENUM.OPEN);
           climb.setArm(ARM_ENUM.VERTICAL);
