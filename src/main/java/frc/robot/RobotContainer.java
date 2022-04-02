@@ -149,7 +149,7 @@ public class RobotContainer {
     Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
     Buttons.INTAKE_PARTIAL_UP_BUTTON.whenPressed(new MoveIntakePartialUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
     Buttons.INTAKE_PARTIAL_DOWN_BUTTON.whenPressed(new MoveIntakePartialDown(M_INTAKE).andThen(new IntakeIn(M_INTAKE)));
-    Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE));
+    Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE).andThen(new IntakeIn(M_INTAKE)));
 
     Buttons.EJECT_BUTTON.whenHeld(new MagazineOut(M_MAGAZINE)).whenHeld(new IntakeOut(M_INTAKE));
 
