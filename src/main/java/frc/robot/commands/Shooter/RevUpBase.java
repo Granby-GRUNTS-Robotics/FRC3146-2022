@@ -14,9 +14,17 @@ public class RevUpBase extends CommandBase {
 
   protected final Shooter shooter; 
   protected double speed;
+  protected double precision = SetpointConstants.SHOOTER_PRECISISON;
+  boolean instant = false;
   
   public RevUpBase(Shooter shooter) {
     this.shooter = shooter;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
+  }
+  public RevUpBase(Shooter shooter, boolean instant) {
+    this.shooter = shooter;
+    this.instant = instant;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
@@ -35,6 +43,6 @@ public class RevUpBase extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(shooter.getError()) < SetpointConstants.SHOOTER_PRECISISON;
+    return instant ? true : Math.abs(shooter.getError()) < precision;
   }
 }

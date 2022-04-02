@@ -19,6 +19,7 @@ import frc.robot.commands.LimeTurnOff;
 import frc.robot.commands.LimeTurnOn;
 import frc.robot.commands.Autonomous.AutoFromLine;
 import frc.robot.commands.Autonomous.AutoWithTurn;
+import frc.robot.commands.Autonomous.FourBallAuto;
 import frc.robot.commands.Climb.ClimbPidTune;
 import frc.robot.commands.Climb.ClimbSetMove;
 import frc.robot.commands.Climb.ClimbSetSpeed;
@@ -81,7 +82,8 @@ public class RobotContainer {
     SmartDashboard.setDefaultNumber("Auto Start Time", 0);
     auto_chooser.addOption("Line", new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     auto_chooser.addOption("Turn", new AutoWithTurn(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
-    SmartDashboard.putData(auto_chooser);
+    auto_chooser.addOption("4 Ball Test", new FourBallAuto(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER, M_LIME_LIGHT));
+    SmartDashboard.putData("auto chooser", auto_chooser);
     SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
     SmartDashboard.putData("Reset Climb Encoder", new InstantCommand(()->M_CLIMB.resetEncoder(), M_CLIMB));
     
@@ -157,8 +159,8 @@ public class RobotContainer {
 
     Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootShuffleBoard(M_MAGAZINE,M_SHOOTER, M_INTAKE));
     Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER, M_INTAKE));
-    Buttons.LIME_TURN_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
-    Buttons.LIME_GOAL_TRIGGER.whileActiveOnce(new ShootLime(M_MAGAZINE, M_SHOOTER,M_LIME_LIGHT,M_INTAKE));
+    //Buttons.LIME_TURN_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
+    Buttons.LIME_GOAL_TRIGGER.whileActiveOnce(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE,M_INTAKE));
     
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))

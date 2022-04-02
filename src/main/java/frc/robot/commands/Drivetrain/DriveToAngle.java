@@ -52,6 +52,6 @@ public class DriveToAngle extends CommandBase {
     if (Math.abs(drivetrain.getAngularError()) < 2){
       counter++;
     }else counter = 0;
-    return counter > 20;
+    return counter > 10;
   }
 }

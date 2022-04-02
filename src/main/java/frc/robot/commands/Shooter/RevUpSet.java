@@ -8,6 +8,11 @@ import frc.robot.subsystems.Shooter;
 /**revs up with arbitrarily defined speed. Great for repeatable auto shots */
 public class RevUpSet extends RevUpBase {
   /** Creates a new SetShooterSpeed. */
+  public RevUpSet(Shooter shooter, double speed, boolean instant) {
+    super(shooter, instant);
+    this.speed = speed;
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
   public RevUpSet(Shooter shooter, double speed) {
     super(shooter);
     this.speed = speed;

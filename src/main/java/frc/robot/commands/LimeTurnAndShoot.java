@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Drivetrain.LimeTurn;
+import frc.robot.commands.Magazine.BackSpace;
+import frc.robot.commands.Shooter.RevUpLime;
 import frc.robot.commands.Shooter.ShootLime;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -19,6 +21,7 @@ public class LimeTurnAndShoot extends SequentialCommandGroup {
   public LimeTurnAndShoot(Drivetrain drivetrain, LimeLight limeLight, Shooter shooter, Magazine magazine, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new LimeTurn(drivetrain, limeLight), new ShootLime(magazine, shooter, limeLight, intake));
+    addCommands(new BackSpace(magazine, intake),
+     new RevUpLime(shooter, limeLight, true), new LimeTurn(drivetrain, limeLight), new ShootLime(magazine, shooter, limeLight, intake));
   }
 }

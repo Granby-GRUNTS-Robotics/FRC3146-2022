@@ -14,6 +14,7 @@ public class BackSpace extends MagMoveBase {
   public BackSpace(Magazine magazine, Intake intake) {
     super(magazine);
     this.intake = intake;
+    speed = 0.6;
     movement_time = SetpointConstants.MAGAZINE_BACKSPACE_DISTANCE;
     addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.

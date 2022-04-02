@@ -17,10 +17,12 @@ public class LimeToggle extends InstantCommand {
     addRequirements(limeLight);
     // Use addRequirements() here to declare subsystem dependencies.
   }
+  public static boolean state = false;
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    limeLight.setLEDS(!limeLight.getLedMode());
+    state = !state;
+    limeLight.setLEDS(!state);
   }
 }

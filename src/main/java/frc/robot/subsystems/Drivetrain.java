@@ -97,6 +97,8 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Drive Fused Heading", getFusedHeading());
     SmartDashboard.putNumber("Goal Angle", goal_angle);
+    SmartDashboard.putNumber("Goal Distance", goal_position);
+    SmartDashboard.putNumber("Position", getLeftPosition());
     // This method will be called once per scheduler run
   }
 
@@ -183,7 +185,10 @@ public class Drivetrain extends SubsystemBase {
     LEFT_DRIVE_ENCODER.setPosition(0);
     RIGHT_DRIVE_ENCODER.setPosition(0);
   }
-
+  public double stickyheading;
+  public void setStickyHeading(){
+    stickyheading = getFusedHeading();
+  }
   /**
    * 
    * @return the fused heading of the PigeonIMU, in degrees

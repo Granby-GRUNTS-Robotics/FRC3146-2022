@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.robot.commands.Intake.IntakeFeed;
 import frc.robot.commands.Magazine.Feed;
+import frc.robot.commands.Magazine.MagMoveBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 
@@ -15,9 +16,9 @@ import frc.robot.subsystems.Magazine;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MagazineAndIntakeFeed extends ParallelRaceGroup {
   /** Creates a new MagazineAndIntakeFeed. */
-  public MagazineAndIntakeFeed(Intake intake, Magazine magazine) {
+  public MagazineAndIntakeFeed(Intake intake, MagMoveBase base) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new Feed(magazine), new IntakeFeed(intake));
+    addCommands(base, new IntakeFeed(intake));
   }
 }
