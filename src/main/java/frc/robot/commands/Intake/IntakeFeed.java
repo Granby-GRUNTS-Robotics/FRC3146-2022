@@ -4,14 +4,12 @@
 
 package frc.robot.commands.Intake;
 
-import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 import frc.robot.subsystems.Intake;
 
-/** Intake Float*/
-public class MoveIntakeFloat extends MoveIntakeBase {
-    public MoveIntakeFloat(Intake intake) {
-        super(intake);
-        pos = INTAKE_ENUM.FLOAT;
+/** moves the intake for picking up balls */
+public class IntakeFeed extends IntakeSpeedBase{
+    public IntakeFeed(Intake intake){
+        super(intake, false);
+        percent = 0.3;
     }
-    
 }

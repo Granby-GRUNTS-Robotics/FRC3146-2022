@@ -170,8 +170,9 @@ public class StateCommand extends CommandBase {
         setHook(HOOK_ENUM.OFF_PREVIOUS);
       break;
       case PULL_UNTIL_SWITCH:
+        climb.setArm(ARM_ENUM.FLOAT);
         try {
-          climb.setClimbPercent(-0.4);
+          climb.setClimbPercent(-1.0);
         } catch (Exception e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
@@ -230,17 +231,32 @@ public class StateCommand extends CommandBase {
         if (climb.isAtPosition() || passedTimeGoal()) substate_finished = true;
         break;
       case LIMIT_SWITCH:
-        if (climb.getLimitSwitch()) substate_finished = true;
+        if (climb.getLimitSwitch()) {
+          substate_finished = true;
+          try {
+            climb.setClimbPercent(0);
+          } catch (Exception e) {
+            //TODO: handle exception
+          }
+        }
         break;
       default:
         break;
     }
     
-    if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.HOOK_RETRACTED || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
-      if (active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
+    if (active_state == BIG_CLIMB_ENUM.HOOK_CAPTURING || active_state == BIG_CLIMB_ENUM.PULL_UNTIL_SWITCH || active_state == BIG_CLIMB_ENUM.PULLWITHPNEUMATICS){
+      if (active_state == BIG_CLIMB_ENUM.PULL_UNTIL_SWITCH){
         if (climb.getPosition() > 15.0){
           climb.setClaw(CLAW_ENUM.OPEN);
           climb.setArm(ARM_ENUM.VERTICAL);
+        }
+      }
+      if (climb.getLimitSwitch()) {
+        try {
+          climb.setClimbPercent(0);
+          climb.clearMotionProfile();
+        } catch (Exception e) {
+          //TODO: handle exception
         }
       }
     }

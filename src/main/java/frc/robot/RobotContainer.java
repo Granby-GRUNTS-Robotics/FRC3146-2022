@@ -13,10 +13,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ControlConstants.BIG_CLIMB_ENUM;
 import frc.robot.RobotMap.Buttons;
+import frc.robot.commands.LimeToggle;
+import frc.robot.commands.LimeTurnAndShoot;
 import frc.robot.commands.LimeTurnOff;
 import frc.robot.commands.LimeTurnOn;
 import frc.robot.commands.Autonomous.AutoFromLine;
 import frc.robot.commands.Autonomous.AutoWithTurn;
+import frc.robot.commands.Autonomous.FourBallAuto;
+import frc.robot.commands.Climb.ClimbPidTune;
+import frc.robot.commands.Climb.ClimbSetMove;
+import frc.robot.commands.Climb.ClimbSetSpeed;
+import frc.robot.commands.Climb.ClimbSetVoltage;
 import frc.robot.commands.Climb.DecrementClimbState;
 import frc.robot.commands.Climb.IncrementClimbState;
 import frc.robot.commands.Climb.ManualClimbMotor;
@@ -25,10 +32,12 @@ import frc.robot.commands.Climb.StateCommand;
 import frc.robot.commands.Drivetrain.JoyDrive;
 import frc.robot.commands.Drivetrain.LimeTurn;
 import frc.robot.commands.Intake.IntakeButtonCommand;
+import frc.robot.commands.Intake.IntakeIn;
+import frc.robot.commands.Intake.IntakeOff;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.MoveIntakeDown;
-import frc.robot.commands.Intake.MoveIntakeFloat;
-import frc.robot.commands.Intake.MoveIntakeSoft;
+import frc.robot.commands.Intake.MoveIntakePartialDown;
+import frc.robot.commands.Intake.MoveIntakePartialUp;
 import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Magazine.MagIntake;
 import frc.robot.commands.Magazine.MagazineOut;
@@ -65,7 +74,12 @@ public class RobotContainer {
     SmartDashboard.setDefaultNumber("Auto Start Time", 0);
     auto_chooser.addOption("Line", new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     auto_chooser.addOption("Turn", new AutoWithTurn(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
-    SmartDashboard.putData(auto_chooser);
+    
+    auto_chooser.addOption("4 Ball Test", new FourBallAuto(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER, M_LIME_LIGHT));
+    SmartDashboard.putData("auto chooser", auto_chooser);
+    SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
+    SmartDashboard.putData("Reset Climb Encoder", new InstantCommand(()->M_CLIMB.resetEncoder(), M_CLIMB));
+    
     SmartDashboard.putData("ManualClimbMotor (Joystick-Controlled)", new ManualClimbMotor(M_CLIMB, Buttons.BUTTON_Y));
 
     SmartDashboard.putData("LimeLED On", new LimeTurnOn(M_LIME_LIGHT));
@@ -87,19 +101,21 @@ public class RobotContainer {
     Buttons.INTAKE_BUTTON.whenHeld(new IntakeButtonCommand(M_INTAKE))
     .whenHeld(new MagIntake(M_MAGAZINE));
 
-    Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE));
-    Buttons.INTAKE_FLOAT_BUTTON.whenPressed(new MoveIntakeFloat(M_INTAKE));
-    Buttons.INTAKE_SOFT_BUTTON.whenPressed(new MoveIntakeSoft(M_INTAKE));
-    Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE));
+    Buttons.SLOW_MODE_BUTTON.whenPressed(new LimeToggle(M_LIME_LIGHT));
+
+    Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
+    Buttons.INTAKE_PARTIAL_UP_BUTTON.whenPressed(new MoveIntakePartialUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
+    Buttons.INTAKE_PARTIAL_DOWN_BUTTON.whenPressed(new MoveIntakePartialDown(M_INTAKE).andThen(new IntakeIn(M_INTAKE)));
+    Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE).andThen(new IntakeIn(M_INTAKE)));
 
     Buttons.EJECT_BUTTON.whenHeld(new MagazineOut(M_MAGAZINE)).whenHeld(new IntakeOut(M_INTAKE));
 
     Buttons.SHOOT_BUTTON.whenReleased(new ShooterBrake(M_SHOOTER));
 
-    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootLow(M_MAGAZINE,M_SHOOTER));
-    Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER));
-    Buttons.LIME_SHOOT_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
-    
+    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootLow(M_MAGAZINE,M_SHOOTER, M_INTAKE));
+    Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER, M_INTAKE));
+    //Buttons.LIME_TURN_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
+    Buttons.LIME_GOAL_TRIGGER.whileActiveOnce(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE,M_INTAKE));
     
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))

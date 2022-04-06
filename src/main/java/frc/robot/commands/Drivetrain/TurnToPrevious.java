@@ -2,26 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LimeLight;
-/**turns on limelight LEDs. Only finishes when a good target is found
- * Might want to add a mode that lets you turn while searching for a good target, then lock on.
- */
-public class LimeTurnOn extends CommandBase {
-  /** Creates a new TurnOnLimeLight. */
-  private LimeLight limeLight;
-  public LimeTurnOn(LimeLight limeLight) {
-    this.limeLight = limeLight;
-    addRequirements(limeLight);
+import frc.robot.subsystems.Drivetrain;
+
+public class TurnToPrevious extends DriveToAngle {
+  /** Creates a new TurnToPrevious. */
+  public TurnToPrevious(Drivetrain drivetrain) {
+    super(drivetrain, 0);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    limeLight.setLEDS(true);
+    
+    super.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +31,6 @@ public class LimeTurnOn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return 
-    limeLight.hasTarget();
+    return false;
   }
 }

@@ -5,13 +5,14 @@
 package frc.robot.commands.Shooter;
 
 import frc.robot.Constants.SetpointConstants;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
 /** high shot */
 public class ShootHigh extends ShootBase {
 
-    public ShootHigh(Magazine magazine, Shooter shooter)  {
-        super(magazine, shooter, new RevUpSet(shooter, SetpointConstants.SHOOTER_SPEED_HIGH));
+    public ShootHigh(Magazine magazine, Shooter shooter, Intake intake)  {
+        super(magazine, shooter, new RevUpSet(shooter, SetpointConstants.SHOOTER_SPEED_HIGH), intake);
         //TODO Auto-generated constructor stub
     }}

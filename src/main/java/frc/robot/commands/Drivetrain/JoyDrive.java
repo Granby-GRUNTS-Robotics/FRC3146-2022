@@ -32,7 +32,7 @@ public class JoyDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drive.setBrakeMode(IdleMode.kCoast);
+    drive.setBrakeMode(IdleMode.kBrake);
 
     drive.setPIDF(0, 0, ControlConstants.DRIVE_VELOCITY_kV, 0);
     SmartDashboard.putData("slowmode chooser" , modechooser);
@@ -52,16 +52,14 @@ public class JoyDrive extends CommandBase {
     }
     
     double thresh = 0.08;
-    double throttle = reversed * RobotMap.Buttons.getWithDeadZone(-joy.getY(),thresh);
-    double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist(), thresh);
+    double throttle = RobotMap.Buttons.getWithDeadZone(-joy.getY(),thresh);
+    double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist(), .15);
     
 
     double slowfinal = ((1 - joy.getRawAxis(3))/2) * difference + slowmodelo;
     SmartDashboard.putNumber("slowfinal", slowfinal);
-    MODE_ENUM mode = modechooser.getSelected();
     //if a certain button is pressed (drive 1), then the multipliers will be ehalved, for finer control of the chassis
-    if (mode == MODE_ENUM.BOTH || mode == MODE_ENUM.TWIST) twistMult = twistMult * ((joy.getRawButton(2)) ? slowfinal : 1);
-    if (mode == MODE_ENUM.BOTH || mode == MODE_ENUM.THROTTLE) throttleMult = throttleMult * ((joy.getRawButton(2)) ? slowfinal : 1);
+
     double left = throttle*throttleMult + twist*twistMult;
     double right = throttle*throttleMult - twist*twistMult;
     if(left !=0 && right !=0){

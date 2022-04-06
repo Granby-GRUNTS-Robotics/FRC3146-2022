@@ -181,7 +181,10 @@ public class Drivetrain extends SubsystemBase {
     LEFT_DRIVE_ENCODER.setPosition(0);
     RIGHT_DRIVE_ENCODER.setPosition(0);
   }
-
+  public double stickyheading;
+  public void setStickyHeading(){
+    stickyheading = getFusedHeading();
+  }
   /**
    * 
    * @return the fused heading of the PigeonIMU, in degrees

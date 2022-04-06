@@ -9,7 +9,7 @@ import frc.robot.commands.Drivetrain.DriveToAngle;
 import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOff;
-import frc.robot.commands.Intake.MoveIntakeDown;
+import frc.robot.commands.Intake.MoveIntakePartialDown;
 import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Shooter.ShootWithSetSpeed;
 import frc.robot.subsystems.Drivetrain;
@@ -27,6 +27,6 @@ public class AutoWithTurn extends SequentialCommandGroup {
   public AutoWithTurn(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MoveIntakeDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new DriveToAngle(drivetrain, 20), new ShootWithSetSpeed(magazine, shooter, 4200), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
+    addCommands(new MoveIntakePartialDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new DriveToAngle(drivetrain, 15), new ShootWithSetSpeed(magazine, shooter, 3300, intake), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
   }
 }

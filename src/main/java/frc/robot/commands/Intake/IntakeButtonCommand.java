@@ -15,9 +15,6 @@ import frc.robot.subsystems.Intake;
 public class IntakeButtonCommand extends CommandBase {
   /** Creates a new IntakeButtonCommand. */
   private Intake intake;
-  private Timer timer = new Timer();
-  private double timegoal = 0;
-  private INTAKE_ENUM start_state;
   public IntakeButtonCommand(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -34,10 +31,6 @@ public class IntakeButtonCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (timer.get() > timegoal && start_state == INTAKE_ENUM.UP){
-      if (intake.getIntakePos() != INTAKE_ENUM.SOFT)
-      intake.setIntakeSolenoids(INTAKE_ENUM.SOFT);
-    }
   }
 
   // Called once the command ends or is interrupted.
