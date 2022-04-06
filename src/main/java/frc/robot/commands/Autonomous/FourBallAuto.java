@@ -16,6 +16,7 @@ import frc.robot.commands.Intake.IntakeOff;
 import frc.robot.commands.Intake.MoveIntakePartialDown;
 import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Magazine.BackSpace;
+import frc.robot.commands.Magazine.MagIntake;
 import frc.robot.commands.Shooter.RevUpSet;
 import frc.robot.commands.Shooter.ShootWithSetSpeed;
 import frc.robot.subsystems.Magazine;
@@ -32,6 +33,14 @@ public class FourBallAuto extends SequentialCommandGroup {
   public FourBallAuto(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter, LimeLight limeLight) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new LimeTurnOn(limeLight),new MoveIntakePartialDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new BackSpace(magazine, intake), new RevUpSet(shooter, 3100, true), new DriveToAngle(drivetrain, 19), new ShootWithSetSpeed(magazine, shooter, 3170, intake),  new ParallelCommandGroup( new MoveIntakePartialDown(intake), new DriveToAngle(drivetrain, -23)),new IntakeIn(intake), new DriveToLocation(drivetrain, 165), new WaitCommand(1.0), new DriveToLocation(drivetrain, -140),  new BackSpace(magazine, intake), new RevUpSet(shooter, 3000, true), new LimeTurnAndShoot(drivetrain, limeLight, shooter, magazine, intake));
+    addCommands(
+      new LimeTurnOn(limeLight),new MoveIntakePartialDown(intake), new IntakeIn(intake), 
+      new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new BackSpace(magazine, intake), new RevUpSet(shooter, 3100, true), new DriveToAngle(drivetrain, 19), new ShootWithSetSpeed(magazine, shooter, 3170, intake),  
+      new ParallelCommandGroup( new MoveIntakePartialDown(intake), new DriveToAngle(drivetrain, -23)),new IntakeIn(intake),
+      new ParallelCommandGroup(
+        new MagIntake(magazine), 
+        new SequentialCommandGroup(
+          new DriveToLocation(drivetrain, 165), new WaitCommand(1.25), new DriveToLocation(drivetrain, -148))),  
+      new BackSpace(magazine, intake), new RevUpSet(shooter, 3000, true), new LimeTurnOn(limeLight), new LimeTurnAndShoot(drivetrain, limeLight, shooter, magazine, intake));
   }
 }
