@@ -95,10 +95,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Drive Fused Heading", getFusedHeading());
-    SmartDashboard.putNumber("Goal Angle", goal_angle);
-    SmartDashboard.putNumber("Goal Distance", goal_position);
-    SmartDashboard.putNumber("Position", getLeftPosition());
+    
     // This method will be called once per scheduler run
   }
 

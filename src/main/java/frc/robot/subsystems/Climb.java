@@ -406,21 +406,9 @@ public class Climb extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Climb Limit Switch", getLimitSwitch());
-    SmartDashboard.putNumber("Ratiod", getLeadStatorCurrent()/getFollowStatorCurrent());
-    leadCurrentEntry.setNumber(getLeadStatorCurrent());
-    followCurrentEntry.setNumber(getFollowStatorCurrent());
-    SmartDashboard.putNumber("Lead Motor Voltage", CLIMB_TALON.getMotorOutputVoltage());
-    SmartDashboard.putNumber("Follow Motor Voltage", FOLLOW_TALON.getMotorOutputVoltage());
-    SmartDashboard.putNumber("Lead Motor Control Temp", CLIMB_TALON.getTemperature());
-    SmartDashboard.putNumber("Follow Mototr Control Temp", FOLLOW_TALON.getTemperature());
+    
     positionEntry.setNumber(getPosition());
-    SmartDashboard.putNumber("Position Error", goal_height - getPosition());
-    SmartDashboard.putNumber("Error", getError()* ControlConstants.CLIMB_ENCODER_TO_DISTANCE);
-    SmartDashboard.putNumber("Climb Velocity", getVelocity()); 
-    hookedEntry.setBoolean(isHooked());
-    SmartDashboard.putNumber("potentiometer", getPotentiometer());
-    SmartDashboard.putNumber("Goal height", goal_height);
+    
     // This method will be called once per scheduler run
   }
 

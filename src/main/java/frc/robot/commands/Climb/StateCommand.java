@@ -28,7 +28,7 @@ public class StateCommand extends CommandBase {
   Timer timer = new Timer();
   double timegoal;
 
-  private BIG_CLIMB_ENUM[] state_list;
+  private BIG_CLIMB_ENUM[] state_list = {BIG_CLIMB_ENUM.RATCHET_RATCHETING};
 
   int state_state = 0;
 

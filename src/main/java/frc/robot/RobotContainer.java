@@ -17,6 +17,7 @@ import frc.robot.commands.LimeToggle;
 import frc.robot.commands.LimeTurnAndShoot;
 import frc.robot.commands.LimeTurnOff;
 import frc.robot.commands.LimeTurnOn;
+import frc.robot.commands.LimelightTune;
 import frc.robot.commands.Autonomous.AutoFromLine;
 import frc.robot.commands.Autonomous.AutoWithTurn;
 import frc.robot.commands.Autonomous.FourBallAuto;
@@ -84,24 +85,7 @@ public class RobotContainer {
     auto_chooser.addOption("Turn", new AutoWithTurn(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     auto_chooser.addOption("4 Ball Test", new FourBallAuto(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER, M_LIME_LIGHT));
     SmartDashboard.putData("auto chooser", auto_chooser);
-    SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
-    SmartDashboard.putData("Reset Climb Encoder", new InstantCommand(()->M_CLIMB.resetEncoder(), M_CLIMB));
     
-    SmartDashboard.putData("ManualClimbMotor (Joystick-Controlled)", new ManualClimbMotor(M_CLIMB, Buttons.BUTTON_Y));
-    SmartDashboard.putData("Climb PID Set", new ClimbPidTune(M_CLIMB));
-    SmartDashboard.putData("Climb Set Move", new ClimbSetMove(M_CLIMB));
-    SmartDashboard.putData("Climb Set Speed", new ClimbSetSpeed(M_CLIMB));
-    SmartDashboard.putData("Climb Set Voltage", new ClimbSetVoltage(M_CLIMB));
-    SmartDashboard.putData("Climb Set PID Port", new PIDSlotSwitch(M_CLIMB));
-    
-
-    SmartDashboard.putData("Arm Horizontal", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_HORIZONTAL));
-    SmartDashboard.putData("Arm Vertical", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_VERTICAL));
-    SmartDashboard.putData("Arm Float", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.ARM_FLOAT));
-    SmartDashboard.putData("Claw Open", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.CLAW_OPEN));
-    SmartDashboard.putData("Claw Closed", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.CLAW_CLOSED));
-    SmartDashboard.putData("Ratchet Engaged", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RATCHET_RATCHETING));
-    SmartDashboard.putData("Ratchet Free", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RACHET_FREE));
     /*
     SmartDashboard.putData("Drivetrain PID Set", new DrivePIDTune(M_DRIVETRAIN));
     SmartDashboard.putData("Drive to Location", new DriveToLocation(M_DRIVETRAIN, 24));
@@ -122,14 +106,7 @@ public class RobotContainer {
     SmartDashboard.putData("Intake Float", new MoveIntakeFloat(M_INTAKE));
     */
 
-    SmartDashboard.putData("Move To Climb State", new MoveToClimbState(M_CLIMB));
-
-    SmartDashboard.putData("Increment Climb", new IncrementClimbState(M_CLIMB));
-
-    SmartDashboard.putData("LimeLED On", new LimeTurnOn(M_LIME_LIGHT));
-    SmartDashboard.putData("LimeLED Off", new LimeTurnOff(M_LIME_LIGHT));
-    SmartDashboard.putData("Shooter PID Set", new ShooterPIDTune(M_SHOOTER));
-    SmartDashboard.putData("Manual Shooter Speed", new RevUpShuffleboard(M_SHOOTER));
+    SmartDashboard.putData("Limelight Tune", new LimelightTune(M_LIME_LIGHT));
     M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
     // Configure the button bindings
     configureButtonBindings();

@@ -151,7 +151,8 @@ public final class Constants {
 
     public static final class LimeLightConstants{
         public static final double GOAL_RELATIVE_HEIGHT_FEET = 5.91;
-        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(70
+        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(70.9
+
         );
         public static final double LIME_FIXER_VALUE = 100.;
     }
