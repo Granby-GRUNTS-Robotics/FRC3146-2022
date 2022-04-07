@@ -52,7 +52,7 @@ public class JoyDrive extends CommandBase {
     }
     
     double thresh = 0.08;
-    double throttle = RobotMap.Buttons.getWithDeadZone(-joy.getY(),thresh);
+    double throttle = RobotMap.Buttons.getWithDeadZone(-joy.getY(),.25);
     double twist = RobotMap.Buttons.getWithDeadZone(joy.getTwist(), .15);
     
 
