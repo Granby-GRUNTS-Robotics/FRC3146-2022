@@ -40,7 +40,7 @@ public class FourBallAuto extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new MagIntake(magazine), 
         new SequentialCommandGroup(
-          new DriveToLocation(drivetrain, 165), new WaitCommand(1.25), new DriveToLocation(drivetrain, -148))),  
+          new DriveToLocation(drivetrain, 170), new WaitCommand(1.25), new DriveToLocation(drivetrain, -148))),  
       new BackSpace(magazine, intake), new RevUpSet(shooter, 3000, true), new LimeTurnOn(limeLight), new LimeTurnAndShoot(drivetrain, limeLight, shooter, magazine, intake));
   }
 }

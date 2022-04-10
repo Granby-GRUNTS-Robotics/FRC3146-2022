@@ -58,7 +58,8 @@ public class RobotMap {
     //sensors
     public static final AnalogInput CLIMB_POTENTIOMETER = new AnalogInput(ControlConstants.POTENTIOMETER_PORT);
     public static final DigitalInput MAGAZINE_LIMIT_SWITCH = new DigitalInput(ControlConstants.MAGAZINE_LIMIT_SWITCH_PORT);
-    public static final DigitalInput CLIMB_LIMIT_SWITCH = new DigitalInput(ControlConstants.CLIMB_LIMIT_SWITCH_PORT);
+    public static final DigitalInput CLIMB_BAR_SWITCH = new DigitalInput(ControlConstants.CLIMB_BAR_SWITCH_PORT);
+    public static final DigitalInput CLIMB_RATCHET_SWITCH = new DigitalInput(ControlConstants.CLIMB_RATCHET_SWITCH_PORT);
 
 
     public static final PigeonIMU PIGEON = new PigeonIMU(ControlConstants.PIGEON_IMU_ID); 
@@ -117,6 +118,8 @@ public class RobotMap {
         
         public static final Button CLIMB_BACKWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 7);
         public static final Button CLIMB_FORWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 8);
+        public static final Button CLIMB_MANUAL_A = new JoystickButton(BUTTON_JOYSTICK,9);
+        public static final Button CLIMB_MANUAL_B = new JoystickButton(BUTTON_JOYSTICK,10);
     }
 
 }

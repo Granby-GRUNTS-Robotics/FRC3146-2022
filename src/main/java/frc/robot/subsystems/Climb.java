@@ -50,7 +50,9 @@ public class Climb extends SubsystemBase {
   private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_FOLLOW_TALON;
   private static final TalonSRX FOLLOW_TALON = RobotMap.CLIMB_DRIVE_TALON;
   private static final AnalogInput POTENTIOMETER = RobotMap.CLIMB_POTENTIOMETER;
-  private static final DigitalInput CLIMB_LIMIT_SWITCH = RobotMap.CLIMB_LIMIT_SWITCH;
+  private static final DigitalInput CLIMB_BAR_SWITCH = RobotMap.CLIMB_BAR_SWITCH;
+  private static final DigitalInput CLIMB_RATCHET_SWITCH = RobotMap.CLIMB_RATCHET_SWITCH;
+
 
   /** Creates a new Climb. */
   public Climb() {
@@ -123,8 +125,11 @@ public class Climb extends SubsystemBase {
       return arm_state;
   }
 
-  public boolean getLimitSwitch(){
-    return !CLIMB_LIMIT_SWITCH.get();
+  public boolean getBarSwitch(){
+    return !CLIMB_BAR_SWITCH.get();
+  }
+  public boolean getRatchetSwitch(){
+    return !CLIMB_RATCHET_SWITCH.get();
   }
 
   /** sets claw position 
@@ -406,7 +411,7 @@ public class Climb extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    
+    SmartDashboard.putBoolean("Ratchet Switch", getRatchetSwitch());
     positionEntry.setNumber(getPosition());
     
     // This method will be called once per scheduler run

@@ -21,7 +21,7 @@ import frc.robot.subsystems.Drivetrain;
 public class StateCommand extends CommandBase {
   /** Creates a new StateCommandBase. */
   private Climb climb;
-  private static enum FINISH_ENUM{TIME, POSITION, SKIP, TIMEOUT, LIMIT_SWITCH};
+  private static enum FINISH_ENUM{TIME, POSITION, SKIP, TIMEOUT, BAR_SWITCH, RATCHET_SWITCH};
   private FINISH_ENUM finish_type = FINISH_ENUM.TIME;
   private boolean substate_finished;
   BIG_CLIMB_ENUM active_state;
@@ -79,14 +79,6 @@ public class StateCommand extends CommandBase {
       skipify();
     }else {timeGoalify(ControlConstants.RATCHET_PISTON_TIME);}
     climb.setRatchet(ratchet_state);
-
-    if (ratchet_state == RATCHET_ENUM.FREE){
-      try {
-        climb.setClimbVelocity(-1);;
-      } catch (Exception e) {
-        //TODO: handle exception
-      }
-    }
   }
 
   public void setHook(HOOK_ENUM hook_state){
@@ -164,10 +156,18 @@ public class StateCommand extends CommandBase {
         setRatchet(RATCHET_ENUM.RATCHETING);
       break;
         case RACHET_FREE:
-        setRatchet(RATCHET_ENUM.FREE);
+        climb.setRatchet(RATCHET_ENUM.FREE);
+        timeGoalify(0.3);
+        ratchetGoalify();
+        try {
+          climb.setClimbVelocity(-3);
+        } catch (Exception e) {
+          //TODO: handle exception
+        }
       break;
       case LAST:
         setHook(HOOK_ENUM.OFF_PREVIOUS);
+        timeOutify(3);
       break;
       case PULL_UNTIL_SWITCH:
         climb.setArm(ARM_ENUM.FLOAT);
@@ -177,15 +177,19 @@ public class StateCommand extends CommandBase {
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
-        limitGoalify();
+        barGoalify();
       break;
       default:
         break;
     }
   }
 
-  private void limitGoalify() {
-    finish_type = FINISH_ENUM.LIMIT_SWITCH;
+  private void barGoalify() {
+    finish_type = FINISH_ENUM.BAR_SWITCH;
+  }
+
+  private void ratchetGoalify() {
+    finish_type = FINISH_ENUM.RATCHET_SWITCH;
   }
 
 
@@ -204,6 +208,7 @@ public class StateCommand extends CommandBase {
     state_state = 0;
     timer.start();
     substate_finished = true;
+    estop = false;
   }
 
   private boolean passedTimeGoal(){
@@ -230,14 +235,28 @@ public class StateCommand extends CommandBase {
       case TIMEOUT:
         if (climb.isAtPosition() || passedTimeGoal()) substate_finished = true;
         break;
-      case LIMIT_SWITCH:
-        if (climb.getLimitSwitch()) {
+      case BAR_SWITCH:
+        if (climb.getBarSwitch()) {
           substate_finished = true;
           try {
             climb.setClimbPercent(0);
           } catch (Exception e) {
             //TODO: handle exception
           }
+        }
+        break;
+      case RATCHET_SWITCH:
+        if (climb.getRatchetSwitch() ) {
+          substate_finished = true;
+          try {
+            climb.setClimbPercent(0);
+          } catch (Exception e) {
+            //TODO: handle exception
+          }
+        }
+        if(passedTimeGoal()){
+          substate_finished = true;
+          estop = true;
         }
         break;
       default:
@@ -251,7 +270,7 @@ public class StateCommand extends CommandBase {
           climb.setArm(ARM_ENUM.VERTICAL);
         }
       }
-      if (climb.getLimitSwitch()) {
+      if (climb.getBarSwitch()) {
         try {
           climb.setClimbPercent(0);
           climb.clearMotionProfile();
@@ -287,9 +306,9 @@ public class StateCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-      return state_list.length == state_state;
+      return state_list.length == state_state || estop;
   }
-
+  boolean estop = false;
   @Override
   public void end(boolean interrupted) {
     climb.clearMotionProfile();

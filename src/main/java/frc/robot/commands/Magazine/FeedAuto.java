@@ -13,7 +13,7 @@ public class FeedAuto extends MagMoveBase {
   /** Creates a new BackSpace. */
   public FeedAuto(Magazine magazine) {
     super(magazine);
-    movement_time = 1.;
+    movement_time = 1.2;
     speed = 0.6;
     // Use addRequirements() here to declare subsystem dependencies.
   }

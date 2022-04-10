@@ -27,7 +27,7 @@ public class AutoFromLine extends SequentialCommandGroup {
   public AutoFromLine(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MoveIntakePartialDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new ShootWithSetSpeed(magazine, shooter, 3500, intake), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
+    addCommands(new MoveIntakePartialDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new ShootWithSetSpeed(magazine, shooter, 3400, intake), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
   }
 
   /** Creates a new AutoFromLine. 

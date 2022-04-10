@@ -85,7 +85,9 @@ public class RobotContainer {
     auto_chooser.addOption("Turn", new AutoWithTurn(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER));
     auto_chooser.addOption("4 Ball Test", new FourBallAuto(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER, M_LIME_LIGHT));
     SmartDashboard.putData("auto chooser", auto_chooser);
-    
+    SmartDashboard.putData("ratchet free", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RACHET_FREE));
+    SmartDashboard.putData("Manual Climb Motor", new ManualClimbMotor(M_CLIMB, RobotMap.Buttons.BUTTON_Y));
+    SmartDashboard.putData("ratchet engaged", new StateCommand(M_CLIMB, BIG_CLIMB_ENUM.RATCHET_RATCHETING));
     /*
     SmartDashboard.putData("Drivetrain PID Set", new DrivePIDTune(M_DRIVETRAIN));
     SmartDashboard.putData("Drive to Location", new DriveToLocation(M_DRIVETRAIN, 24));
@@ -144,7 +146,7 @@ public class RobotContainer {
     .whenReleased(new MoveToClimbState(M_CLIMB));
     Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-    
+    Buttons.CLIMB_MANUAL_A.and(Buttons.CLIMB_MANUAL_B).whenActive(new ManualClimbMotor(M_CLIMB, RobotMap.Buttons.BUTTON_Y));
   }
 
   /**
