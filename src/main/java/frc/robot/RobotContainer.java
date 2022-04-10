@@ -156,6 +156,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return auto_chooser.getSelected();
+    return (auto_chooser.getSelected()!=null)?auto_chooser.getSelected():new AutoFromLine(M_MAGAZINE, M_INTAKE, M_DRIVETRAIN, M_SHOOTER);
   }
 }
