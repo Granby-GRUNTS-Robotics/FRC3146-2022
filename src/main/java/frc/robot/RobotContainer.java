@@ -146,7 +146,7 @@ public class RobotContainer {
     .whenReleased(new MoveToClimbState(M_CLIMB));
     Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-    Buttons.CLIMB_MANUAL_A.and(Buttons.CLIMB_MANUAL_B).whenActive(new ManualClimbMotor(M_CLIMB, RobotMap.Buttons.BUTTON_Y));
+    Buttons.CLIMB_MANUAL_A.and(Buttons.CLIMB_MANUAL_B).whileActiveOnce(new ManualClimbMotor(M_CLIMB, RobotMap.Buttons.BUTTON_Y));
   }
 
   /**
