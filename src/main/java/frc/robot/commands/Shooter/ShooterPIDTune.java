@@ -6,6 +6,8 @@ package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
+import frc.robot.Constants.ControlConstants;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterPIDTune extends InstantCommand {
@@ -20,16 +22,16 @@ public class ShooterPIDTune extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.setDefaultNumber("Shooter P", 0);
-    SmartDashboard.setDefaultNumber("Shooter I", 0);
-    SmartDashboard.setDefaultNumber("Shooter D", 0);
-    SmartDashboard.setDefaultNumber("Shooter FF", 0);
+    SmartDashboard.setDefaultNumber("Shooter P", ControlConstants.SHOOTER_kP);
+    SmartDashboard.setDefaultNumber("Shooter I", ControlConstants.SHOOTER_kI);
+    SmartDashboard.setDefaultNumber("Shooter D", ControlConstants.SHOOTER_kD);
+    SmartDashboard.setDefaultNumber("Shooter FF", ControlConstants.SHOOTER_kV);
     SmartDashboard.setDefaultNumber("Shooter I Max", 0);
     double p = SmartDashboard.getNumber("Shooter P", 0);
     double i = SmartDashboard.getNumber("Shooter I", 0);
     double d = SmartDashboard.getNumber("Shooter D", 0);
     double f = SmartDashboard.getNumber("Shooter FF", 0);
-    double imax = SmartDashboard.getNumber("Shooter I Max", 0);
-    shooter.setPDF(p, i, d, f, imax);
+    //double imax = SmartDashboard.getNumber("Shooter I Max", 0);
+    shooter.setPDF(p, i, d, f, 0);
   }
 }

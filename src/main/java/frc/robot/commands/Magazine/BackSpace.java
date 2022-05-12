@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Magazine;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
@@ -21,6 +23,7 @@ public class BackSpace extends MagMoveBase {
   }
   @Override
   public void initialize() {
+    SmartDashboard.putString(Constants.SHOOT_STRING, "Backspacing");
     intake.setIntakePercent(-0.3);
     super.initialize();
   }

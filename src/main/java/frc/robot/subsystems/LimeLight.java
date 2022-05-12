@@ -96,8 +96,8 @@ public class LimeLight extends SubsystemBase {
    * @param distance, the distance, in inches, from the target 
    * @return a suitable flywheel speed
    */
-  private static double a = 3364.0143;
-  private static double b = -233.49395;
+  private static double a = 3460;
+  private static double b = -234;
   private static double c = 79.190021;
   public double calculateFlyWheelSpeed(double distance){
     return (a) + (b * distance) + (c * Math.pow(distance, 2));

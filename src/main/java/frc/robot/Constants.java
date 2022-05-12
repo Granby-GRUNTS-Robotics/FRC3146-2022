@@ -14,7 +14,7 @@ package frc.robot;
  */
 //TODO fill in constants
 public final class Constants {
-
+    public static final String SHOOT_STRING = "Shooter Active Command: ";
     public static int climb_state = 0;
     
     public static final class PneumaticConstants{
@@ -84,10 +84,10 @@ public final class Constants {
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
         //PID, motion control, feed forward values
-        public static final double SHOOTER_kP = 0.00026;
+        public static final double SHOOTER_kP = 0.00035;
         public static final double SHOOTER_kD = 0;
         public static final double SHOOTER_kS = 0.161;
-        public static final double SHOOTER_kV = 0.000185;
+        public static final double SHOOTER_kV = 0.000174;
 
         public static final double DRIVE_ARB_FF = -0.15;
 
@@ -119,18 +119,21 @@ public final class Constants {
         public static final double HOOK_DOWN_kF = 0.227;
         
         //drivetrain control constants
-        public static final double kTHROTTLE_MULTIPLIER = 100;
-        public static final double kTWIST_MULTIPLIER = 40;
+        public static final double kTHROTTLE_MULTIPLIER = 160;
+        public static final double kTWIST_MULTIPLIER = 50;
         public static final double WHEEL_DIAMETER = 5.9; // approx in inches
+        public static final double SHOOTER_kI = 0;
     }
 
     public static final class SetpointConstants{
-        public static final double SHOOTER_SPEED_LOW = 2000;
+        public static final double SHOOTER_SPEED_LOW = 1000;
         public static final double SHOOTER_SPEED_HIGH = 3660;
         public static final double SHOOTER_PRECISISON = 40
         ;
-        public static final double PROTECTED_SHOOTING_ANGLE = -28.30;
-        public static final double PROTECTED_SHOOTING_SPEED = 0;
+        public static final double PROTECTED_SHOOTING_ANGLE = -13.3;
+        public static final double PROTECTED_SHOOTING_SPEED = 4500;
+        public static final double PROTECTED_SHOOTING_DISTANCE = -4;
+
         public static final double MAGAZINE_SPEED = 0.45;
         public static final double MAGAZINE_INTAKE_SPEED = 0.6;
         public static final double MAGAZINE_PRECISION = 10;
@@ -148,6 +151,7 @@ public final class Constants {
         public static final double HOOK_OFF_PREV = 17;
 
         public static final double HOOK_PRECISON = 0.5;
+        
     }
 
     public static final class LimeLightConstants{

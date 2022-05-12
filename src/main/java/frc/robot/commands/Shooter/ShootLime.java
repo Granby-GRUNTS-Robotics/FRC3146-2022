@@ -16,4 +16,8 @@ public class ShootLime extends ShootBase{
         super(magazine, shooter, new RevUpLime(shooter, limeLight), intake);
         //addCommands(new LimeTurnOff(limeLight));
     }
+    public ShootLime(Magazine magazine, Shooter shooter, LimeLight limeLight, Intake intake, boolean auto){
+        super(magazine, shooter, new RevUpLime(shooter, limeLight), auto, intake );
+        //addCommands(new LimeTurnOff(limeLight));
+    }
 }

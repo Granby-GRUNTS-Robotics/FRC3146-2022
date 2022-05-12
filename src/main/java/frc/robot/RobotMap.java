@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -29,16 +30,16 @@ import frc.robot.Constants.PneumaticConstants;
 /** Add your docs here. */
 public class RobotMap {
     //solenoids/pneumatics
-    public static final PneumaticsControlModule PNEUMATICS_BASE = new PneumaticsControlModule(PneumaticConstants.PCM_ID);
+    public static final PneumaticHub PNEUMATICS_BASE = new PneumaticHub(PneumaticConstants.PCM_ID);
     
-    public static final Solenoid INTAKE_MAIN_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.INTAKE_UP_SOLENOID_PORT);
-    public static final Solenoid INTAKE_SECONDARY_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.INTAKE_DOWN_SOLENOID_PORT);    
+    public static final Solenoid INTAKE_MAIN_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.REVPH, PneumaticConstants.INTAKE_UP_SOLENOID_PORT);
+    public static final Solenoid INTAKE_SECONDARY_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.REVPH, PneumaticConstants.INTAKE_DOWN_SOLENOID_PORT);    
     
-    public static final Solenoid ARM_VERT_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.ARM_VERT_SOLENOID_PORT);
-    public static final Solenoid ARM_HORI_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.ARM_HORI_SOLENOID_PORT);
+    public static final Solenoid ARM_VERT_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.REVPH, PneumaticConstants.ARM_VERT_SOLENOID_PORT);
+    public static final Solenoid ARM_HORI_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.REVPH, PneumaticConstants.ARM_HORI_SOLENOID_PORT);
 
-    public static final Solenoid RATCHET_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.RATCHET_SOLENOID_PORT);
-    public static final Solenoid CLAW_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.CTREPCM, PneumaticConstants.CLAW_SOLENOID_PORT);
+    public static final Solenoid RATCHET_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.REVPH, PneumaticConstants.RATCHET_SOLENOID_PORT);
+    public static final Solenoid CLAW_SOLENOID = new Solenoid(PneumaticConstants.PCM_ID, PneumaticsModuleType.REVPH, PneumaticConstants.CLAW_SOLENOID_PORT);
 
     //motors
     //spark maxes
@@ -89,9 +90,10 @@ public class RobotMap {
 
         public static final Button SHOOT_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 1);
         public static final Button SLOW_MODE_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 2);
-        public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
+        public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 5);
         public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
         public static final Button LIME_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 6);
+        public static final Button PROTECTED_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
 
         public static final Trigger LOW_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
@@ -113,6 +115,12 @@ public class RobotMap {
         public static final Trigger LIME_TURN_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
                 return !LIME_GOAL_BUTTON.get() && !LOW_GOAL_BUTTON.get() && !HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+            };
+        });
+
+        public static final Trigger PROTECTED_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
+            public boolean getAsBoolean() {
+                return PROTECTED_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
             };
         });
         

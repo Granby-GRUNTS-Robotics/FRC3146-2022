@@ -5,6 +5,8 @@
 package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.LimeTurnAndShoot;
+import frc.robot.commands.LimeTurnOn;
 import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOff;
@@ -14,6 +16,7 @@ import frc.robot.commands.Intake.MoveIntakeUp;
 import frc.robot.commands.Shooter.ShootWithSetSpeed;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
@@ -24,10 +27,10 @@ public class AutoFromLine extends SequentialCommandGroup {
   /** Creates a new AutoFromLine. 
    * very basic autonomous routine starting from initiation zone, moving forwards to collect ball and shooting towards target
   */
-  public AutoFromLine(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter) {
+  public AutoFromLine(Magazine magazine, Intake intake, Drivetrain drivetrain, Shooter shooter, LimeLight limelight) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MoveIntakePartialDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new ShootWithSetSpeed(magazine, shooter, 3400, intake), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 25));
+    addCommands(new LimeTurnOn(limelight, true), new MoveIntakePartialDown(intake), new IntakeIn(intake), new DriveToLocation(drivetrain, 40),new DriveToLocation(drivetrain, -12), new LimeTurnAndShoot(drivetrain, limelight, shooter, magazine, intake, true), new IntakeOff(intake), new MoveIntakeUp(intake), new DriveToLocation(drivetrain, 20));
   }
 
   /** Creates a new AutoFromLine. 

@@ -4,12 +4,13 @@
 
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.LimeTurnAndShoot;
 import frc.robot.commands.LimeTurnOn;
-import frc.robot.commands.Drivetrain.DriveToAngle;
+import frc.robot.commands.Drivetrain.DriveToAbsoluteAngle;
 import frc.robot.commands.Drivetrain.DriveToLocation;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOff;
@@ -34,13 +35,14 @@ public class FourBallAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new LimeTurnOn(limeLight),new MoveIntakePartialDown(intake), new IntakeIn(intake), 
-      new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new BackSpace(magazine, intake), new RevUpSet(shooter, 3100, true), new DriveToAngle(drivetrain, 19), new ShootWithSetSpeed(magazine, shooter, 3170, intake),  
-      new ParallelCommandGroup( new MoveIntakePartialDown(intake), new DriveToAngle(drivetrain, -23)),new IntakeIn(intake),
+      new InstantCommand(()-> drivetrain.resetPigeon() , drivetrain),
+      new LimeTurnOn(limeLight, true),new MoveIntakePartialDown(intake), new IntakeIn(intake), 
+      new DriveToLocation(drivetrain, 36), new DriveToLocation(drivetrain, -12), new BackSpace(magazine, intake), new RevUpSet(shooter, 3100, true), new DriveToAbsoluteAngle(drivetrain, 19), new ShootWithSetSpeed(magazine, shooter, 3170, intake),  
+      new ParallelCommandGroup( new MoveIntakePartialDown(intake), new DriveToAbsoluteAngle(drivetrain, -9)),new IntakeIn(intake),
       new ParallelCommandGroup(
         new MagIntake(magazine), 
         new SequentialCommandGroup(
-          new DriveToLocation(drivetrain, 170), new WaitCommand(1.25), new DriveToLocation(drivetrain, -148))),  
-      new BackSpace(magazine, intake), new RevUpSet(shooter, 3000, true), new LimeTurnOn(limeLight), new LimeTurnAndShoot(drivetrain, limeLight, shooter, magazine, intake));
+          new DriveToLocation(drivetrain, 164), new WaitCommand(0.75),new DriveToAbsoluteAngle(drivetrain, 3), new DriveToLocation(drivetrain, -130))),  
+      new BackSpace(magazine, intake), new RevUpSet(shooter, 3000, true), new LimeTurnOn(limeLight), new LimeTurnAndShoot(drivetrain, limeLight, shooter, magazine, intake), new IntakeOff(intake));
   }
 }

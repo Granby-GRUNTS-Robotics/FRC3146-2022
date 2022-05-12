@@ -26,6 +26,6 @@ public class ShootBase extends SequentialCommandGroup {
   public ShootBase(Magazine magazine, Shooter shooter, RevUpBase speedBase, boolean auto, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new BackSpace(magazine, intake), speedBase, new MagazineAndIntakeFeed(intake, new FeedAuto(magazine)), new ShooterBrake(shooter));
+    addCommands(new BackSpace(magazine, intake), speedBase,new WaitCommand(0.25), new MagazineAndIntakeFeed(intake, new FeedAuto(magazine)), new ShooterBrake(shooter));
   }
 }

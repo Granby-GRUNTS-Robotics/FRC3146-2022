@@ -4,6 +4,9 @@
 
 package frc.robot.commands.Drivetrain;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimeLight;
 
@@ -13,6 +16,7 @@ import frc.robot.subsystems.LimeLight;
 */
 public class LimeTurn extends DriveToAngle {
     private LimeLight limeLight;
+    private Timer timer= new Timer();
     public LimeTurn(Drivetrain drivetrain, LimeLight limeLight) {
         super(drivetrain, 0);
         this.limeLight = limeLight;
@@ -20,7 +24,17 @@ public class LimeTurn extends DriveToAngle {
     }
     @Override
     public void initialize() {
+        SmartDashboard.putString(Constants.SHOOT_STRING, "Turning");
+        timer.reset();
+        timer.start();
         angle = -limeLight.getX();
         super.initialize();
+        thresh = 5;
+    }
+    
+    @Override
+    public boolean isFinished() {
+        // TODO Auto-generated method stub
+        return super.isFinished() || timer.hasElapsed(1.);
     }
 }

@@ -17,6 +17,13 @@ public class LimeTurnOn extends CommandBase {
     addRequirements(limeLight);
     // Use addRequirements() here to declare subsystem dependencies.
   }
+  boolean instant = false;
+  public LimeTurnOn(LimeLight limeLight, boolean instant) {
+    this.instant = instant;
+    this.limeLight = limeLight;
+    addRequirements(limeLight);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -36,6 +43,6 @@ public class LimeTurnOn extends CommandBase {
   @Override
   public boolean isFinished() {
     return 
-    limeLight.hasTarget();
+    limeLight.hasTarget() || instant;
   }
 }

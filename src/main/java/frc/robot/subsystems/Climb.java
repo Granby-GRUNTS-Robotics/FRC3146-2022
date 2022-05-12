@@ -412,7 +412,9 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Ratchet Switch", getRatchetSwitch());
+    SmartDashboard.putBoolean("Bar Switch", getBarSwitch());
     positionEntry.setNumber(getPosition());
+    SmartDashboard.putNumber("Climb Position", getPosition());
     
     // This method will be called once per scheduler run
   }
