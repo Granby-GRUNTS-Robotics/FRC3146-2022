@@ -52,8 +52,10 @@ public final class Constants {
 
     public static final class ControlConstants{
 
-        public static final int DRIVE_CONTROLLER_PORT = 0;
-        public static final int BUTTON_JOYSTICK_PORT = 1;
+       // public static final int DRIVE_CONTROLLER_PORT = 0;
+        //public static final int BUTTON_JOYSTICK_PORT = 1;
+
+        public static final int LOGITECH_CONTROLLER_PORT = 0;
 
         //sensors
         public static final int POTENTIOMETER_PORT = 0;
@@ -120,7 +122,7 @@ public final class Constants {
         
 
         //drivetrain control constants
-        public static final double kTHROTTLE_MULTIPLIER = 30; //competition speed: 160
+        public static final double kTHROTTLE_MULTIPLIER = 25; //competition speed: 160
         public static final double kTWIST_MULTIPLIER = 20; // competition speed: 50
         public static final double WHEEL_DIAMETER = 5.9; // approx in inches
         public static final double SHOOTER_kI = 0;
@@ -129,7 +131,7 @@ public final class Constants {
     public static final class SetpointConstants{
         public static final double SHOOTER_SPEED_LOW = 1000;
         // public static final double SHOOTER_SPEED_HIGH = 3660;  //Orig Competition High speed
-        public static final double SHOOTER_SPEED_HIGH = 1700;
+        public static final double SHOOTER_SPEED_HIGH = 1500;
         public static final double SHOOTER_PRECISISON = 40
         ;
         public static final double PROTECTED_SHOOTING_ANGLE = -13.3;

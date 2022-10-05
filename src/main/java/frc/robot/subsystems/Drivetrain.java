@@ -114,7 +114,7 @@ public class Drivetrain extends SubsystemBase {
   /**
    * only sets mode if different from current mode.
    * Sets brake mode of all 4 drive motors
-   * @param mode the brake mode, either coast or 
+   * @param mode the brake mode, either coast o
    */
   public void setBrakeMode(IdleMode mode){
     if(LEFT_DRIVE_SPARK_MAX.getIdleMode() != mode){

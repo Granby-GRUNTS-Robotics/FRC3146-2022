@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.lang.ModuleLayer.Controller;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -65,13 +66,15 @@ public class RobotMap {
 
     public static final PigeonIMU PIGEON = new PigeonIMU(ControlConstants.PIGEON_IMU_ID); 
     
-    public static final Joystick DRIVE_JOYSTICK = new Joystick(ControlConstants.DRIVE_CONTROLLER_PORT);
-    public static final Joystick BUTTON_JOYSTICK = new Joystick(ControlConstants.BUTTON_JOYSTICK_PORT);
+   /* public static final Joystick DRIVE_JOYSTICK = new Joystick(ControlConstants.DRIVE_CONTROLLER_PORT);
+    public static final Joystick BUTTON_JOYSTICK = new Joystick(ControlConstants.BUTTON_JOYSTICK_PORT); */
+
+    public static final Joystick LOGITECH_CONTROLLER = new Joystick(ControlConstants.LOGITECH_CONTROLLER_PORT);
 
     public static final class Buttons{        
         public static final DoubleSupplier BUTTON_Y = new DoubleSupplier() {
             public double getAsDouble() {
-                double x = -BUTTON_JOYSTICK.getRawAxis(1);
+                double x = -LOGITECH_CONTROLLER.getRawAxis(1);
                 return x;
             };
         };
@@ -81,53 +84,42 @@ public class RobotMap {
                 return value;
         }
 
-        public static final Button INTAKE_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 1);
-        public static final Button EJECT_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 2);
-        public static final Button INTAKE_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 6);
-        public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 5);
-        public static final Button INTAKE_PARTIAL_UP_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 4);
-        public static final Button INTAKE_PARTIAL_DOWN_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 3);
+        public static final Button INTAKE_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 7);
+        public static final Button EJECT_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 3);
+    /*  public static final Button INTAKE_UP_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 6);
+        public static final Button INTAKE_DOWN_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 5);
+        public static final Button INTAKE_PARTIAL_UP_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 4);
+        public static final Button INTAKE_PARTIAL_DOWN_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 3);
+    */
+       // public static final Button SHOOT_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 8);
+        public static final Button LIME_TOGGLE_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 2);
+        public static final Button HIGH_GOAL_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 8);
+        public static final Button LIME_GOAL_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 4);
 
-        public static final Button SHOOT_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 1);
-        public static final Button SLOW_MODE_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 2);
-        public static final Button LOW_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 5);
-        public static final Button HIGH_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 3);
-        public static final Button LIME_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 6);
-        public static final Button PROTECTED_GOAL_BUTTON = new JoystickButton(DRIVE_JOYSTICK, 4);
-
-        public static final Trigger LOW_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
-            public boolean getAsBoolean() {
-                return LOW_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
-            };
-        });
 
         public static final Trigger LIME_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
-                return LIME_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+                return LIME_GOAL_BUTTON.get();
             };
         });
 
         public static final Trigger HIGH_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
-                return HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+                return HIGH_GOAL_BUTTON.get();
             };
         });
         public static final Trigger LIME_TURN_TRIGGER = new Trigger(new BooleanSupplier() {
             public boolean getAsBoolean() {
-                return !LIME_GOAL_BUTTON.get() && !LOW_GOAL_BUTTON.get() && !HIGH_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
+                return !LIME_GOAL_BUTTON.get() && !HIGH_GOAL_BUTTON.get();
             };
         });
 
-        public static final Trigger PROTECTED_GOAL_TRIGGER = new Trigger(new BooleanSupplier() {
-            public boolean getAsBoolean() {
-                return PROTECTED_GOAL_BUTTON.get() && SHOOT_BUTTON.get();
-            };
-        });
+    
         
-        public static final Button CLIMB_BACKWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 7);
-        public static final Button CLIMB_FORWARDS_BUTTON = new JoystickButton(BUTTON_JOYSTICK, 8);
-        public static final Button CLIMB_MANUAL_A = new JoystickButton(BUTTON_JOYSTICK,9);
-        public static final Button CLIMB_MANUAL_B = new JoystickButton(BUTTON_JOYSTICK,10);
+        public static final Button CLIMB_BACKWARDS_BUTTON = new JoystickButton(LOGITECH_CONTROLLER,6);
+        public static final Button CLIMB_FORWARDS_BUTTON = new JoystickButton(LOGITECH_CONTROLLER, 5);
+        public static final Button CLIMB_MANUAL_A = new JoystickButton(LOGITECH_CONTROLLER,9);
+        public static final Button CLIMB_MANUAL_B = new JoystickButton(LOGITECH_CONTROLLER,10);
     }
 
 }

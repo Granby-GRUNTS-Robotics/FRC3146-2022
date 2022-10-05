@@ -118,7 +118,7 @@ public class RobotContainer {
     */
     //SmartDashboard.putData("turn to 90", new DriveToAbsoluteAngle(M_DRIVETRAIN, 90));
     //SmartDashboard.putData("Limelight Tune", new LimelightTune(M_LIME_LIGHT));
-    M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.DRIVE_JOYSTICK));
+    M_DRIVETRAIN.setDefaultCommand(new JoyDrive(M_DRIVETRAIN, RobotMap.LOGITECH_CONTROLLER));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -134,30 +134,33 @@ public class RobotContainer {
     Buttons.INTAKE_BUTTON.whenHeld(new IntakeButtonCommand(M_INTAKE))
     .whenHeld(new MagIntake(M_MAGAZINE));
 
-    Buttons.SLOW_MODE_BUTTON.whenPressed(new LimeToggle(M_LIME_LIGHT));
+    Buttons.LIME_TOGGLE_BUTTON.whenPressed(new LimeToggle(M_LIME_LIGHT));
 
-    Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
+    /*Buttons.INTAKE_UP_BUTTON.whenPressed(new MoveIntakeUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
     Buttons.INTAKE_PARTIAL_UP_BUTTON.whenPressed(new MoveIntakePartialUp(M_INTAKE).andThen(new IntakeOff(M_INTAKE)));
     Buttons.INTAKE_PARTIAL_DOWN_BUTTON.whenPressed(new MoveIntakePartialDown(M_INTAKE).andThen(new IntakeIn(M_INTAKE)));
     Buttons.INTAKE_DOWN_BUTTON.whenPressed(new MoveIntakeDown(M_INTAKE).andThen(new IntakeIn(M_INTAKE)));
-
+*/
     Buttons.EJECT_BUTTON.whenHeld(new MagazineOut(M_MAGAZINE)).whenHeld(new IntakeOut(M_INTAKE));
 
-    Buttons.SHOOT_BUTTON.whenReleased(new ShooterBrake(M_SHOOTER));
+   Buttons.HIGH_GOAL_BUTTON.whenReleased(new ShooterBrake(M_SHOOTER));
+   Buttons.LIME_GOAL_BUTTON.whenReleased(new ShooterBrake(M_SHOOTER));
 
-    Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootLow(M_MAGAZINE,M_SHOOTER, M_INTAKE));
+   // Buttons.LOW_GOAL_TRIGGER.whileActiveOnce(new ShootLow(M_MAGAZINE,M_SHOOTER, M_INTAKE));
     Buttons.HIGH_GOAL_TRIGGER.whileActiveOnce(new ShootHigh(M_MAGAZINE, M_SHOOTER, M_INTAKE));
     //Buttons.LIME_TURN_TRIGGER.whileActiveOnce(new LimeTurn(M_DRIVETRAIN, M_LIME_LIGHT));
     
     Buttons.LIME_GOAL_TRIGGER.whileActiveOnce(new LimeTurnAndShoot(M_DRIVETRAIN, M_LIME_LIGHT, M_SHOOTER, M_MAGAZINE,M_INTAKE));
-    Buttons.PROTECTED_GOAL_TRIGGER.whileActiveOnce(new ProtectedShootingTuner(M_MAGAZINE,M_INTAKE,M_DRIVETRAIN, M_SHOOTER));
+    //Buttons.PROTECTED_GOAL_TRIGGER.whileActiveOnce(new ProtectedShootingTuner(M_MAGAZINE,M_INTAKE,M_DRIVETRAIN, M_SHOOTER));
     
     //Only uncomment once all testing has been done
     Buttons.CLIMB_FORWARDS_BUTTON.whenPressed(new IncrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
     Buttons.CLIMB_BACKWARDS_BUTTON.whenPressed(new DecrementClimbState(M_CLIMB))
     .whenReleased(new MoveToClimbState(M_CLIMB));
-    Buttons.CLIMB_MANUAL_A.and(Buttons.CLIMB_MANUAL_B).whileActiveOnce(new ManualClimbMotor(M_CLIMB, RobotMap.Buttons.BUTTON_Y));
+    Buttons.CLIMB[\]
+    ][\
+    _MANUAL_A.and(Buttons.CLIMB_MANUAL_B).whileActiveOnce(new ManualClimbMotor(M_CLIMB, RobotMap.Buttons.BUTTON_Y));
   }
 
   /**
