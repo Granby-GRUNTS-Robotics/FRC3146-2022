@@ -7,10 +7,12 @@ package frc.robot.commands.Intake;
 import frc.robot.Constants.PneumaticConstants.INTAKE_ENUM;
 import frc.robot.subsystems.Intake;
 
-/** Put your hands in the air baby */
-public class MoveIntakeUp extends MoveIntakeBase{
-    public MoveIntakeUp(Intake intake){
+/** Intake soft and smoof like BTS Butter */
+public class MoveIntakePartialDown extends MoveIntakeBase{
+
+    public MoveIntakePartialDown(Intake intake) {
         super(intake);
-        pos = INTAKE_ENUM.FULL_UP;
+        pos = INTAKE_ENUM.PARTIAL_DOWN;
     }
+    
 }

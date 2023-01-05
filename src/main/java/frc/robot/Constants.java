@@ -14,7 +14,7 @@ package frc.robot;
  */
 //TODO fill in constants
 public final class Constants {
-
+    public static final String SHOOT_STRING = "Shooter Active Command: ";
     public static int climb_state = 0;
     
     public static final class PneumaticConstants{
@@ -27,7 +27,7 @@ public final class Constants {
         public static final int RATCHET_SOLENOID_PORT = 0;
         public static final int CLAW_SOLENOID_PORT = 1;
         //"double solenoids" have 4 permutations. Normal solenoids only have 2 states
-        public static enum INTAKE_ENUM {UP, DOWN, FLOAT, SOFT};
+        public static enum INTAKE_ENUM {FULL_UP, FULL_DOWN, PARTIAL_UP, PARTIAL_DOWN};
         public static enum ARM_ENUM {HORIZONTAL, VERTICAL, FLOAT, BOTH};
         public static enum CLAW_ENUM {OPEN, CLOSED};
         public static enum RATCHET_ENUM {RATCHETING, FREE};
@@ -45,7 +45,7 @@ public final class Constants {
 
         //CTRE (victors and talons)
         public static final int CLIMB_LEAD_TALON_ID = 11;
-        public static final int CLIMB_FOLLOW_VICTOR_ID = 10;
+        public static final int CLIMB_FOLLOW_TALON_ID = 10;
         public static final int INTAKE_VICTOR_ID = 12;
         public static final int MAGAZINE_VICTOR_ID = 5;
     }
@@ -59,6 +59,8 @@ public final class Constants {
         public static final int POTENTIOMETER_PORT = 0;
         public static final int PIGEON_IMU_ID = 1;
         public static final int MAGAZINE_LIMIT_SWITCH_PORT = 0;
+        public static final int CLIMB_BAR_SWITCH_PORT = 1;
+        public static final int CLIMB_RATCHET_SWITCH_PORT = 2;
 
         //conversion factors
         public static final double CLIMB_ENCODER_TO_DISTANCE = (double) 10 / 16 * Math.PI / 8192; //8192 == counts per rotation. Will be different if we use potentiometer
@@ -74,7 +76,7 @@ public final class Constants {
         public static enum BIG_CLIMB_ENUM{PULLWITHPNEUMATICS, HOOK_EXTENDED, HOOK_RESTING, HOOK_RETRACTED, HOOK_SWING_UP, HOOK_CAPTURING, 
                                           ARM_HORIZONTAL, ARM_VERTICAL, ARM_FLOAT, ARM_BOTH, 
                                           CLAW_OPEN, CLAW_CLOSED, 
-                                          RATCHET_RATCHETING, RACHET_FREE, FIRST, LAST, HOOK_OFF_PREV, WAIT, PIDZERO, PIDONE
+                                          RATCHET_RATCHETING, RACHET_FREE, FIRST, LAST, HOOK_OFF_PREV, WAIT, PIDZERO, PIDONE, PULL_UNTIL_SWITCH
                                          };
         public static enum HOOK_ENUM {EXTENDED, RESTING, RETRACTED, MIDDLE, CAPTURING, FIRST, OFF_PREVIOUS};
 
@@ -82,15 +84,15 @@ public final class Constants {
         public static enum MODE_ENUM {BOTH, TWIST, THROTTLE};
 
         //PID, motion control, feed forward values
-        public static final double SHOOTER_kP = 0.00015;
+        public static final double SHOOTER_kP = 0.00035;
         public static final double SHOOTER_kD = 0;
         public static final double SHOOTER_kS = 0.161;
-        public static final double SHOOTER_kV = 0.000185;
+        public static final double SHOOTER_kV = 0.000174;
 
         public static final double DRIVE_ARB_FF = -0.15;
 
-        public static final double DRIVE_MAX_ACC = 30;
-        public static final double DRIVE_CRUISE = 50;
+        public static final double DRIVE_MAX_ACC = 80;
+        public static final double DRIVE_CRUISE = 90;
 
         public static final double DRIVE_POSITION_kP = 0.06;
         public static final double DRIVE_POSITION_kD = 0.0007;
@@ -105,7 +107,7 @@ public final class Constants {
         public static final double CLIMB_DOWN_ARB_FF = 12;
 
         public static final double CLIMB_MAX_ACC = 20;
-        public static final double CLIMB_CRUISE = 40
+        public static final double CLIMB_CRUISE = 40;
         ;
         
         public static final double HOOK_UP_kP = 0.05;
@@ -117,18 +119,22 @@ public final class Constants {
         public static final double HOOK_DOWN_kF = 0.227;
         
         //drivetrain control constants
-        public static final double kTHROTTLE_MULTIPLIER = 30;
-        public static final double kTWIST_MULTIPLIER = 40;
+        public static final double kTHROTTLE_MULTIPLIER = 160;
+        public static final double kTWIST_MULTIPLIER = 50;
         public static final double WHEEL_DIAMETER = 5.9; // approx in inches
+        public static final double SHOOTER_kI = 0;
     }
 
     public static final class SetpointConstants{
-        public static final double SHOOTER_SPEED_LOW = 3660;
-        public static final double SHOOTER_SPEED_HIGH = 4500;
-        public static final double SHOOTER_PRECISISON = 30
+        public static final double SHOOTER_SPEED_LOW = 1000;
+        public static final double SHOOTER_SPEED_HIGH = 3660;
+        public static final double SHOOTER_PRECISISON = 40
         ;
+        public static final double PROTECTED_SHOOTING_ANGLE = -13.3;
+        public static final double PROTECTED_SHOOTING_SPEED = 4500;
+        public static final double PROTECTED_SHOOTING_DISTANCE = -4;
 
-        public static final double MAGAZINE_SPEED = 0.8;
+        public static final double MAGAZINE_SPEED = 0.45;
         public static final double MAGAZINE_INTAKE_SPEED = 0.6;
         public static final double MAGAZINE_PRECISION = 10;
         public static final double MAGAZINE_BACKSPACE_DISTANCE = -0.05;
@@ -136,7 +142,7 @@ public final class Constants {
 
         public static final double INTAKE_SPEED = 0.75;
 
-        public static final double HOOK_EXTENDED = 27.5;
+        public static final double HOOK_EXTENDED = 26.5;
         public static final double HOOK_FIRST_BAR = 22;
         public static final double HOOK_RETRACTED = 2;
         public static final double HOOK_MIDDLE = 7;
@@ -145,11 +151,14 @@ public final class Constants {
         public static final double HOOK_OFF_PREV = 17;
 
         public static final double HOOK_PRECISON = 0.5;
+        
     }
 
     public static final class LimeLightConstants{
         public static final double GOAL_RELATIVE_HEIGHT_FEET = 5.91;
-        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(45);
+        public static final double LIMELIGHT_MOUNTING_ANGLE = Math.toRadians(70.9
+
+        );
         public static final double LIME_FIXER_VALUE = 100.;
     }
 }

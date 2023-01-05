@@ -95,11 +95,12 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Drive Fused Heading", getFusedHeading());
-    SmartDashboard.putNumber("Goal Angle", goal_angle);
+    
     // This method will be called once per scheduler run
   }
-
+  public void resetPigeon(){
+    PIGEON.setFusedHeading(0);
+  }
   /**
    * 
    * @param left the left goal speed, in inches per second, of the robot
@@ -183,7 +184,10 @@ public class Drivetrain extends SubsystemBase {
     LEFT_DRIVE_ENCODER.setPosition(0);
     RIGHT_DRIVE_ENCODER.setPosition(0);
   }
-
+  public double stickyheading;
+  public void setStickyHeading(){
+    stickyheading = getFusedHeading();
+  }
   /**
    * 
    * @return the fused heading of the PigeonIMU, in degrees
@@ -248,4 +252,10 @@ public void setSmartMotionValues(double cruise_speed, double max_acceleration) {
 public void setVoltage(double voltage) {
   LEFT_CONTROLLER.setReference(voltage, ControlType.kVoltage);
 }
+
+public void setGoalAngleAbsolute(double angle) {
+    goal_angle = angle;
+    goal_position = angleToDistance(angle - PIGEON.getFusedHeading());
+    setGoalPositionsRelative(-goal_position, +goal_position);
+  }
 }

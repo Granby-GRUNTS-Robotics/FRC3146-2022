@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.LimeLightConstants;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -37,8 +38,7 @@ public class LimeLight extends SubsystemBase {
   NetworkTableEntry ledMode = table.getEntry("ledMode");
 
   //variables until tuned, then will become constants
-  private double flyWheelFixer = 0;
-  private double height = 0;
+  private double height = Constants.LimeLightConstants.GOAL_RELATIVE_HEIGHT_FEET;
 
   /**
    * 
@@ -46,6 +46,14 @@ public class LimeLight extends SubsystemBase {
    */
   public double getX(){
     return tx.getDouble(0.0);
+  }
+
+  /**
+   * 
+   * @return true if leds are on, false if leds are off
+   */
+  public boolean getLedMode() {
+      return (ledMode.getDouble(0.0) == 3);
   }
 
   /**
@@ -67,10 +75,19 @@ public class LimeLight extends SubsystemBase {
 
   /**
    * 
+   * has a bit of math, but don't worry about it unless you have taken trig
+   * @return the distance, in inches, from the edge of the target
+   */
+  public double getDistanceFromAngle(double angle){
+    return height/(Math.tan(Math.toRadians(angle+ty.getDouble(0.0))));
+  }
+
+  /**
+   * 
    * @return whether or not the limelight has a valid target
    */
   public boolean hasTarget(){
-    return tv.getNumber(0.0) == (Number)1.0;
+    return tv.getDouble(0.0) == 1.0;
   }
 
   //in case we ever need to augment the calculations. Which, let's all be honest, we probably will have to. So I added in a basic thing for testing
@@ -79,8 +96,11 @@ public class LimeLight extends SubsystemBase {
    * @param distance, the distance, in inches, from the target 
    * @return a suitable flywheel speed
    */
+  private static double a = 3460;
+  private static double b = -234;
+  private static double c = 79.190021;
   public double calculateFlyWheelSpeed(double distance){
-    return Math.pow(distance, 2.0) * flyWheelFixer;
+    return (a) + (b * distance) + (c * Math.pow(distance, 2));
   }
 
   @Override
@@ -89,12 +109,8 @@ public class LimeLight extends SubsystemBase {
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
     double area = ta.getDouble(0.0);
-    height = SmartDashboard.getNumber("Goal Relative Height", LimeLightConstants.GOAL_RELATIVE_HEIGHT_FEET);
-    flyWheelFixer = SmartDashboard.getNumber("Flywheel Speed Multiplier", LimeLightConstants.LIME_FIXER_VALUE);
-    //post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putBoolean("Has Targget", hasTarget());
     SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("Distance From Target (in)", getDistanceFromAngle());
+    SmartDashboard.putNumber("Distance From Target (feet)", getDistanceFromAngle());
   }
 }

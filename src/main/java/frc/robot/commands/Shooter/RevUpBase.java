@@ -6,6 +6,7 @@ package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Shooter;
 /**base class for revving up the flywheel.*/
@@ -14,9 +15,17 @@ public class RevUpBase extends CommandBase {
 
   protected final Shooter shooter; 
   protected double speed;
+  protected double precision = SetpointConstants.SHOOTER_PRECISISON;
+  boolean instant = false;
   
   public RevUpBase(Shooter shooter) {
     this.shooter = shooter;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
+  }
+  public RevUpBase(Shooter shooter, boolean instant) {
+    this.shooter = shooter;
+    this.instant = instant;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
@@ -25,6 +34,7 @@ public class RevUpBase extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putNumber("Rev Up Speed", speed);
+    SmartDashboard.putString(Constants.SHOOT_STRING, "Revving Up");
     shooter.setSpeed(speed);
   }
 
@@ -35,6 +45,6 @@ public class RevUpBase extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(shooter.getError()) < SetpointConstants.SHOOTER_PRECISISON;
+    return instant ? true : Math.abs(shooter.getError()) < precision;
   }
 }

@@ -12,7 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 /**drives to a set distance */
 public class DriveToLocation extends CommandBase {
   private Drivetrain drivetrain;
-  private double distance;
+  protected double distance;
   /** Creates a new DriveToLocation. 
    * @param distance the linear distance to move in inches
    * @param drivetrain the drivetrain subsystem to use

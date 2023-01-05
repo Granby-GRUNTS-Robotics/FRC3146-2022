@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,7 +31,8 @@ import frc.robot.RobotMap;
 
 public class Climb extends SubsystemBase {
 
-  private NetworkTableEntry currentEntry;
+  private NetworkTableEntry leadCurrentEntry;
+  private NetworkTableEntry followCurrentEntry;
   private NetworkTableEntry hookedEntry;
   private NetworkTableEntry positionEntry;
 
@@ -45,20 +47,24 @@ public class Climb extends SubsystemBase {
 
   private double goal_height = 0;
 
-  private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_DRIVE_TALON;
-  private static final VictorSPX FOLLOW_VICTOR = RobotMap.CLIMB_FOLLOW_VICTOR;
+  private static final TalonSRX CLIMB_TALON = RobotMap.CLIMB_FOLLOW_TALON;
+  private static final TalonSRX FOLLOW_TALON = RobotMap.CLIMB_DRIVE_TALON;
   private static final AnalogInput POTENTIOMETER = RobotMap.CLIMB_POTENTIOMETER;
+  private static final DigitalInput CLIMB_BAR_SWITCH = RobotMap.CLIMB_BAR_SWITCH;
+  private static final DigitalInput CLIMB_RATCHET_SWITCH = RobotMap.CLIMB_RATCHET_SWITCH;
+
 
   /** Creates a new Climb. */
   public Climb() {
-    FOLLOW_VICTOR.follow(CLIMB_TALON);
-    FOLLOW_VICTOR.setInverted(false);
+    FOLLOW_TALON.follow(CLIMB_TALON);
+    FOLLOW_TALON.setInverted(false);
     CLIMB_TALON.setInverted(false);
     CLIMB_TALON.setSelectedSensorPosition(0);
     CLIMB_TALON.setSensorPhase(true); // clockwise looking at the encoder from the outside moves the hook out. Reversed Talon to make positive outwards. Reversed Sensor to match Talon
     
     //limits current draw to 35 amps
     CLIMB_TALON.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 50, 0, 0.5));
+    FOLLOW_TALON.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 50, 0, 0.5));
     
     CLIMB_TALON.config_kP(0, ControlConstants.HOOK_UP_kP);
     CLIMB_TALON.config_kD(0, ControlConstants.HOOK_UP_kD);
@@ -78,7 +84,8 @@ public class Climb extends SubsystemBase {
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable climbTable = inst.getTable("climb");
-    currentEntry = climbTable.getEntry("current");
+    leadCurrentEntry = climbTable.getEntry("lead climb current");
+    followCurrentEntry = climbTable.getEntry("follow climb current");
     positionEntry = climbTable.getEntry("position");
     hookedEntry = climbTable.getEntry("is_hooked");
   }
@@ -116,6 +123,13 @@ public class Climb extends SubsystemBase {
    */
   public ARM_ENUM getArmState() {
       return arm_state;
+  }
+
+  public boolean getBarSwitch(){
+    return !CLIMB_BAR_SWITCH.get();
+  }
+  public boolean getRatchetSwitch(){
+    return !CLIMB_RATCHET_SWITCH.get();
   }
 
   /** sets claw position 
@@ -257,7 +271,8 @@ public class Climb extends SubsystemBase {
     if ((percent > 0) && (getRatchetState() == RATCHET_ENUM.RATCHETING)){
       throw new Exception("Ratcheting should be enabled only for pulling upwards!");
     }else{
-    CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, percent);}
+    CLIMB_TALON.set(TalonSRXControlMode.PercentOutput, percent);
+  }
   }
 
   /**
@@ -327,15 +342,18 @@ public class Climb extends SubsystemBase {
    * @return true if current of lead motor exceeds climb threshold
    */
   public boolean isHooked(){
-    return (getStatorCurrent() < MotorConstants.CLIMB_AMPS); 
+    return (getLeadStatorCurrent() < MotorConstants.CLIMB_AMPS); 
   }
 
   /**
    * 
    * @return the current being drawn by the Lead Talon in amps
    */
-  public double getStatorCurrent(){
+  public double getLeadStatorCurrent(){
     return CLIMB_TALON.getStatorCurrent();
+  }
+  public double getFollowStatorCurrent(){
+    return FOLLOW_TALON.getStatorCurrent();
   }
 
   /**
@@ -393,14 +411,11 @@ public class Climb extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    currentEntry.setNumber(getStatorCurrent());
+    SmartDashboard.putBoolean("Ratchet Switch", getRatchetSwitch());
+    SmartDashboard.putBoolean("Bar Switch", getBarSwitch());
     positionEntry.setNumber(getPosition());
-    SmartDashboard.putNumber("Position Error", goal_height - getPosition());
-    SmartDashboard.putNumber("Error", getError()* ControlConstants.CLIMB_ENCODER_TO_DISTANCE);
-    SmartDashboard.putNumber("Climb Velocity", getVelocity());
-    hookedEntry.setBoolean(isHooked());
-    SmartDashboard.putNumber("potentiometer", getPotentiometer());
-    SmartDashboard.putNumber("Goal height", goal_height);
+    SmartDashboard.putNumber("Climb Position", getPosition());
+    
     // This method will be called once per scheduler run
   }
 

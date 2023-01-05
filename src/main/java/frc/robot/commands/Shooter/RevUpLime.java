@@ -14,10 +14,18 @@ public class RevUpLime extends RevUpBase{
         super(shooter);
         this.limeLight = limeLight;
         addRequirements(limeLight);
+        precision = 80;
+    }
+    
+    public RevUpLime(Shooter shooter, LimeLight limeLight, boolean instant){
+        super(shooter, instant);
+        this.limeLight = limeLight;
+        addRequirements(limeLight);
     }
     @Override
     public void initialize() {
         speed = limeLight.calculateFlyWheelSpeed(limeLight.getDistanceFromAngle());
         super.initialize();
     }
+    
 }

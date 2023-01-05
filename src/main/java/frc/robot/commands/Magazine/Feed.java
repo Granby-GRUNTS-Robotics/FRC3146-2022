@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Magazine;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Constants.SetpointConstants;
 import frc.robot.subsystems.Magazine;
 /**feed for shooting balls. stil need to decrease feed distance */
@@ -13,5 +15,10 @@ public class Feed extends MagMoveBase {
     super(magazine);
     movement_time = SetpointConstants.MAGAZINE_FEED_DISTANCE;
     // Use addRequirements() here to declare subsystem dependencies.
+  }
+  @Override
+  public void initialize() {
+    SmartDashboard.putString(Constants.SHOOT_STRING, "Feeding");
+    super.initialize();
   }
 }
